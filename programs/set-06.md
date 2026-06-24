@@ -49,12 +49,10 @@
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
@@ -62,67 +60,62 @@
 
 ```python
 from flask import Flask
-
-app = Flask(__name__)
+app=Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello from Flask DevOps Lab"
+ return "Hello Flask Docker Application"
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+app.run(host="0.0.0.0",port=5000)
 ```
 
 #### requirements.txt
 
 ```text
-flask
+Flask
 ```
 
 #### Dockerfile
 
 ```dockerfile
-FROM python:3.12-slim
+FROM python:3.12
 WORKDIR /app
+COPY app.py .
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY app.py .
 EXPOSE 5000
-CMD ["python", "app.py"]
+CMD ["python","app.py"]
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-pip3 install flask
-python3 app.py
-docker build -t flask-devops-lab .
-docker run -d --name flask-lab -p 5000:5000 flask-devops-lab
-curl http://localhost:5000
+docker build -t flask-app .
+docker run -p 5000:5000 flask-app
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag flask-app 245123751006/flask-app
+docker push 245123751006/flask-app
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "Flask Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
 ```
 
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag flask-devops-lab:latest YOUR_DOCKERHUB_USERNAME/flask-devops-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/flask-devops-lab:latest
-```
-
-**Expected Output:** Hello from Flask DevOps Lab
+**Expected Output:** Hello Flask Docker Application
 
 **Quick Fixes:**
 - If Docker build fails, confirm file names match Dockerfile COPY commands.

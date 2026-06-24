@@ -56,10 +56,11 @@
 #### Docker image commands
 
 ```bash
-docker pull node:20-alpine
-docker run -it --name nodecon node:20-alpine node
-console.log('Hello from Node container')
-.exit
+docker pull node
+docker run -it --name node-container node
+node --version
+console.log("Hello Node Docker")
+exit
 ```
 
 **Expected Output:** node container runs and prints command output.

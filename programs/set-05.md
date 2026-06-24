@@ -43,72 +43,62 @@
 
 **Files:**
 - app.js
-- package.json
 - Dockerfile
 
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
 #### app.js
 
 ```javascript
-console.log("Hello from Node.js DevOps Lab");
-```
-
-#### package.json
-
-```json
-{"scripts":{"start":"node app.js"},"dependencies":{}}
+console.log("Hello Node Docker Application");
 ```
 
 #### Dockerfile
 
 ```dockerfile
-FROM node:20-alpine
+FROM node:alpine
 WORKDIR /app
-COPY package.json app.js ./
-CMD ["npm", "start"]
+COPY app.js .
+CMD ["node","app.js"]
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-node app.js
-docker build -t node-devops-lab .
-docker run node-devops-lab
+docker build -t nodeimage .
+docker run nodeimage
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag nodeimage 245123751006/nodeimage
+docker push 245123751006/nodeimage
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "Node Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
 ```
 
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag node-devops-lab:latest YOUR_DOCKERHUB_USERNAME/node-devops-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/node-devops-lab:latest
-```
-
-**Expected Output:** Hello from Node.js DevOps Lab
+**Expected Output:** Hello Node Docker Application
 
 **Quick Fixes:**
 - If Docker build fails, confirm file names match Dockerfile COPY commands.

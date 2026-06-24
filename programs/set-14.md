@@ -47,20 +47,22 @@
 
 **Execution Steps:**
 1. Pull the Ubuntu image.
-2. Run an Ubuntu container named MyContainer.
-3. Execute shell commands inside MyContainer.
-4. Verify command output in terminal.
+2. Run an interactive Ubuntu container named MyContainer.
+3. Execute the shell commands inside the container.
+4. Type exit to leave the container.
 
 **Commands:**
 
-#### Docker Ubuntu commands
+#### Run Ubuntu image in MyContainer
 
 ```bash
 docker pull ubuntu
-docker run -dit --name MyContainer ubuntu bash
-docker exec MyContainer pwd
-docker exec MyContainer ls
-docker exec MyContainer echo "Hello from Ubuntu container"
+docker run -it --name MyContainer ubuntu
+ls
+pwd
+echo "Hello Ubuntu Docker"
+apt update
+exit
 ```
 
 **Expected Output:** Container MyContainer runs and shell commands print output.

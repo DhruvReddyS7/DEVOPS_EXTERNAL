@@ -48,32 +48,26 @@
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
 #### index.html
 
 ```html
-<!doctype html>
 <html>
-  <head>
-    <title>Registration Form</title>
-  </head>
-  <body>
-    <h2>Registration Form</h2>
-    <form>
-      <input placeholder="Name" required>
-      <input placeholder="Email" type="email" required>
-      <input placeholder="Password" type="password" required>
-      <button>Register</button>
-    </form>
-  </body>
+<body>
+<h2>Registration Form</h2>
+<form>
+Name:<input type="text"><br>
+Email:<input type="email"><br>
+Password:<input type="password"><br>
+<input type="submit" value="Register">
+</form>
+</body>
 </html>
 ```
 
@@ -81,38 +75,36 @@
 
 ```dockerfile
 FROM nginx:latest
-WORKDIR /usr/share/nginx/html
-COPY ./index.html .
+COPY index.html /usr/share/nginx/html/index.html
 EXPOSE 80
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-docker build -t html-registration-lab .
-docker run -d --name html-registration -p 8080:80 html-registration-lab
-curl http://localhost:8080
+docker build -t registration-app .
+docker run -d -p 8080:80 registration-app
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag registration-app 245123751006/registration-app
+docker push 245123751006/registration-app
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "HTML Registration Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
-```
-
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag html-registration-lab:latest YOUR_DOCKERHUB_USERNAME/html-registration-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/html-registration-lab:latest
 ```
 
 **Expected Output:** Browser shows the Registration Form page.

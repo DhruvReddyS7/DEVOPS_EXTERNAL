@@ -57,9 +57,15 @@
 
 ```bash
 docker pull nginx
-docker run -d --name nginxcon -p 8080:80 nginx
-curl http://localhost:8080
-docker exec nginxcon ls /usr/share/nginx/html
+docker run -d --name nginx-container -p 8080:80 nginx
+docker ps
+docker exec -it nginx-container bash
+ls
+cd /usr/share/nginx/html
+exit
+
+Open:
+http://localhost:8080
 ```
 
 **Expected Output:** nginx container runs and prints command output.

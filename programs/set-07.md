@@ -56,14 +56,13 @@
 
 **Source Files:**
 
-#### main.c
+#### hello.c
 
 ```c
-#include <stdio.h>
-
-int main() {
-  printf("Hello from C DevOps Lab\n");
-  return 0;
+#include<stdio.h>
+int main(){
+printf("Hello from C Docker Application");
+return 0;
 }
 ```
 

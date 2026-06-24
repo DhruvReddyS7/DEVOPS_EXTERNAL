@@ -47,18 +47,18 @@
 
 **Execution Steps:**
 1. Open terminal.
-2. Check Docker is installed and running.
-3. Pull the hello-world image.
+2. Pull the hello-world image.
+3. List Docker images.
 4. Run the hello-world image.
 5. Read the success message in terminal.
 
 **Commands:**
 
-#### Docker hello-world commands
+#### Run Hello-World image in Docker
 
 ```bash
-docker --version
 docker pull hello-world
+docker images
 docker run hello-world
 ```
 

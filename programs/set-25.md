@@ -42,7 +42,7 @@
 **Aim:** Create a Jenkins Job for executing Java program in GIT – Using Trigger, Build the Job remotely.
 
 **Files:**
-- HelloDevOps.java
+- HelloWorld.java
 
 **Execution Steps:**
 1. Create project folder and add the source files.
@@ -59,13 +59,13 @@
 
 **Source Files:**
 
-#### HelloDevOps.java
+#### HelloWorld.java
 
 ```java
-public class HelloDevOps {
-  public static void main(String[] args) {
-    System.out.println("Hello from Java DevOps Lab");
-  }
+public class HelloWorld{
+public static void main(String args[]){
+System.out.println("Hello from Java Docker Application");
+}
 }
 ```
 
@@ -74,8 +74,8 @@ public class HelloDevOps {
 #### Ubuntu commands
 
 ```bash
-javac HelloDevOps.java
-java HelloDevOps
+javac HelloWorld.java
+java HelloWorld
 ```
 
 #### GitHub push commands
@@ -92,8 +92,8 @@ git push -u origin main
 #### Jenkins Execute shell
 
 ```bash
-javac HelloDevOps.java
-java HelloDevOps
+javac HelloWorld.java
+java HelloWorld
 ```
 
 **Expected Output:** Remote trigger starts build and Java output appears in console.

@@ -48,60 +48,57 @@
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
 #### app.py
 
 ```python
-print("Hello from Python DevOps Lab")
+print("Hello Python Docker Application")
 ```
 
 #### Dockerfile
 
 ```dockerfile
-FROM python:latest
+FROM python:3.12
 WORKDIR /app
 COPY app.py .
-CMD ["python", "app.py"]
+CMD ["python","app.py"]
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-python3 app.py
-docker build -t python-devops-lab .
-docker run python-devops-lab
+docker build -t python-app .
+docker run python-app
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag python-app 245123751006/python-app
+docker push 245123751006/python-app
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "Python Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
 ```
 
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag python-devops-lab:latest YOUR_DOCKERHUB_USERNAME/python-devops-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/python-devops-lab:latest
-```
-
-**Expected Output:** Hello from Python DevOps Lab
+**Expected Output:** Hello Python Docker Application
 
 **Quick Fixes:**
 - If Docker build fails, confirm file names match Dockerfile COPY commands.

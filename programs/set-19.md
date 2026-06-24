@@ -47,32 +47,38 @@
 **Execution Steps:**
 1. Create docker-compose.yml.
 2. Start both containers.
-3. Ping bbConB from bbConA.
-4. Stop containers after verification.
+3. Check containers are running.
+4. Enter bbConA shell.
+5. Ping bbConB from bbConA.
+6. Stop containers after verification.
 
 **Source Files:**
 
 #### docker-compose.yml
 
 ```yaml
+version: "3"
 services:
-  bbConA:
-    image: busybox
-    container_name: bbConA
-    command: sleep 3600
-  bbConB:
-    image: busybox
-    container_name: bbConB
-    command: sleep 3600
+ bbConA:
+  image: busybox
+  container_name: bbConA
+  command: sleep 3600
+ bbConB:
+  image: busybox
+  container_name: bbConB
+  command: sleep 3600
 ```
 
 **Commands:**
 
-#### Docker Compose commands
+#### Docker Compose BusyBox commands
 
 ```bash
 docker compose up -d
-docker exec bbConA ping -c 4 bbConB
+docker ps
+docker exec -it bbConA sh
+ping bbConB
+docker compose down
 ```
 
 **Expected Output:** Ping replies from bbConB are displayed inside bbConA.

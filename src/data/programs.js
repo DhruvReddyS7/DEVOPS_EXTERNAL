@@ -1,7 +1,7 @@
 import { dockerCommands, gitCommands, kubernetesCommands } from "./commonCommands.js";
 
 const repo = "https://github.com/YOUR_USERNAME/devops-lab-program.git";
-const dockerUser = "YOUR_DOCKERHUB_USERNAME";
+const dockerUser = "245123751006";
 
 const block = (label, language, code) => ({ label, language, code: code.trim() });
 
@@ -12,28 +12,31 @@ git branch -M main
 git remote add origin ${repo}
 git push -u origin main`;
 
-const dockerPush = (image) => `docker login
-docker tag ${image}:latest ${dockerUser}/${image}:latest
-docker push ${dockerUser}/${image}:latest`;
+const dockerPush = (image) => `docker login -u ${dockerUser}
+docker tag ${image} ${dockerUser}/${image}
+docker push ${dockerUser}/${image}`;
 
-const makeDockerPractical = ({ title, aim, files, blocks, build, run, output }) => ({
+const makeDockerPractical = ({ title, aim, files, blocks, build, run, output, commit = "Docker App" }) => ({
   aim,
   files,
   blocks,
   steps: [
     "Create the listed source files in one folder.",
     "Open terminal in that folder.",
-    "Run the Ubuntu commands block from top to bottom.",
-    "Build the Docker image using the docker build command.",
-    "Run the container using the docker run command.",
+    "Run the Build & Run commands.",
     "Check output in terminal or browser.",
-    "Push code to GitHub.",
-    "Push Docker image to DockerHub."
+    "Run the DockerHub commands to push the image.",
+    "Run the GitHub commands to push the code."
   ],
   commandBlocks: [
-    block("Ubuntu commands", "bash", [...build, ...run].join("\n")),
-    block("GitHub push commands", "bash", gitPush),
-    block("DockerHub push commands", "bash", dockerPush(title))
+    block("Build & Run", "bash", [...build, ...run].join("\n")),
+    block("DockerHub", "bash", dockerPush(title)),
+    block("GitHub", "bash", `git init
+git add .
+git commit -m "${commit}"
+git remote add origin ${repo}
+git branch -M main
+git push -u origin main`)
   ],
   expected: output,
   fixes: [
@@ -45,157 +48,151 @@ const makeDockerPractical = ({ title, aim, files, blocks, build, run, output }) 
 
 const simpleApps = {
   java: makeDockerPractical({
-    title: "java-devops-lab",
+    title: "java-app",
     aim: "Write a simple Java program, build and run it in Docker, push code to GitHub, and push image to DockerHub.",
-    files: ["HelloDevOps.java", "Dockerfile"],
+    files: ["HelloWorld.java", "Dockerfile"],
     blocks: [
-      block("HelloDevOps.java", "java", `public class HelloDevOps {
-  public static void main(String[] args) {
-    System.out.println("Hello from Java DevOps Lab");
-  }
+      block("HelloWorld.java", "java", `public class HelloWorld{
+public static void main(String args[]){
+System.out.println("Hello from Java Docker Application");
+}
 }`),
-      block("Dockerfile", "dockerfile", `FROM eclipse-temurin:17-jdk
+      block("Dockerfile", "dockerfile", `FROM eclipse-temurin:17
 WORKDIR /app
-COPY HelloDevOps.java .
-RUN javac HelloDevOps.java
-CMD ["java", "HelloDevOps"]`)
+COPY HelloWorld.java .
+RUN javac HelloWorld.java
+CMD ["java","HelloWorld"]`)
     ],
-    build: ["javac HelloDevOps.java", "java HelloDevOps", "docker build -t java-devops-lab ."],
-    run: ["docker run java-devops-lab"],
-    output: "Hello from Java DevOps Lab"
+    build: ["docker build -t java-app ."],
+    run: ["docker run java-app"],
+    output: "Hello from Java Docker Application",
+    commit: "Java Docker App"
   }),
   c: makeDockerPractical({
-    title: "c-devops-lab",
+    title: "c-app",
     aim: "Write a simple C program, build and run it in Docker, push code to GitHub, and push image to DockerHub.",
-    files: ["main.c", "Dockerfile"],
+    files: ["hello.c", "Dockerfile"],
     blocks: [
-      block("main.c", "c", `#include <stdio.h>
-
-int main() {
-  printf("Hello from C DevOps Lab\\n");
-  return 0;
+      block("hello.c", "c", `#include<stdio.h>
+int main(){
+printf("Hello from C Docker Application");
+return 0;
 }`),
-      block("Dockerfile", "dockerfile", `FROM gcc:13
+      block("Dockerfile", "dockerfile", `FROM gcc:latest
 WORKDIR /app
-COPY main.c .
-RUN gcc main.c -o main
-CMD ["./main"]`)
+COPY hello.c .
+RUN gcc hello.c -o hello
+CMD ["./hello"]`)
     ],
-    build: ["gcc main.c -o main", "./main", "docker build -t c-devops-lab ."],
-    run: ["docker run c-devops-lab"],
-    output: "Hello from C DevOps Lab"
+    build: ["docker build -t c-app ."],
+    run: ["docker run c-app"],
+    output: "Hello from C Docker Application",
+    commit: "C Docker App"
   }),
   html: makeDockerPractical({
-    title: "html-devops-lab",
+    title: "html-app",
     aim: "Create a simple HTML page, serve it using nginx Docker image, push code to GitHub, and push image to DockerHub.",
     files: ["index.html", "Dockerfile"],
     blocks: [
-      block("index.html", "html", `<!doctype html>
-<html>
-  <head><title>DevOps Lab</title></head>
-  <body>
-    <h1>Hello from HTML DevOps Lab</h1>
-    <p>This page is running inside Docker.</p>
-  </body>
+      block("index.html", "html", `<html>
+<body>
+<h1>Hello HTML Docker Application</h1>
+</body>
 </html>`),
       block("Dockerfile", "dockerfile", `FROM nginx:latest
-WORKDIR /usr/share/nginx/html
-COPY ./index.html .
+COPY index.html /usr/share/nginx/html/index.html
 EXPOSE 80`)
     ],
-    build: ["docker build -t html-devops-lab ."],
-    run: ["docker run -d --name html-lab -p 8080:80 html-devops-lab", "curl http://localhost:8080"],
-    output: "Browser shows: Hello from HTML DevOps Lab"
+    build: ["docker build -t html-app ."],
+    run: ["docker run -d -p 8080:80 html-app"],
+    output: "Browser shows: Hello HTML Docker Application",
+    commit: "HTML Docker App"
   }),
   python: makeDockerPractical({
-    title: "python-devops-lab",
+    title: "python-app",
     aim: "Write a simple Python program, build and run it in Docker, push code to GitHub, and push image to DockerHub.",
     files: ["app.py", "Dockerfile"],
     blocks: [
-      block("app.py", "python", `print("Hello from Python DevOps Lab")`),
-      block("Dockerfile", "dockerfile", `FROM python:latest
+      block("app.py", "python", `print("Hello Python Docker Application")`),
+      block("Dockerfile", "dockerfile", `FROM python:3.12
 WORKDIR /app
 COPY app.py .
-CMD ["python", "app.py"]`)
+CMD ["python","app.py"]`)
     ],
-    build: ["python3 app.py", "docker build -t python-devops-lab ."],
-    run: ["docker run python-devops-lab"],
-    output: "Hello from Python DevOps Lab"
+    build: ["docker build -t python-app ."],
+    run: ["docker run python-app"],
+    output: "Hello Python Docker Application",
+    commit: "Python Docker App"
   }),
   node: makeDockerPractical({
-    title: "node-devops-lab",
+    title: "nodeimage",
     aim: "Write a simple Node.js program, build and run it in Docker, push code to GitHub, and push image to DockerHub.",
-    files: ["app.js", "package.json", "Dockerfile"],
+    files: ["app.js", "Dockerfile"],
     blocks: [
-      block("app.js", "javascript", `console.log("Hello from Node.js DevOps Lab");`),
-      block("package.json", "json", `{"scripts":{"start":"node app.js"},"dependencies":{}}`),
-      block("Dockerfile", "dockerfile", `FROM node:20-alpine
+      block("app.js", "javascript", `console.log("Hello Node Docker Application");`),
+      block("Dockerfile", "dockerfile", `FROM node:alpine
 WORKDIR /app
-COPY package.json app.js ./
-CMD ["npm", "start"]`)
+COPY app.js .
+CMD ["node","app.js"]`)
     ],
-    build: ["node app.js", "docker build -t node-devops-lab ."],
-    run: ["docker run node-devops-lab"],
-    output: "Hello from Node.js DevOps Lab"
+    build: ["docker build -t nodeimage ."],
+    run: ["docker run nodeimage"],
+    output: "Hello Node Docker Application",
+    commit: "Node Docker App"
   }),
   flask: makeDockerPractical({
-    title: "flask-devops-lab",
+    title: "flask-app",
     aim: "Create a Flask app, build and run it in Docker, push code to GitHub, and push image to DockerHub.",
     files: ["app.py", "requirements.txt", "Dockerfile"],
     blocks: [
       block("app.py", "python", `from flask import Flask
-
-app = Flask(__name__)
+app=Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello from Flask DevOps Lab"
+ return "Hello Flask Docker Application"
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)`),
-      block("requirements.txt", "text", "flask"),
-      block("Dockerfile", "dockerfile", `FROM python:3.12-slim
+app.run(host="0.0.0.0",port=5000)`),
+      block("requirements.txt", "text", "Flask"),
+      block("Dockerfile", "dockerfile", `FROM python:3.12
 WORKDIR /app
+COPY app.py .
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY app.py .
 EXPOSE 5000
-CMD ["python", "app.py"]`)
+CMD ["python","app.py"]`)
     ],
-    build: ["pip3 install flask", "python3 app.py", "docker build -t flask-devops-lab ."],
-    run: ["docker run -d --name flask-lab -p 5000:5000 flask-devops-lab", "curl http://localhost:5000"],
-    output: "Hello from Flask DevOps Lab"
+    build: ["docker build -t flask-app ."],
+    run: ["docker run -p 5000:5000 flask-app"],
+    output: "Hello Flask Docker Application",
+    commit: "Flask Docker App"
   })
 };
 
 const htmlRegistrationDocker = makeDockerPractical({
-  title: "html-registration-lab",
+  title: "registration-app",
   aim: "Develop a simple containerized HTML application (Registration form) using Docker and push the image to dockerhub and code to GIT",
   files: ["index.html", "Dockerfile"],
   blocks: [
-    block("index.html", "html", `<!doctype html>
-<html>
-  <head>
-    <title>Registration Form</title>
-  </head>
-  <body>
-    <h2>Registration Form</h2>
-    <form>
-      <input placeholder="Name" required>
-      <input placeholder="Email" type="email" required>
-      <input placeholder="Password" type="password" required>
-      <button>Register</button>
-    </form>
-  </body>
+    block("index.html", "html", `<html>
+<body>
+<h2>Registration Form</h2>
+<form>
+Name:<input type="text"><br>
+Email:<input type="email"><br>
+Password:<input type="password"><br>
+<input type="submit" value="Register">
+</form>
+</body>
 </html>`),
     block("Dockerfile", "dockerfile", `FROM nginx:latest
-WORKDIR /usr/share/nginx/html
-COPY ./index.html .
+COPY index.html /usr/share/nginx/html/index.html
 EXPOSE 80`)
   ],
-  build: ["docker build -t html-registration-lab ."],
-  run: ["docker run -d --name html-registration -p 8080:80 html-registration-lab", "curl http://localhost:8080"],
-  output: "Browser shows the Registration Form page."
+  build: ["docker build -t registration-app ."],
+  run: ["docker run -d -p 8080:80 registration-app"],
+  output: "Browser shows the Registration Form page.",
+  commit: "HTML Registration Docker App"
 });
 
 const fiveStageJenkinsfile = block("Jenkinsfile", "groovy", `pipeline {
@@ -317,8 +314,8 @@ print("Div:", a / b)`)],
     aim: "Give Docker commands to Run an Hello-World image in Docker.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Open terminal.", "Check Docker is installed and running.", "Pull the hello-world image.", "Run the hello-world image.", "Read the success message in terminal."],
-    commandBlocks: [block("Docker hello-world commands", "bash", "docker --version\ndocker pull hello-world\ndocker run hello-world")],
+    steps: ["Open terminal.", "Pull the hello-world image.", "List Docker images.", "Run the hello-world image.", "Read the success message in terminal."],
+    commandBlocks: [block("Run Hello-World image in Docker", "bash", "docker pull hello-world\ndocker images\ndocker run hello-world")],
     expected: "Docker prints the hello-world success message.",
     fixes: ["If Docker is not running, start Docker Desktop or Docker service.", "If image pull fails, check internet connection."]
   },
@@ -377,8 +374,8 @@ print("Div:", a / b)`)],
     aim: "Give Docker commands to Run an Ubuntu image in Docker container named \"MyContainer\" and execute some shell commands inside it.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Pull the Ubuntu image.", "Run an Ubuntu container named MyContainer.", "Execute shell commands inside MyContainer.", "Verify command output in terminal."],
-    commandBlocks: [block("Docker Ubuntu commands", "bash", "docker pull ubuntu\ndocker run -dit --name MyContainer ubuntu bash\ndocker exec MyContainer pwd\ndocker exec MyContainer ls\ndocker exec MyContainer echo \"Hello from Ubuntu container\"")],
+    steps: ["Pull the Ubuntu image.", "Run an interactive Ubuntu container named MyContainer.", "Execute the shell commands inside the container.", "Type exit to leave the container."],
+    commandBlocks: [block("Run Ubuntu image in MyContainer", "bash", "docker pull ubuntu\ndocker run -it --name MyContainer ubuntu\nls\npwd\necho \"Hello Ubuntu Docker\"\napt update\nexit")],
     expected: "Container MyContainer runs and shell commands print output.",
     fixes: ["If the container name already exists, use another name or remove the old container first.", "If Ubuntu exits, run it with `-dit` so it stays active."]
   },
@@ -389,17 +386,18 @@ print("Div:", a / b)`)],
   19: {
     aim: "Use Docker Compose to create busybox containers bbConA and bbConB and ping bbConB from bbConA.",
     files: ["docker-compose.yml"],
-    blocks: [block("docker-compose.yml", "yaml", `services:
-  bbConA:
-    image: busybox
-    container_name: bbConA
-    command: sleep 3600
-  bbConB:
-    image: busybox
-    container_name: bbConB
-    command: sleep 3600`)],
-    steps: ["Create docker-compose.yml.", "Start both containers.", "Ping bbConB from bbConA.", "Stop containers after verification."],
-    commandBlocks: [block("Docker Compose commands", "bash", "docker compose up -d\ndocker exec bbConA ping -c 4 bbConB")],
+    blocks: [block("docker-compose.yml", "yaml", `version: "3"
+services:
+ bbConA:
+  image: busybox
+  container_name: bbConA
+  command: sleep 3600
+ bbConB:
+  image: busybox
+  container_name: bbConB
+  command: sleep 3600`)],
+    steps: ["Create docker-compose.yml.", "Start both containers.", "Check containers are running.", "Enter bbConA shell.", "Ping bbConB from bbConA.", "Stop containers after verification."],
+    commandBlocks: [block("Docker Compose BusyBox commands", "bash", "docker compose up -d\ndocker ps\ndocker exec -it bbConA sh\nping bbConB\ndocker compose down")],
     expected: "Ping replies from bbConB are displayed inside bbConA.",
     fixes: ["Use `docker compose`, not old `docker-compose`, on recent Docker.", "Both containers must be on the same compose network."]
   },
@@ -410,9 +408,9 @@ print("Div:", a / b)`)],
   24: null,
   25: jenkinsJob({
     aim: "Create Jenkins Java Git job and trigger the build remotely.",
-    files: ["HelloDevOps.java"],
+    files: ["HelloWorld.java"],
     blocks: [simpleApps.java.blocks[0]],
-    shell: "javac HelloDevOps.java\njava HelloDevOps",
+    shell: "javac HelloWorld.java\njava HelloWorld",
     output: "Remote trigger starts build and Java output appears in console.",
     extra: ["Enable Build Triggers -> Trigger builds remotely.", "Set token as `devops123`.", "Trigger using: `curl http://localhost:8080/job/JOB_NAME/build?token=devops123`."]
   }),
@@ -475,9 +473,9 @@ minikube service ${name}-service --url`)],
   fixes: ["If pods are Pending, run `kubectl describe pod <pod-name>`.", "If service URL fails, verify Minikube is running."]
 });
 
-practicals[15] = dockerImageTask("python", "docker pull python:3.12-slim\ndocker run -it --name pycon python:3.12-slim python\nprint('Hello from Python container')\nexit()");
-practicals[16] = dockerImageTask("node", "docker pull node:20-alpine\ndocker run -it --name nodecon node:20-alpine node\nconsole.log('Hello from Node container')\n.exit");
-practicals[17] = dockerImageTask("nginx", "docker pull nginx\ndocker run -d --name nginxcon -p 8080:80 nginx\ncurl http://localhost:8080\ndocker exec nginxcon ls /usr/share/nginx/html");
+practicals[15] = dockerImageTask("python", "docker pull python\ndocker run -it --name python-container python\npython --version\nprint(\"Hello Python Docker\")\nexit");
+practicals[16] = dockerImageTask("node", "docker pull node\ndocker run -it --name node-container node\nnode --version\nconsole.log(\"Hello Node Docker\")\nexit");
+practicals[17] = dockerImageTask("nginx", "docker pull nginx\ndocker run -d --name nginx-container -p 8080:80 nginx\ndocker ps\ndocker exec -it nginx-container bash\nls\ncd /usr/share/nginx/html\nexit\n\nOpen:\nhttp://localhost:8080");
 practicals[20] = kubeTask("nginx", "nginx", 80);
 practicals[21] = kubeTask("node", "node:20-alpine", 3000, `          command: ["node"]
           args: ["-e", "require('http').createServer((req,res)=>res.end('Node app running')).listen(3000, '0.0.0.0')"]`);

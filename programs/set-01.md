@@ -42,72 +42,68 @@
 **Aim:** Write a simple program in Java, Build and run the Docker image and push the code to GITHUB and Docker Image to DockerHub.
 
 **Files:**
-- HelloDevOps.java
+- HelloWorld.java
 - Dockerfile
 
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
-#### HelloDevOps.java
+#### HelloWorld.java
 
 ```java
-public class HelloDevOps {
-  public static void main(String[] args) {
-    System.out.println("Hello from Java DevOps Lab");
-  }
+public class HelloWorld{
+public static void main(String args[]){
+System.out.println("Hello from Java Docker Application");
+}
 }
 ```
 
 #### Dockerfile
 
 ```dockerfile
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17
 WORKDIR /app
-COPY HelloDevOps.java .
-RUN javac HelloDevOps.java
-CMD ["java", "HelloDevOps"]
+COPY HelloWorld.java .
+RUN javac HelloWorld.java
+CMD ["java","HelloWorld"]
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-javac HelloDevOps.java
-java HelloDevOps
-docker build -t java-devops-lab .
-docker run java-devops-lab
+docker build -t java-app .
+docker run java-app
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag java-app 245123751006/java-app
+docker push 245123751006/java-app
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "Java Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
 ```
 
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag java-devops-lab:latest YOUR_DOCKERHUB_USERNAME/java-devops-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/java-devops-lab:latest
-```
-
-**Expected Output:** Hello from Java DevOps Lab
+**Expected Output:** Hello from Java Docker Application
 
 **Quick Fixes:**
 - If Docker build fails, confirm file names match Dockerfile COPY commands.

@@ -56,10 +56,11 @@
 #### Docker image commands
 
 ```bash
-docker pull python:3.12-slim
-docker run -it --name pycon python:3.12-slim python
-print('Hello from Python container')
-exit()
+docker pull python
+docker run -it --name python-container python
+python --version
+print("Hello Python Docker")
+exit
 ```
 
 **Expected Output:** python container runs and prints command output.

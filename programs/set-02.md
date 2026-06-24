@@ -42,73 +42,68 @@
 **Aim:** Write a simple program in C, Build and run the Docker image and push the code to GITHUB and Docker Image to DockerHub.
 
 **Files:**
-- main.c
+- hello.c
 - Dockerfile
 
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Ubuntu commands block from top to bottom.
-4. Build the Docker image using the docker build command.
-5. Run the container using the docker run command.
-6. Check output in terminal or browser.
-7. Push code to GitHub.
-8. Push Docker image to DockerHub.
+3. Run the Build & Run commands.
+4. Check output in terminal or browser.
+5. Run the DockerHub commands to push the image.
+6. Run the GitHub commands to push the code.
 
 **Source Files:**
 
-#### main.c
+#### hello.c
 
 ```c
-#include <stdio.h>
-
-int main() {
-  printf("Hello from C DevOps Lab\n");
-  return 0;
+#include<stdio.h>
+int main(){
+printf("Hello from C Docker Application");
+return 0;
 }
 ```
 
 #### Dockerfile
 
 ```dockerfile
-FROM gcc:13
+FROM gcc:latest
 WORKDIR /app
-COPY main.c .
-RUN gcc main.c -o main
-CMD ["./main"]
+COPY hello.c .
+RUN gcc hello.c -o hello
+CMD ["./hello"]
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Build & Run
 
 ```bash
-gcc main.c -o main
-./main
-docker build -t c-devops-lab .
-docker run c-devops-lab
+docker build -t c-app .
+docker run c-app
 ```
 
-#### GitHub push commands
+#### DockerHub
+
+```bash
+docker login -u 245123751006
+docker tag c-app 245123751006/c-app
+docker push 245123751006/c-app
+```
+
+#### GitHub
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
-git branch -M main
+git commit -m "C Docker App"
 git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git branch -M main
 git push -u origin main
 ```
 
-#### DockerHub push commands
-
-```bash
-docker login
-docker tag c-devops-lab:latest YOUR_DOCKERHUB_USERNAME/c-devops-lab:latest
-docker push YOUR_DOCKERHUB_USERNAME/c-devops-lab:latest
-```
-
-**Expected Output:** Hello from C DevOps Lab
+**Expected Output:** Hello from C Docker Application
 
 **Quick Fixes:**
 - If Docker build fails, confirm file names match Dockerfile COPY commands.
