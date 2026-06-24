@@ -51,7 +51,7 @@ const simpleApps = {
     System.out.println("Hello from Java DevOps Lab");
   }
 }`),
-      block("Dockerfile", "dockerfile", `FROM openjdk:17-jdk-slim
+      block("Dockerfile", "dockerfile", `FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY HelloDevOps.java .
 RUN javac HelloDevOps.java
@@ -95,8 +95,9 @@ CMD ["./main"]`)
     <p>This page is running inside Docker.</p>
   </body>
 </html>`),
-      block("Dockerfile", "dockerfile", `FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
+      block("Dockerfile", "dockerfile", `FROM nginx:latest
+WORKDIR /usr/share/nginx/html
+COPY ./index.html .
 EXPOSE 80`)
     ],
     build: ["docker build -t html-devops-lab ."],
@@ -109,7 +110,7 @@ EXPOSE 80`)
     files: ["app.py", "Dockerfile"],
     blocks: [
       block("app.py", "python", `print("Hello from Python DevOps Lab")`),
-      block("Dockerfile", "dockerfile", `FROM python:3.12-slim
+      block("Dockerfile", "dockerfile", `FROM python:latest
 WORKDIR /app
 COPY app.py .
 CMD ["python", "app.py"]`)

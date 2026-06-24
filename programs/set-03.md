@@ -64,8 +64,9 @@ Files required: index.html, Dockerfile
 
 ### Dockerfile
 ```dockerfile
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
+FROM nginx:latest
+WORKDIR /usr/share/nginx/html
+COPY ./index.html .
 EXPOSE 80
 ```
 

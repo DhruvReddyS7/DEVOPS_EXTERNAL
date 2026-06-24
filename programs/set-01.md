@@ -62,7 +62,7 @@ public class HelloDevOps {
 
 ### Dockerfile
 ```dockerfile
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY HelloDevOps.java .
 RUN javac HelloDevOps.java
