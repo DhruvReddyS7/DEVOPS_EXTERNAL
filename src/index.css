@@ -187,10 +187,14 @@ button:hover, button.active {
 
 .set-list button {
   display: grid;
-  grid-template-columns: 62px minmax(0, 1fr);
-  gap: 9px;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "num title range"
+    "num title range";
+  column-gap: 9px;
+  row-gap: 3px;
   align-items: center;
-  min-height: 58px;
+  min-height: 64px;
   padding: 10px;
   text-align: left;
 }
@@ -201,20 +205,24 @@ button:hover, button.active {
 }
 
 .set-list b {
+  grid-area: num;
   color: var(--green);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.85rem;
 }
 
 .set-list span {
+  grid-area: title;
   min-width: 0;
   color: #dbeafe;
   line-height: 1.25;
   font-size: 0.88rem;
+  overflow-wrap: anywhere;
 }
 
 .set-list small {
-  grid-column: 2;
+  grid-area: range;
+  align-self: end;
   color: var(--muted);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
@@ -232,7 +240,7 @@ button:hover, button.active {
   height: 100%;
   min-height: 0;
   display: grid;
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto minmax(0, 1fr);
 }
 
 .terminal-path {
