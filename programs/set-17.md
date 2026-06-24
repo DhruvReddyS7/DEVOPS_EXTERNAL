@@ -1,55 +1,60 @@
 # Set 17: nginx Docker image commands + Kubernetes Mongo deployment
+
 ## Questions
+
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
 4. Give Docker commands to run a nginx image and execute some commands.
 5. Kubernetes - Create an Mongo deployment and run some kubectl commands
-## Q1 Git Commands
+
+### Q1 Git Commands
 
 | No. | Command | Usage |
-|---:|---|---|
+| --- | --- | --- |
 | 1 | `git init` | Creates a new Git repository in the current folder. |
 | 2 | `git status` | Shows changed, staged, and untracked files. |
 | 3 | `git add .` | Stages all project files for commit. |
 | 4 | `git commit -m "initial commit"` | Saves staged changes with a message. |
 | 5 | `git push origin main` | Uploads local commits to GitHub. |
-## Q2 Docker Commands
+
+### Q2 Docker Commands
 
 | No. | Command | Usage |
-|---:|---|---|
+| --- | --- | --- |
 | 1 | `docker --version` | Checks whether Docker is installed. |
 | 2 | `docker build -t myapp .` | Builds a Docker image from a Dockerfile. |
 | 3 | `docker run --name mycontainer myapp` | Runs a container from an image. |
 | 4 | `docker ps -a` | Lists running and stopped containers. |
 | 5 | `docker push username/myapp:latest` | Pushes an image to DockerHub. |
-## Q3 Kubernetes Commands
+
+### Q3 Kubernetes Commands
 
 | No. | Command | Usage |
-|---:|---|---|
+| --- | --- | --- |
 | 1 | `kubectl version --client` | Checks the installed kubectl client version. |
 | 2 | `kubectl create deployment web --image=nginx` | Creates a deployment from an image. |
 | 3 | `kubectl get pods` | Lists pods in the current namespace. |
 | 4 | `kubectl expose deployment web --type=NodePort --port=80` | Creates a service to access the deployment. |
 | 5 | `kubectl apply -f deployment.yaml` | Creates or updates Kubernetes objects from YAML. |
-## Q4 Practical
 
-Aim: Run a nginx Docker image and execute basic commands.
+### Q4 Practical Answer
 
-Files required: No source file required
+**Aim:** Give Docker commands to run a nginx image and execute some commands.
 
-### Execution Steps
-1. Open Ubuntu terminal and create a fresh folder for this program.
-2. No program file is required for this task.
-3. Copy the command block shown below directly into terminal/Jenkins as required.
-4. Pull the Docker image.
-5. Run the container.
-6. Execute the shown command inside the container.
-7. Check the terminal output.
-8. Run the command block in the same order from top to bottom.
-9. Compare the terminal/Jenkins/browser output with the expected output shown at the end.
+**Files:**
+- No source file required
 
-### Docker image commands
+**Execution Steps:**
+1. Pull the Docker image.
+2. Run the container.
+3. Execute the shown command inside the container.
+4. Check the terminal output.
+
+**Commands:**
+
+#### Docker image commands
+
 ```bash
 docker pull nginx
 docker run -d --name nginxcon -p 8080:80 nginx
@@ -57,28 +62,30 @@ curl http://localhost:8080
 docker exec nginxcon ls /usr/share/nginx/html
 ```
 
-### Expected Output
-nginx container runs and prints command output.
+**Expected Output:** nginx container runs and prints command output.
 
-## Q5 Practical
+**Quick Fixes:**
+- If image pull is slow, check internet connection.
+- If container exits immediately, use interactive mode or a long-running command.
 
-Aim: Create a Kubernetes mongo deployment and run kubectl commands.
+### Q5 Practical Answer
 
-Files required: mongo-deployment.yaml
+**Aim:** Kubernetes - Create an Mongo deployment and run some kubectl commands
 
-### Execution Steps
-1. Open Ubuntu terminal and create a fresh folder for this program.
-2. Create these file(s) exactly with the same names: mongo-deployment.yaml.
-3. Copy the source code shown below into the matching file names.
-4. Start Minikube.
-5. Create the YAML file.
-6. Apply the YAML manifest.
-7. Check deployments, pods, and services.
-8. Open service using Minikube URL.
-9. Run the command block in the same order from top to bottom.
-10. Compare the terminal/Jenkins/browser output with the expected output shown at the end.
+**Files:**
+- mongo-deployment.yaml
 
-### mongo-deployment.yaml
+**Execution Steps:**
+1. Start Minikube.
+2. Create the YAML file.
+3. Apply the YAML manifest.
+4. Check deployments, pods, and services.
+5. Open service using Minikube URL.
+
+**Source Files:**
+
+#### mongo-deployment.yaml
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -115,7 +122,10 @@ spec:
       nodePort: 30080
 ```
 
-### kubectl commands
+**Commands:**
+
+#### kubectl commands
+
 ```bash
 minikube start
 kubectl apply -f mongo-deployment.yaml
@@ -125,5 +135,8 @@ kubectl get svc
 minikube service mongo-service --url
 ```
 
-### Expected Output
-mongo pods show Running and service URL opens successfully.
+**Expected Output:** mongo pods show Running and service URL opens successfully.
+
+**Quick Fixes:**
+- If pods are Pending, run `kubectl describe pod <pod-name>`.
+- If service URL fails, verify Minikube is running.

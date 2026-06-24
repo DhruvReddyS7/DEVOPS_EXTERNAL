@@ -21,8 +21,11 @@ const makeDockerPractical = ({ title, aim, files, blocks, build, run, output }) 
   files,
   blocks,
   steps: [
-    ...build,
-    ...run,
+    "Create the listed source files in one folder.",
+    "Open terminal in that folder.",
+    "Run the Ubuntu commands block from top to bottom.",
+    "Build the Docker image using the docker build command.",
+    "Run the container using the docker run command.",
     "Check output in terminal or browser.",
     "Push code to GitHub.",
     "Push Docker image to DockerHub."
@@ -165,6 +168,47 @@ CMD ["python", "app.py"]`)
   })
 };
 
+const htmlRegistrationDocker = makeDockerPractical({
+  title: "html-registration-lab",
+  aim: "Develop a simple containerized HTML application (Registration form) using Docker and push the image to dockerhub and code to GIT",
+  files: ["index.html", "Dockerfile"],
+  blocks: [
+    block("index.html", "html", `<!doctype html>
+<html>
+  <head>
+    <title>Registration Form</title>
+  </head>
+  <body>
+    <h2>Registration Form</h2>
+    <form>
+      <input placeholder="Name" required>
+      <input placeholder="Email" type="email" required>
+      <input placeholder="Password" type="password" required>
+      <button>Register</button>
+    </form>
+  </body>
+</html>`),
+    block("Dockerfile", "dockerfile", `FROM nginx:latest
+WORKDIR /usr/share/nginx/html
+COPY ./index.html .
+EXPOSE 80`)
+  ],
+  build: ["docker build -t html-registration-lab ."],
+  run: ["docker run -d --name html-registration -p 8080:80 html-registration-lab", "curl http://localhost:8080"],
+  output: "Browser shows the Registration Form page."
+});
+
+const fiveStageJenkinsfile = block("Jenkinsfile", "groovy", `pipeline {
+  agent any
+  stages {
+    stage('Start') { steps { sh 'echo start' } }
+    stage('Build') { steps { sh 'echo build' } }
+    stage('Test') { steps { sh 'echo test' } }
+    stage('Package') { steps { sh 'echo package' } }
+    stage('Deploy') { steps { sh 'echo deploy' } }
+  }
+}`);
+
 const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [] }) => ({
   aim,
   files,
@@ -270,13 +314,13 @@ print("Div:", a / b)`)],
     output: "Reverse number: 54321"
   }),
   10: {
-    aim: "Run Docker hello-world image and create a Jenkins periodic shell job.",
+    aim: "Give Docker commands to Run an Hello-World image in Docker.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Run Docker hello-world locally.", "In Jenkins create Freestyle project.", "Enable Build Triggers -> Build periodically.", "Use schedule `H/5 * * * *` for every 5 minutes.", "Add Execute shell commands and save."],
-    commandBlocks: [block("Docker hello-world", "bash", "docker pull hello-world\ndocker run hello-world"), block("Jenkins shell", "bash", "date\necho \"Periodic DevOps lab job running\"\ndocker run hello-world")],
-    expected: "Docker prints the hello-world success message. Jenkins console shows periodic execution.",
-    fixes: ["Add Jenkins user to docker group: `sudo usermod -aG docker jenkins` and restart Jenkins.", "Use `H/5 * * * *`, not plain text, in Build periodically."]
+    steps: ["Open terminal.", "Check Docker is installed and running.", "Pull the hello-world image.", "Run the hello-world image.", "Read the success message in terminal."],
+    commandBlocks: [block("Docker hello-world commands", "bash", "docker --version\ndocker pull hello-world\ndocker run hello-world")],
+    expected: "Docker prints the hello-world success message.",
+    fixes: ["If Docker is not running, start Docker Desktop or Docker service.", "If image pull fails, check internet connection."]
   },
   11: jenkinsJob({
     aim: "Create an HTML registration form, push to GitHub, and publish it using Jenkins.",
@@ -330,27 +374,18 @@ print("Div:", a / b)`)],
     extra: ["Enable This project is parameterized -> Choice Parameter.", "Name it `PROGRAM_FILE` and add `Pattern.java` and `pattern.py`."]
   }),
   14: {
-    aim: "Run Ubuntu container named MyContainer and create a Jenkins pipeline with 5 stages.",
-    files: ["Jenkinsfile"],
-    blocks: [block("Jenkinsfile", "groovy", `pipeline {
-  agent any
-  stages {
-    stage('Start') { steps { sh 'echo start' } }
-    stage('Build') { steps { sh 'echo build' } }
-    stage('Test') { steps { sh 'echo test' } }
-    stage('Package') { steps { sh 'echo package' } }
-    stage('Deploy') { steps { sh 'echo deploy' } }
-  }
-}`)],
-    steps: ["Pull Ubuntu image.", "Create container named MyContainer.", "Execute shell commands inside it.", "Create Jenkins Pipeline job and paste the 5-stage script."],
-    commandBlocks: [block("Docker commands", "bash", "docker pull ubuntu\ndocker run -dit --name MyContainer ubuntu bash\ndocker exec MyContainer pwd\ndocker exec MyContainer ls\ndocker exec MyContainer echo \"Hello from Ubuntu container\""), block("GitHub push commands", "bash", gitPush)],
-    expected: "Container MyContainer runs and Jenkins displays 5 successful stages.",
-    fixes: ["If name already exists, use another container name.", "If Jenkins Docker fails, add Jenkins user to docker group."]
+    aim: "Give Docker commands to Run an Ubuntu image in Docker container named \"MyContainer\" and execute some shell commands inside it.",
+    files: ["No source file required"],
+    blocks: [],
+    steps: ["Pull the Ubuntu image.", "Run an Ubuntu container named MyContainer.", "Execute shell commands inside MyContainer.", "Verify command output in terminal."],
+    commandBlocks: [block("Docker Ubuntu commands", "bash", "docker pull ubuntu\ndocker run -dit --name MyContainer ubuntu bash\ndocker exec MyContainer pwd\ndocker exec MyContainer ls\ndocker exec MyContainer echo \"Hello from Ubuntu container\"")],
+    expected: "Container MyContainer runs and shell commands print output.",
+    fixes: ["If the container name already exists, use another name or remove the old container first.", "If Ubuntu exits, run it with `-dit` so it stays active."]
   },
   15: null,
   16: null,
   17: null,
-  18: simpleApps.html,
+  18: htmlRegistrationDocker,
   19: {
     aim: "Use Docker Compose to create busybox containers bbConA and bbConB and ping bbConB from bbConA.",
     files: ["docker-compose.yml"],
@@ -631,11 +666,16 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
       fixes: ["Schedule must be valid cron syntax.", "Check Jenkins system time if trigger seems late."]
     } :
     id === 14 ? {
-      ...practicals[14],
-      aim: "Create a Jenkins pipeline job with 5 stages.",
-      steps: ["Open Jenkins.", "Create a Pipeline job.", "Paste the Jenkinsfile script.", "Save the job.", "Click Build Now and check all 5 stages."],
-      commandBlocks: [block("Jenkinsfile", "groovy", practicals[14].blocks[0].code)]
+      aim: "Create a Jenkins pipeline Job using pipeline script with 5 stages.",
+      files: ["Jenkinsfile"],
+      blocks: [fiveStageJenkinsfile],
+      steps: ["Create a Jenkinsfile with 5 stages.", "Push the Jenkinsfile to GitHub.", "Open Jenkins.", "Create a Pipeline job.", "Use Pipeline script from SCM or paste the pipeline script.", "Save the job.", "Click Build Now and check all 5 stages."],
+      commandBlocks: [block("GitHub push commands", "bash", gitPush), fiveStageJenkinsfile],
+      expected: "Jenkins displays Start, Build, Test, Package, and Deploy stages as successful.",
+      fixes: ["Keep filename exactly `Jenkinsfile`.", "Install Pipeline plugin if the Pipeline job type is missing."]
     } : null;
+  const q4Practical = practical ? { ...practical, aim: q4 } : practical;
+  const q5Answer = q5Practical && q5 ? { ...q5Practical, aim: q5 } : q5Practical;
   return {
     id,
     title: `Set ${id}: ${title}`,
@@ -644,7 +684,7 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
     git: gitCommands,
     docker: dockerCommands,
     kubernetes: kubernetesCommands,
-    q4: practical,
-    q5: q5Practical
+    q4: q4Practical,
+    q5: q5Answer
   };
 });
