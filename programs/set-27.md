@@ -53,13 +53,15 @@
 5. Enable `This project is parameterized`.
 6. Add Choice Parameter named `PROGRAM_FILE`.
 7. Choices: `Calculator.java` and `calculator.py`.
-8. Under Source Code Management choose Git and paste the repository URL.
-9. Under Build Steps choose Execute shell.
-10. Paste the run command.
-11. Save.
-12. Click Build with Parameters.
-13. Select Java or Python file.
-14. Click Build and check Console Output.
+8. Add String Parameter `A` with default value `10`.
+9. Add String Parameter `B` with default value `5`.
+10. Under Source Code Management choose Git and paste the repository URL.
+11. Under Build Steps choose Execute shell.
+12. Paste the run command.
+13. Save.
+14. Click Build with Parameters.
+15. Select Java or Python file and enter A/B values.
+16. Click Build and check Console Output.
 
 **Source Files:**
 
@@ -68,8 +70,8 @@
 ```java
 public class Calculator {
   public static void main(String[] args) {
-    int a = 10;
-    int b = 5;
+    int a = Integer.parseInt(args[0]);
+    int b = Integer.parseInt(args[1]);
     System.out.println("Add: " + (a + b));
     System.out.println("Sub: " + (a - b));
     System.out.println("Mul: " + (a * b));
@@ -81,8 +83,10 @@ public class Calculator {
 #### calculator.py
 
 ```python
-a = 10
-b = 5
+import sys
+
+a = int(sys.argv[1])
+b = int(sys.argv[2])
 print("Add:", a + b)
 print("Sub:", a - b)
 print("Mul:", a * b)
@@ -106,15 +110,15 @@ git push -u origin main
 
 ```bash
 if [ "$PROGRAM_FILE" = "Calculator.java" ]; then
-  javac Calculator.java && java Calculator
+  javac Calculator.java && java Calculator $A $B
 else
-  python3 calculator.py
+  python3 calculator.py $A $B
 fi
 ```
 
-**Expected Output:** Selected calculator prints Add, Sub, Mul, and Div.
+**Expected Output:** Selected calculator prints Add, Sub, Mul, and Div using Jenkins values A and B.
 
 **Quick Fixes:**
-- Only one parameter is needed: `PROGRAM_FILE`.
+- Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.
 - Use `Build with Parameters`, not normal Build Now.
-- Use absolute paths like `/usr/bin/python3` if Python is not found.
+- If values are blank, enter numbers like `10` and `5`.
