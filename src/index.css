@@ -187,7 +187,7 @@ button:hover, button.active {
 
 .set-list button {
   display: grid;
-  grid-template-columns: 66px minmax(0, 1fr) auto;
+  grid-template-columns: 62px minmax(0, 1fr);
   gap: 9px;
   align-items: center;
   min-height: 58px;
@@ -214,6 +214,7 @@ button:hover, button.active {
 }
 
 .set-list small {
+  grid-column: 2;
   color: var(--muted);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
@@ -524,8 +525,7 @@ button:hover, button.active {
   color: #dbeafe;
 }
 
-.summary-label,
-.mini-info {
+.summary-label {
   color: var(--green);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.82rem;
@@ -570,10 +570,10 @@ button:hover, button.active {
 }
 
 .steps-panel summary {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   color: var(--green);
   font-family: "JetBrains Mono", monospace;
@@ -602,6 +602,14 @@ button:hover, button.active {
   color: var(--muted);
   font-size: 0.75rem;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+.steps-panel summary span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .steps-panel ol {
