@@ -56,39 +56,14 @@
 
 **Commands:**
 
-#### Create node deployment
+#### node kubectl commands
 
 ```bash
 kubectl create deployment node-deployment --image=node
-```
-
-#### Get deployments
-
-```bash
 kubectl get deployments
-```
-
-#### Get pods
-
-```bash
 kubectl get pods
-```
-
-#### Describe node deployment
-
-```bash
 kubectl describe deployment node-deployment
-```
-
-#### Get all resources
-
-```bash
 kubectl get all
-```
-
-#### Delete node deployment
-
-```bash
 kubectl delete deployment node-deployment
 ```
 
@@ -178,12 +153,6 @@ await driver.get('https://www.google.com');
 
 // replace with
 await driver.get('https://www.yourcollegewebsite.com');
-```
-
-#### Run again
-
-```bash
-node google.js
 ```
 
 **Expected Output:** Chrome browser opens automatically and loads the Google website.

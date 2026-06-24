@@ -12,16 +12,7 @@ const tabInfo = {
 };
 
 function buildExecutionSteps(practical) {
-  const hasFiles = practical.files.some((file) => !file.toLowerCase().includes("no source"));
-  const fileList = practical.files.join(", ");
-  return [
-    "Open Ubuntu terminal and create a fresh folder for this program.",
-    hasFiles ? `Create these file(s) exactly with the same names: ${fileList}.` : "No program file is required for this task.",
-    hasFiles ? "Copy the source code shown below into the matching file names." : "Copy the command block shown below directly into terminal/Jenkins as required.",
-    ...practical.steps,
-    "Run the command block in the same order from top to bottom.",
-    "Compare the terminal/Jenkins/browser output with the expected output shown at the end."
-  ];
+  return practical.steps;
 }
 
 function Practical({ practical }) {
@@ -66,12 +57,14 @@ function Practical({ practical }) {
         </section>
       )}
 
-      <section className="practical-section">
-        <h3>Run Commands</h3>
-        <div className="answer-flow">
-          {practical.commandBlocks.map((item) => <CodeBlock key={item.label} {...item} />)}
-        </div>
-      </section>
+      {practical.commandBlocks.length > 0 && (
+        <section className="practical-section">
+          <h3>Run Commands</h3>
+          <div className="answer-flow">
+            {practical.commandBlocks.map((item) => <CodeBlock key={item.label} {...item} />)}
+          </div>
+        </section>
+      )}
 
       <div className="output-card">
         <span className="summary-label">Expected Output</span>

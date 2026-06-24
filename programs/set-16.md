@@ -111,39 +111,14 @@ docker rm nodecontainer
 
 **Commands:**
 
-#### Create python deployment
+#### python kubectl commands
 
 ```bash
 kubectl create deployment python-deployment --image=python
-```
-
-#### Get deployments
-
-```bash
 kubectl get deployments
-```
-
-#### Get pods
-
-```bash
 kubectl get pods
-```
-
-#### Describe python deployment
-
-```bash
 kubectl describe deployment python-deployment
-```
-
-#### Get all resources
-
-```bash
 kubectl get all
-```
-
-#### Delete python deployment
-
-```bash
 kubectl delete deployment python-deployment
 ```
 

@@ -112,39 +112,14 @@ docker rm pycontainer
 
 **Commands:**
 
-#### Create nginx deployment
+#### nginx kubectl commands
 
 ```bash
 kubectl create deployment nginx-deployment --image=nginx
-```
-
-#### Get deployments
-
-```bash
 kubectl get deployments
-```
-
-#### Get pods
-
-```bash
 kubectl get pods
-```
-
-#### Describe nginx deployment
-
-```bash
 kubectl describe deployment nginx-deployment
-```
-
-#### Get all resources
-
-```bash
 kubectl get all
-```
-
-#### Delete nginx deployment
-
-```bash
 kubectl delete deployment nginx-deployment
 ```
 

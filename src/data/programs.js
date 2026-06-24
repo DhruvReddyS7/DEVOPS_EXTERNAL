@@ -570,12 +570,12 @@ const kubeCommandTask = (name, image) => ({
     "Delete the deployment after verification."
   ],
   commandBlocks: [
-    block(`Create ${name} deployment`, "bash", `kubectl create deployment ${name}-deployment --image=${image}`),
-    block("Get deployments", "bash", "kubectl get deployments"),
-    block("Get pods", "bash", "kubectl get pods"),
-    block(`Describe ${name} deployment`, "bash", `kubectl describe deployment ${name}-deployment`),
-    block("Get all resources", "bash", "kubectl get all"),
-    block(`Delete ${name} deployment`, "bash", `kubectl delete deployment ${name}-deployment`)
+    block(`${name} kubectl commands`, "bash", `kubectl create deployment ${name}-deployment --image=${image}
+kubectl get deployments
+kubectl get pods
+kubectl describe deployment ${name}-deployment
+kubectl get all
+kubectl delete deployment ${name}-deployment`)
   ],
   expected: `${name} deployment is created, shown in kubectl output, described, and deleted successfully.`,
   fixes: ["If kubectl cannot connect, run `minikube start`.", "If deployment already exists, delete it first using the delete command."]
@@ -661,8 +661,7 @@ openGoogle();`)],
     block("Install Selenium WebDriver", "bash", "npm install selenium-webdriver"),
     block("Create file", "bash", "nano google.js"),
     block("Run program", "bash", "node google.js"),
-    block("Replace with college website", "javascript", "await driver.get('https://www.google.com');\n\n// replace with\nawait driver.get('https://www.yourcollegewebsite.com');"),
-    block("Run again", "bash", "node google.js")
+    block("Replace with college website", "javascript", "await driver.get('https://www.google.com');\n\n// replace with\nawait driver.get('https://www.yourcollegewebsite.com');")
   ],
   expected: "Chrome browser opens automatically and loads the Google website.",
   fixes: ["Install Google Chrome before running Selenium.", "If Chrome session fails, update Chrome and Selenium WebDriver."]

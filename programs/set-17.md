@@ -132,39 +132,14 @@ docker rm nginxcontainer
 
 **Commands:**
 
-#### Create mongo deployment
+#### mongo kubectl commands
 
 ```bash
 kubectl create deployment mongo-deployment --image=mongo
-```
-
-#### Get deployments
-
-```bash
 kubectl get deployments
-```
-
-#### Get pods
-
-```bash
 kubectl get pods
-```
-
-#### Describe mongo deployment
-
-```bash
 kubectl describe deployment mongo-deployment
-```
-
-#### Get all resources
-
-```bash
 kubectl get all
-```
-
-#### Delete mongo deployment
-
-```bash
 kubectl delete deployment mongo-deployment
 ```
 
