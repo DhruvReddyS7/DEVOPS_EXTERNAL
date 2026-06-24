@@ -233,14 +233,13 @@ const fiveStageJenkinsfile = block("Jenkinsfile", "groovy", `pipeline {
     }
 }`);
 
-const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPush, setup = [], shellLabel = "Run commands" }) => ({
+const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPush, setup = [] }) => ({
   aim,
   files,
   blocks,
   steps: [
     ...setup,
-    "Create the listed source files with the exact file names.",
-    "Run the program locally using the run commands.",
+    ...(setup.length ? [] : ["Create the listed source files with the exact file names."]),
     "Push the project to GitHub.",
     "Open Jenkins at http://localhost:8080.",
     "Create New Item -> Freestyle project.",
@@ -250,7 +249,6 @@ const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPu
     ...extra
   ],
   commandBlocks: [
-    block(shellLabel, "bash", shell),
     block("GitHub push commands", "bash", git),
     block("Jenkins Execute shell", "bash", shell)
   ],
@@ -415,17 +413,7 @@ print("Division =", a / b)`)],
     }
 }`)],
     steps: ["Create project folder `JenkinsPipelineDemo`.", "Create `Jenkinsfile` and paste the pipeline script.", "Push the Jenkinsfile to GitHub.", "Open Jenkins and create a Pipeline job named `PipelineDemo`.", "In Pipeline definition choose `Pipeline script from SCM`.", "SCM: Git.", "Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.", "Branch Specifier: `*/main`.", "Script Path: `Jenkinsfile`.", "Save and Build Now.", "Open Console Output and verify success."],
-    commandBlocks: [block("Git Commands", "bash", "git init\ngit add .\ngit commit -m \"Added Jenkinsfile\"\ngit remote add origin https://github.com/username/JenkinsPipelineDemo.git\ngit branch -M main\ngit push -u origin main"), block("Jenkinsfile", "groovy", `pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Hello from Jenkins Pipeline'
-            }
-        }
-    }
-}`)],
+    commandBlocks: [block("Git Commands", "bash", "git init\ngit add .\ngit commit -m \"Added Jenkinsfile\"\ngit remote add origin https://github.com/username/JenkinsPipelineDemo.git\ngit branch -M main\ngit push -u origin main")],
     expected: "Console Output shows `Hello from Jenkins Pipeline` and `Finished: SUCCESS`.",
     fixes: ["Keep filename exactly `Jenkinsfile`.", "Install Pipeline and Git plugins if SCM option is missing."]
   },

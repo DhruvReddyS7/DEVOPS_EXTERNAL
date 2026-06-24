@@ -47,15 +47,14 @@
 
 **Execution Steps:**
 1. Create the listed source files with the exact file names.
-2. Run the program locally using the run commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Enable This project is parameterized -> Choice Parameter.
-10. Name it `PROGRAM_FILE` and add `Pattern.java` and `pattern.py`.
+2. Push the project to GitHub.
+3. Open Jenkins at http://localhost:8080.
+4. Create New Item -> Freestyle project.
+5. Under Source Code Management choose Git and paste the repository URL.
+6. Under Build Steps choose Execute shell and paste the shell commands.
+7. Save and click Build Now.
+8. Enable This project is parameterized -> Choice Parameter.
+9. Name it `PROGRAM_FILE` and add `Pattern.java` and `pattern.py`.
 
 **Source Files:**
 
@@ -80,13 +79,6 @@ for i in range(1, 6):
 ```
 
 **Commands:**
-
-#### Run commands
-
-```bash
-echo "Selected file: $PROGRAM_FILE"
-if [ "$PROGRAM_FILE" = "Pattern.java" ]; then javac Pattern.java && java Pattern; else python3 pattern.py; fi
-```
 
 #### GitHub push commands
 

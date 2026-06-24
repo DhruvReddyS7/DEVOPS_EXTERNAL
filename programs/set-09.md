@@ -47,16 +47,14 @@
 **Execution Steps:**
 1. Create folder: `mkdir JavaProgram && cd JavaProgram`.
 2. Create file: `vi ReverseNumber.java`.
-3. Create the listed source files with the exact file names.
-4. Run the program locally using the run commands.
-5. Push the project to GitHub.
-6. Open Jenkins at http://localhost:8080.
-7. Create New Item -> Freestyle project.
-8. Under Source Code Management choose Git and paste the repository URL.
-9. Under Build Steps choose Execute shell and paste the shell commands.
-10. Save and click Build Now.
-11. Use job name `JavaProgramJob`.
-12. Branch specifier: `*/main`.
+3. Push the project to GitHub.
+4. Open Jenkins at http://localhost:8080.
+5. Create New Item -> Freestyle project.
+6. Under Source Code Management choose Git and paste the repository URL.
+7. Under Build Steps choose Execute shell and paste the shell commands.
+8. Save and click Build Now.
+9. Use job name `JavaProgramJob`.
+10. Branch specifier: `*/main`.
 
 **Source Files:**
 
@@ -80,13 +78,6 @@ public class ReverseNumber {
 ```
 
 **Commands:**
-
-#### Run commands
-
-```bash
-javac ReverseNumber.java
-java ReverseNumber
-```
 
 #### GitHub push commands
 

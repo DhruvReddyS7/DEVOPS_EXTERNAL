@@ -88,22 +88,6 @@ git branch -M main
 git push -u origin main
 ```
 
-#### Jenkinsfile
-
-```groovy
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Hello from Jenkins Pipeline'
-            }
-        }
-    }
-}
-```
-
 **Expected Output:** Console Output shows `Hello from Jenkins Pipeline` and `Finished: SUCCESS`.
 
 **Quick Fixes:**
