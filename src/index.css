@@ -425,13 +425,63 @@ button:hover, button.active {
   gap: 12px;
 }
 
-.mini-info, .steps-panel {
+.practical-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 12px;
+}
+
+.aim-card,
+.files-card,
+.output-card,
+.practical-section,
+.mini-info,
+.steps-panel {
   min-width: 0;
   padding: 13px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #06101d;
   line-height: 1.55;
+}
+
+.aim-card,
+.files-card,
+.output-card {
+  display: grid;
+  gap: 8px;
+}
+
+.aim-card p,
+.output-card p {
+  margin: 0;
+  color: #dbeafe;
+}
+
+.summary-label,
+.mini-info {
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.file-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.file-chips code {
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 5px;
+  background: #020617;
+  color: #bae6fd;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
 }
 
 .mini-info {
@@ -453,9 +503,39 @@ button:hover, button.active {
   border-left: 4px solid var(--green);
 }
 
-.steps-panel h3 {
-  margin: 0 0 10px;
-  font-size: 1rem;
+.steps-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  list-style: none;
+}
+
+.steps-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.steps-panel summary::before {
+  content: ">";
+  color: var(--green);
+}
+
+.steps-panel[open] summary {
+  margin-bottom: 10px;
+}
+
+.steps-panel[open] summary::before {
+  content: "v";
+}
+
+.steps-panel summary small {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .steps-panel ol {
@@ -491,6 +571,18 @@ button:hover, button.active {
 .steps-panel li p {
   min-width: 0;
   margin: 3px 0 0;
+}
+
+.practical-section {
+  display: grid;
+  gap: 10px;
+}
+
+.practical-section h3 {
+  margin: 0;
+  color: var(--green);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.92rem;
 }
 
 .terminal {
@@ -681,6 +773,10 @@ pre {
   }
 
   .brief-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .practical-summary {
     grid-template-columns: 1fr;
   }
 

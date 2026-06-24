@@ -29,18 +29,24 @@ function Practical({ practical }) {
   const executionSteps = buildExecutionSteps(practical);
   return (
     <div className="answer-flow">
-      <div className="brief-grid">
-        <div className="mini-info">
-          <b>Aim</b>
-          <span>{practical.aim}</span>
+      <div className="practical-summary">
+        <div className="aim-card">
+          <span className="summary-label">Aim</span>
+          <p>{practical.aim}</p>
         </div>
-        <div className="mini-info">
-          <b>Files</b>
-          <span>{practical.files.join(", ")}</span>
+        <div className="files-card">
+          <span className="summary-label">Files Required</span>
+          <div className="file-chips">
+            {practical.files.map((file) => <code key={file}>{file}</code>)}
+          </div>
         </div>
       </div>
-      <div className="steps-panel">
-        <h3>Execution Steps</h3>
+
+      <details className="steps-panel" open>
+        <summary>
+          <span>Execution Steps</span>
+          <small>{executionSteps.length} steps</small>
+        </summary>
         <ol>
           {executionSteps.map((step, index) => (
             <li key={step}>
@@ -49,12 +55,27 @@ function Practical({ practical }) {
             </li>
           ))}
         </ol>
-      </div>
-      {practical.blocks.map((item) => <CodeBlock key={item.label} {...item} />)}
-      {practical.commandBlocks.map((item) => <CodeBlock key={item.label} {...item} />)}
-      <div className="mini-info">
-        <b>Expected Output</b>
-        <span>{practical.expected}</span>
+      </details>
+
+      {practical.blocks.length > 0 && (
+        <section className="practical-section">
+          <h3>Source Files</h3>
+          <div className="answer-flow">
+            {practical.blocks.map((item) => <CodeBlock key={item.label} {...item} />)}
+          </div>
+        </section>
+      )}
+
+      <section className="practical-section">
+        <h3>Run Commands</h3>
+        <div className="answer-flow">
+          {practical.commandBlocks.map((item) => <CodeBlock key={item.label} {...item} />)}
+        </div>
+      </section>
+
+      <div className="output-card">
+        <span className="summary-label">Expected Output</span>
+        <p>{practical.expected}</p>
       </div>
     </div>
   );
