@@ -437,10 +437,17 @@ print("Division =", a / b)`)],
     aim: "Give Docker commands to Run an Ubuntu image in Docker container named \"MyContainer\" and execute some shell commands inside it.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Pull the Ubuntu image.", "Run an interactive Ubuntu container named MyContainer.", "Execute the shell commands inside the container.", "Type exit to leave the container."],
-    commandBlocks: [block("Run Ubuntu image in MyContainer", "bash", "docker pull ubuntu\ndocker run -it --name MyContainer ubuntu\nls\npwd\necho \"Hello Ubuntu Docker\"\napt update\nexit")],
-    expected: "Container MyContainer runs and shell commands print output.",
-    fixes: ["If the container name already exists, use another name or remove the old container first.", "If Ubuntu exits, run it with `-dit` so it stays active."]
+    steps: ["Open terminal and become root if required.", "Pull the Ubuntu latest image.", "Run Ubuntu container named ubuntucontainer.", "Inside the container, create folder and file.", "Exit the container.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+    commandBlocks: [
+      block("Root login", "bash", "sudo su"),
+      block("Pull Ubuntu image", "bash", "docker pull ubuntu:latest"),
+      block("Run Ubuntu container", "bash", "docker run -it --name ubuntucontainer ubuntu bash"),
+      block("Inside Ubuntu container", "bash", "whoami\nmkdir cse\ncd cse\necho \"Hello CSE\" > hello.txt\nls\ncat hello.txt\nexit"),
+      block("Stop container", "bash", "docker stop ubuntucontainer"),
+      block("Remove container if name exists", "bash", "docker rm ubuntucontainer")
+    ],
+    expected: "Ubuntu container opens, creates hello.txt, and prints `Hello CSE`.",
+    fixes: ["If the container name already exists, run `docker rm ubuntucontainer`.", "If permission is denied, start with `sudo su`."]
   },
   15: null,
   16: null,
@@ -549,9 +556,54 @@ minikube service ${name}-service --url`)],
   fixes: ["If pods are Pending, run `kubectl describe pod <pod-name>`.", "If service URL fails, verify Minikube is running."]
 });
 
-practicals[15] = dockerImageTask("python", "docker pull python\ndocker run -it --name python-container python\npython --version\nprint(\"Hello Python Docker\")\nexit");
-practicals[16] = dockerImageTask("node", "docker pull node\ndocker run -it --name node-container node\nnode --version\nconsole.log(\"Hello Node Docker\")\nexit");
-practicals[17] = dockerImageTask("nginx", "docker pull nginx\ndocker run -d --name nginx-container -p 8080:80 nginx\ndocker ps\ndocker exec -it nginx-container bash\nls\ncd /usr/share/nginx/html\nexit\n\nOpen:\nhttp://localhost:8080");
+practicals[15] = {
+  aim: "Give Docker commands to run a Python image and execute some commands.",
+  files: ["No source file required"],
+  blocks: [],
+  steps: ["Pull the Python latest image.", "Run Python container named pycontainer.", "Inside Python, execute basic commands.", "Exit Python.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+  commandBlocks: [
+    block("Pull Python image", "bash", "docker pull python:latest"),
+    block("Run Python container", "bash", "docker run -it --name pycontainer python"),
+    block("Inside Python", "python", "x = 5\nprint(x)\nprint(4 + 3)\nexit()"),
+    block("Stop container", "bash", "docker stop pycontainer"),
+    block("Remove container if name exists", "bash", "docker rm pycontainer")
+  ],
+  expected: "Python container opens and prints `5` and `7`.",
+  fixes: ["If container name exists, run `docker rm pycontainer`.", "Use `exit()` to leave Python."]
+};
+practicals[16] = {
+  aim: "Give Docker commands to run a node image and execute some commands.",
+  files: ["No source file required"],
+  blocks: [],
+  steps: ["Pull the Node latest image.", "Run Node container named nodecontainer.", "Inside Node, execute JavaScript commands.", "Exit Node.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+  commandBlocks: [
+    block("Pull Node image", "bash", "docker pull node:latest"),
+    block("Run Node container", "bash", "docker run -it --name nodecontainer node"),
+    block("Inside Node", "javascript", "console.log(\"Hello Node\");\n2 + 5\n.exit"),
+    block("Stop container", "bash", "docker stop nodecontainer"),
+    block("Remove container if name exists", "bash", "docker rm nodecontainer")
+  ],
+  expected: "Node container opens, prints `Hello Node`, and evaluates `2 + 5`.",
+  fixes: ["If container name exists, run `docker rm nodecontainer`.", "Use `.exit` to leave Node."]
+};
+practicals[17] = {
+  aim: "Give Docker commands to run a nginx image and execute some commands.",
+  files: ["No source file required"],
+  blocks: [],
+  steps: ["Pull the Nginx latest image.", "Run Nginx container named nginxcontainer on port 8080.", "Check running containers.", "Open the browser URL.", "Enter the Nginx container.", "Run basic commands inside it.", "Exit and stop the container.", "If name already exists, remove old container and run again."],
+  commandBlocks: [
+    block("Pull Nginx image", "bash", "docker pull nginx:latest"),
+    block("Run Nginx container", "bash", "docker run -d --name nginxcontainer -p 8080:80 nginx"),
+    block("Check running container", "bash", "docker ps"),
+    block("Open browser", "text", "http://localhost:8080"),
+    block("Enter Nginx container", "bash", "docker exec -it nginxcontainer sh"),
+    block("Inside Nginx container", "bash", "nginx -v\npwd\nls\nexit"),
+    block("Stop container", "bash", "docker stop nginxcontainer"),
+    block("Remove container if name exists", "bash", "docker rm nginxcontainer")
+  ],
+  expected: "Nginx runs on http://localhost:8080 and container commands print version/path/files.",
+  fixes: ["If container name exists, run `docker rm nginxcontainer`.", "If port 8080 is busy, change the left side, for example `-p 9090:80`."]
+};
 practicals[20] = kubeTask("nginx", "nginx", 80);
 practicals[21] = kubeTask("node", "node:20-alpine", 3000, `          command: ["node"]
           args: ["-e", "require('http').createServer((req,res)=>res.end('Node app running')).listen(3000, '0.0.0.0')"]`);

@@ -46,30 +46,63 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Ubuntu image.
-2. Run an interactive Ubuntu container named MyContainer.
-3. Execute the shell commands inside the container.
-4. Type exit to leave the container.
+1. Open terminal and become root if required.
+2. Pull the Ubuntu latest image.
+3. Run Ubuntu container named ubuntucontainer.
+4. Inside the container, create folder and file.
+5. Exit the container.
+6. Stop the container after completion.
+7. If name already exists, remove old container and run again.
 
 **Commands:**
 
-#### Run Ubuntu image in MyContainer
+#### Root login
 
 ```bash
-docker pull ubuntu
-docker run -it --name MyContainer ubuntu
+sudo su
+```
+
+#### Pull Ubuntu image
+
+```bash
+docker pull ubuntu:latest
+```
+
+#### Run Ubuntu container
+
+```bash
+docker run -it --name ubuntucontainer ubuntu bash
+```
+
+#### Inside Ubuntu container
+
+```bash
+whoami
+mkdir cse
+cd cse
+echo "Hello CSE" > hello.txt
 ls
-pwd
-echo "Hello Ubuntu Docker"
-apt update
+cat hello.txt
 exit
 ```
 
-**Expected Output:** Container MyContainer runs and shell commands print output.
+#### Stop container
+
+```bash
+docker stop ubuntucontainer
+```
+
+#### Remove container if name exists
+
+```bash
+docker rm ubuntucontainer
+```
+
+**Expected Output:** Ubuntu container opens, creates hello.txt, and prints `Hello CSE`.
 
 **Quick Fixes:**
-- If the container name already exists, use another name or remove the old container first.
-- If Ubuntu exits, run it with `-dit` so it stays active.
+- If the container name already exists, run `docker rm ubuntucontainer`.
+- If permission is denied, start with `sudo su`.
 
 ### Q5 Practical Answer
 

@@ -46,28 +46,52 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Docker image.
-2. Run the container.
-3. Execute the shown command inside the container.
-4. Check the terminal output.
+1. Pull the Node latest image.
+2. Run Node container named nodecontainer.
+3. Inside Node, execute JavaScript commands.
+4. Exit Node.
+5. Stop the container after completion.
+6. If name already exists, remove old container and run again.
 
 **Commands:**
 
-#### Docker image commands
+#### Pull Node image
 
 ```bash
-docker pull node
-docker run -it --name node-container node
-node --version
-console.log("Hello Node Docker")
-exit
+docker pull node:latest
 ```
 
-**Expected Output:** node container runs and prints command output.
+#### Run Node container
+
+```bash
+docker run -it --name nodecontainer node
+```
+
+#### Inside Node
+
+```javascript
+console.log("Hello Node");
+2 + 5
+.exit
+```
+
+#### Stop container
+
+```bash
+docker stop nodecontainer
+```
+
+#### Remove container if name exists
+
+```bash
+docker rm nodecontainer
+```
+
+**Expected Output:** Node container opens, prints `Hello Node`, and evaluates `2 + 5`.
 
 **Quick Fixes:**
-- If image pull is slow, check internet connection.
-- If container exits immediately, use interactive mode or a long-running command.
+- If container name exists, run `docker rm nodecontainer`.
+- Use `.exit` to leave Node.
 
 ### Q5 Practical Answer
 

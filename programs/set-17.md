@@ -46,33 +46,73 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Docker image.
-2. Run the container.
-3. Execute the shown command inside the container.
-4. Check the terminal output.
+1. Pull the Nginx latest image.
+2. Run Nginx container named nginxcontainer on port 8080.
+3. Check running containers.
+4. Open the browser URL.
+5. Enter the Nginx container.
+6. Run basic commands inside it.
+7. Exit and stop the container.
+8. If name already exists, remove old container and run again.
 
 **Commands:**
 
-#### Docker image commands
+#### Pull Nginx image
 
 ```bash
-docker pull nginx
-docker run -d --name nginx-container -p 8080:80 nginx
-docker ps
-docker exec -it nginx-container bash
-ls
-cd /usr/share/nginx/html
-exit
+docker pull nginx:latest
+```
 
-Open:
+#### Run Nginx container
+
+```bash
+docker run -d --name nginxcontainer -p 8080:80 nginx
+```
+
+#### Check running container
+
+```bash
+docker ps
+```
+
+#### Open browser
+
+```text
 http://localhost:8080
 ```
 
-**Expected Output:** nginx container runs and prints command output.
+#### Enter Nginx container
+
+```bash
+docker exec -it nginxcontainer sh
+```
+
+#### Inside Nginx container
+
+```bash
+nginx -v
+pwd
+ls
+exit
+```
+
+#### Stop container
+
+```bash
+docker stop nginxcontainer
+```
+
+#### Remove container if name exists
+
+```bash
+docker rm nginxcontainer
+```
+
+**Expected Output:** Nginx runs on http://localhost:8080 and container commands print version/path/files.
 
 **Quick Fixes:**
-- If image pull is slow, check internet connection.
-- If container exits immediately, use interactive mode or a long-running command.
+- If container name exists, run `docker rm nginxcontainer`.
+- If port 8080 is busy, change the left side, for example `-p 9090:80`.
 
 ### Q5 Practical Answer
 

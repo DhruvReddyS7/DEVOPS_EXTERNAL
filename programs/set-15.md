@@ -46,28 +46,53 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Docker image.
-2. Run the container.
-3. Execute the shown command inside the container.
-4. Check the terminal output.
+1. Pull the Python latest image.
+2. Run Python container named pycontainer.
+3. Inside Python, execute basic commands.
+4. Exit Python.
+5. Stop the container after completion.
+6. If name already exists, remove old container and run again.
 
 **Commands:**
 
-#### Docker image commands
+#### Pull Python image
 
 ```bash
-docker pull python
-docker run -it --name python-container python
-python --version
-print("Hello Python Docker")
-exit
+docker pull python:latest
 ```
 
-**Expected Output:** python container runs and prints command output.
+#### Run Python container
+
+```bash
+docker run -it --name pycontainer python
+```
+
+#### Inside Python
+
+```python
+x = 5
+print(x)
+print(4 + 3)
+exit()
+```
+
+#### Stop container
+
+```bash
+docker stop pycontainer
+```
+
+#### Remove container if name exists
+
+```bash
+docker rm pycontainer
+```
+
+**Expected Output:** Python container opens and prints `5` and `7`.
 
 **Quick Fixes:**
-- If image pull is slow, check internet connection.
-- If container exits immediately, use interactive mode or a long-running command.
+- If container name exists, run `docker rm pycontainer`.
+- Use `exit()` to leave Python.
 
 ### Q5 Practical Answer
 
