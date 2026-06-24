@@ -514,21 +514,23 @@ print("Division:", a / b)`)],
     files: ["Calculator.java", "calculator.py"],
     blocks: [block("Calculator.java", "java", `public class Calculator {
   public static void main(String[] args) {
-    int a = Integer.parseInt(System.getenv().getOrDefault("A", "10"));
-    int b = Integer.parseInt(System.getenv().getOrDefault("B", "5"));
+    int a = 10;
+    int b = 5;
     System.out.println("Add: " + (a + b));
     System.out.println("Sub: " + (a - b));
+    System.out.println("Mul: " + (a * b));
+    System.out.println("Div: " + (a / b));
   }
-}`), block("calculator.py", "python", `import os
-
-a = int(os.environ.get("A", "10"))
-b = int(os.environ.get("B", "5"))
+}`), block("calculator.py", "python", `a = 10
+b = 5
 print("Add:", a + b)
-print("Sub:", a - b)`)],
-    steps: ["Create the listed source files with the exact file names.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle project.", "Enable `This project is parameterized`.", "Add Choice Parameter `PROGRAM_FILE` with choices `Calculator.java` and `calculator.py`.", "Add String Parameter `A` with value `10`.", "Add String Parameter `B` with value `5`.", "Under Source Code Management choose Git and paste the repository URL.", "Under Build Steps choose Execute shell.", "Paste the run command.", "Save.", "Click Build with Parameters.", "Select the file and enter A/B values.", "Click Build and check Console Output."],
-    commandBlocks: [block("GitHub push commands", "bash", gitPush), block("Jenkins Execute shell", "bash", "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then\n  javac Calculator.java\n  java Calculator\nelse\n  python3 calculator.py\nfi")],
-    expected: "Selected calculator prints Add and Sub using Jenkins parameters A and B.",
-    fixes: ["Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.", "Use `Build with Parameters`, not normal Build Now.", "Use absolute paths like `/usr/bin/python3` if Python is not found."]
+print("Sub:", a - b)
+print("Mul:", a * b)
+print("Div:", a / b)`)],
+    steps: ["Create the listed source files with the exact file names.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle project.", "Enable `This project is parameterized`.", "Add Choice Parameter named `PROGRAM_FILE`.", "Choices: `Calculator.java` and `calculator.py`.", "Under Source Code Management choose Git and paste the repository URL.", "Under Build Steps choose Execute shell.", "Paste the run command.", "Save.", "Click Build with Parameters.", "Select Java or Python file.", "Click Build and check Console Output."],
+    commandBlocks: [block("GitHub push commands", "bash", gitPush), block("Jenkins Execute shell", "bash", "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then\n  javac Calculator.java && java Calculator\nelse\n  python3 calculator.py\nfi")],
+    expected: "Selected calculator prints Add, Sub, Mul, and Div.",
+    fixes: ["Only one parameter is needed: `PROGRAM_FILE`.", "Use `Build with Parameters`, not normal Build Now.", "Use absolute paths like `/usr/bin/python3` if Python is not found."]
   }
 };
 

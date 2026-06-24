@@ -51,16 +51,15 @@
 3. Open Jenkins at http://localhost:8080.
 4. Create New Item -> Freestyle project.
 5. Enable `This project is parameterized`.
-6. Add Choice Parameter `PROGRAM_FILE` with choices `Calculator.java` and `calculator.py`.
-7. Add String Parameter `A` with value `10`.
-8. Add String Parameter `B` with value `5`.
-9. Under Source Code Management choose Git and paste the repository URL.
-10. Under Build Steps choose Execute shell.
-11. Paste the run command.
-12. Save.
-13. Click Build with Parameters.
-14. Select the file and enter A/B values.
-15. Click Build and check Console Output.
+6. Add Choice Parameter named `PROGRAM_FILE`.
+7. Choices: `Calculator.java` and `calculator.py`.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell.
+10. Paste the run command.
+11. Save.
+12. Click Build with Parameters.
+13. Select Java or Python file.
+14. Click Build and check Console Output.
 
 **Source Files:**
 
@@ -69,10 +68,12 @@
 ```java
 public class Calculator {
   public static void main(String[] args) {
-    int a = Integer.parseInt(System.getenv().getOrDefault("A", "10"));
-    int b = Integer.parseInt(System.getenv().getOrDefault("B", "5"));
+    int a = 10;
+    int b = 5;
     System.out.println("Add: " + (a + b));
     System.out.println("Sub: " + (a - b));
+    System.out.println("Mul: " + (a * b));
+    System.out.println("Div: " + (a / b));
   }
 }
 ```
@@ -80,12 +81,12 @@ public class Calculator {
 #### calculator.py
 
 ```python
-import os
-
-a = int(os.environ.get("A", "10"))
-b = int(os.environ.get("B", "5"))
+a = 10
+b = 5
 print("Add:", a + b)
 print("Sub:", a - b)
+print("Mul:", a * b)
+print("Div:", a / b)
 ```
 
 **Commands:**
@@ -105,16 +106,15 @@ git push -u origin main
 
 ```bash
 if [ "$PROGRAM_FILE" = "Calculator.java" ]; then
-  javac Calculator.java
-  java Calculator
+  javac Calculator.java && java Calculator
 else
   python3 calculator.py
 fi
 ```
 
-**Expected Output:** Selected calculator prints Add and Sub using Jenkins parameters A and B.
+**Expected Output:** Selected calculator prints Add, Sub, Mul, and Div.
 
 **Quick Fixes:**
-- Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.
+- Only one parameter is needed: `PROGRAM_FILE`.
 - Use `Build with Parameters`, not normal Build Now.
 - Use absolute paths like `/usr/bin/python3` if Python is not found.
