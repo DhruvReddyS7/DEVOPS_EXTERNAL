@@ -99,70 +99,57 @@ docker rm pycontainer
 **Aim:** Kubernetes - Create an nginx deployment and run some kubectl commands
 
 **Files:**
-- nginx-deployment.yaml
+- No YAML file required
 
 **Execution Steps:**
-1. Start Minikube.
-2. Create the YAML file.
-3. Apply the YAML manifest.
-4. Check deployments, pods, and services.
-5. Open service using Minikube URL.
-
-**Source Files:**
-
-#### nginx-deployment.yaml
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-        - name: nginx
-          image: nginx
-
-          ports:
-            - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
-  type: NodePort
-  selector:
-    app: nginx
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30080
-```
+1. Start Minikube or make sure Kubernetes is running.
+2. Create nginx deployment using kubectl.
+3. Check deployments.
+4. Check pods.
+5. Describe nginx deployment.
+6. List all Kubernetes resources.
+7. Delete the deployment after verification.
 
 **Commands:**
 
-#### kubectl commands
+#### Create nginx deployment
 
 ```bash
-minikube start
-kubectl apply -f nginx-deployment.yaml
-kubectl get deployments
-kubectl get pods -o wide
-kubectl get svc
-minikube service nginx-service --url
+kubectl create deployment nginx-deployment --image=nginx
 ```
 
-**Expected Output:** nginx pods show Running and service URL opens successfully.
+#### Get deployments
+
+```bash
+kubectl get deployments
+```
+
+#### Get pods
+
+```bash
+kubectl get pods
+```
+
+#### Describe nginx deployment
+
+```bash
+kubectl describe deployment nginx-deployment
+```
+
+#### Get all resources
+
+```bash
+kubectl get all
+```
+
+#### Delete nginx deployment
+
+```bash
+kubectl delete deployment nginx-deployment
+```
+
+**Expected Output:** nginx deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If pods are Pending, run `kubectl describe pod <pod-name>`.
-- If service URL fails, verify Minikube is running.
+- If kubectl cannot connect, run `minikube start`.
+- If deployment already exists, delete it first using the delete command.

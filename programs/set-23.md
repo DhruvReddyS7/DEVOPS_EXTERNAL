@@ -46,10 +46,13 @@
 - package.json
 
 **Execution Steps:**
-1. Install Node.js and Google Chrome.
-2. Install Selenium dependency.
-3. Run the script.
-4. Confirm Chrome opens and title prints.
+1. Create a project directory.
+2. Initialize Node.js project.
+3. Install Selenium WebDriver.
+4. Create `checkResult.js`.
+5. Paste the exam-result website Selenium code.
+6. Run the script.
+7. Verify that the page title and success message print in terminal.
 
 **Source Files:**
 
@@ -73,16 +76,34 @@ const { Builder, By, until } = require("selenium-webdriver");
 
 **Commands:**
 
-#### Selenium commands
+#### Create project
+
+```bash
+mkdir result-checker
+cd result-checker
+```
+
+#### Initialize and install Selenium
 
 ```bash
 npm init -y
 npm install selenium-webdriver
-node openWebsite.js
+```
+
+#### Create file
+
+```bash
+nano checkResult.js
+```
+
+#### Run program
+
+```bash
+node checkResult.js
 ```
 
 **Expected Output:** Terminal prints page title and Result site loaded successfully.
 
 **Quick Fixes:**
-- Do not close Chrome manually while test is running.
-- Update Google Chrome if Selenium cannot create session.
+- Install Google Chrome before running Selenium.
+- If Chrome session fails, update Chrome and Selenium WebDriver.

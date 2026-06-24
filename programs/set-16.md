@@ -98,71 +98,57 @@ docker rm nodecontainer
 **Aim:** Kubernetes - Create an python deployment and run some kubectl commands
 
 **Files:**
-- python-deployment.yaml
+- No YAML file required
 
 **Execution Steps:**
-1. Start Minikube.
-2. Create the YAML file.
-3. Apply the YAML manifest.
-4. Check deployments, pods, and services.
-5. Open service using Minikube URL.
-
-**Source Files:**
-
-#### python-deployment.yaml
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: python
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: python
-  template:
-    metadata:
-      labels:
-        app: python
-    spec:
-      containers:
-        - name: python
-          image: python:3.12-slim
-          command: ["python"]
-          args: ["-m", "http.server", "8000"]
-          ports:
-            - containerPort: 8000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: python-service
-spec:
-  type: NodePort
-  selector:
-    app: python
-  ports:
-    - port: 8000
-      targetPort: 8000
-      nodePort: 30080
-```
+1. Start Minikube or make sure Kubernetes is running.
+2. Create python deployment using kubectl.
+3. Check deployments.
+4. Check pods.
+5. Describe python deployment.
+6. List all Kubernetes resources.
+7. Delete the deployment after verification.
 
 **Commands:**
 
-#### kubectl commands
+#### Create python deployment
 
 ```bash
-minikube start
-kubectl apply -f python-deployment.yaml
-kubectl get deployments
-kubectl get pods -o wide
-kubectl get svc
-minikube service python-service --url
+kubectl create deployment python-deployment --image=python
 ```
 
-**Expected Output:** python pods show Running and service URL opens successfully.
+#### Get deployments
+
+```bash
+kubectl get deployments
+```
+
+#### Get pods
+
+```bash
+kubectl get pods
+```
+
+#### Describe python deployment
+
+```bash
+kubectl describe deployment python-deployment
+```
+
+#### Get all resources
+
+```bash
+kubectl get all
+```
+
+#### Delete python deployment
+
+```bash
+kubectl delete deployment python-deployment
+```
+
+**Expected Output:** python deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If pods are Pending, run `kubectl describe pod <pod-name>`.
-- If service URL fails, verify Minikube is running.
+- If kubectl cannot connect, run `minikube start`.
+- If deployment already exists, delete it first using the delete command.

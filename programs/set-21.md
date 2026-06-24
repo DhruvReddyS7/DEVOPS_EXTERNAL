@@ -43,125 +43,151 @@
 **Aim:** Kubernetes - Create an node deployment and run some kubectl commands
 
 **Files:**
-- node-deployment.yaml
+- No YAML file required
 
 **Execution Steps:**
-1. Start Minikube.
-2. Create the YAML file.
-3. Apply the YAML manifest.
-4. Check deployments, pods, and services.
-5. Open service using Minikube URL.
-
-**Source Files:**
-
-#### node-deployment.yaml
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: node
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: node
-  template:
-    metadata:
-      labels:
-        app: node
-    spec:
-      containers:
-        - name: node
-          image: node:20-alpine
-          command: ["node"]
-          args: ["-e", "require('http').createServer((req,res)=>res.end('Node app running')).listen(3000, '0.0.0.0')"]
-          ports:
-            - containerPort: 3000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: node-service
-spec:
-  type: NodePort
-  selector:
-    app: node
-  ports:
-    - port: 3000
-      targetPort: 3000
-      nodePort: 30080
-```
+1. Start Minikube or make sure Kubernetes is running.
+2. Create node deployment using kubectl.
+3. Check deployments.
+4. Check pods.
+5. Describe node deployment.
+6. List all Kubernetes resources.
+7. Delete the deployment after verification.
 
 **Commands:**
 
-#### kubectl commands
+#### Create node deployment
 
 ```bash
-minikube start
-kubectl apply -f node-deployment.yaml
-kubectl get deployments
-kubectl get pods -o wide
-kubectl get svc
-minikube service node-service --url
+kubectl create deployment node-deployment --image=node
 ```
 
-**Expected Output:** node pods show Running and service URL opens successfully.
+#### Get deployments
+
+```bash
+kubectl get deployments
+```
+
+#### Get pods
+
+```bash
+kubectl get pods
+```
+
+#### Describe node deployment
+
+```bash
+kubectl describe deployment node-deployment
+```
+
+#### Get all resources
+
+```bash
+kubectl get all
+```
+
+#### Delete node deployment
+
+```bash
+kubectl delete deployment node-deployment
+```
+
+**Expected Output:** node deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If pods are Pending, run `kubectl describe pod <pod-name>`.
-- If service URL fails, verify Minikube is running.
+- If kubectl cannot connect, run `minikube start`.
+- If deployment already exists, delete it first using the delete command.
 
 ### Q5 Practical Answer
 
 **Aim:** Write a JavaScript program to open Google / College website in the browser using Selenium
 
 **Files:**
-- openWebsite.js
-- package.json
+- google.js
 
 **Execution Steps:**
-1. Install Node.js and Google Chrome.
-2. Install Selenium dependency.
-3. Run the script.
-4. Confirm Chrome opens and title prints.
+1. Install Node.js and npm.
+2. Create a project directory and move into it.
+3. Initialize the Node.js project.
+4. Install Selenium WebDriver.
+5. Create `google.js`.
+6. Add the Selenium code.
+7. Run the program.
+8. To open college website, replace the Google URL and run again.
 
 **Source Files:**
 
-#### openWebsite.js
+#### google.js
 
 ```javascript
-const { Builder } = require("selenium-webdriver");
+const { Builder } = require('selenium-webdriver');
 
-(async function openWebsite() {
-  const driver = await new Builder().forBrowser("chrome").build();
-  try {
-    await driver.get("https://www.google.com");
-    console.log(await driver.getTitle());
-  } finally {
-    await driver.quit();
-  }
-})();
-```
+async function openGoogle() {
+    let driver = await new Builder().forBrowser('chrome').build();
 
-#### package.json
+    await driver.get('https://www.google.com');
+}
 
-```json
-{"scripts":{"test":"node openWebsite.js"},"dependencies":{"selenium-webdriver":"latest"}}
+openGoogle();
 ```
 
 **Commands:**
 
-#### Selenium commands
+#### Install Node.js and npm
+
+```bash
+sudo apt update
+sudo apt install nodejs npm -y
+```
+
+#### Create project directory
+
+```bash
+mkdir selenium-demo
+cd selenium-demo
+```
+
+#### Initialize Node project
 
 ```bash
 npm init -y
-npm install selenium-webdriver
-node openWebsite.js
 ```
 
-**Expected Output:** Chrome opens Google and terminal prints page title.
+#### Install Selenium WebDriver
+
+```bash
+npm install selenium-webdriver
+```
+
+#### Create file
+
+```bash
+nano google.js
+```
+
+#### Run program
+
+```bash
+node google.js
+```
+
+#### Replace with college website
+
+```javascript
+await driver.get('https://www.google.com');
+
+// replace with
+await driver.get('https://www.yourcollegewebsite.com');
+```
+
+#### Run again
+
+```bash
+node google.js
+```
+
+**Expected Output:** Chrome browser opens automatically and loads the Google website.
 
 **Quick Fixes:**
-- Do not close Chrome manually while test is running.
-- Update Google Chrome if Selenium cannot create session.
+- Install Google Chrome before running Selenium.
+- If Chrome session fails, update Chrome and Selenium WebDriver.

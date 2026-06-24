@@ -556,6 +556,31 @@ minikube service ${name}-service --url`)],
   fixes: ["If pods are Pending, run `kubectl describe pod <pod-name>`.", "If service URL fails, verify Minikube is running."]
 });
 
+const kubeCommandTask = (name, image) => ({
+  aim: `Kubernetes: Create ${name} Deployment and Run kubectl Commands.`,
+  files: ["No YAML file required"],
+  blocks: [],
+  steps: [
+    "Start Minikube or make sure Kubernetes is running.",
+    `Create ${name} deployment using kubectl.`,
+    "Check deployments.",
+    "Check pods.",
+    `Describe ${name} deployment.`,
+    "List all Kubernetes resources.",
+    "Delete the deployment after verification."
+  ],
+  commandBlocks: [
+    block(`Create ${name} deployment`, "bash", `kubectl create deployment ${name}-deployment --image=${image}`),
+    block("Get deployments", "bash", "kubectl get deployments"),
+    block("Get pods", "bash", "kubectl get pods"),
+    block(`Describe ${name} deployment`, "bash", `kubectl describe deployment ${name}-deployment`),
+    block("Get all resources", "bash", "kubectl get all"),
+    block(`Delete ${name} deployment`, "bash", `kubectl delete deployment ${name}-deployment`)
+  ],
+  expected: `${name} deployment is created, shown in kubectl output, described, and deleted successfully.`,
+  fixes: ["If kubectl cannot connect, run `minikube start`.", "If deployment already exists, delete it first using the delete command."]
+});
+
 practicals[15] = {
   aim: "Give Docker commands to run a Python image and execute some commands.",
   files: ["No source file required"],
@@ -605,27 +630,42 @@ practicals[17] = {
   fixes: ["If container name exists, run `docker rm nginxcontainer`.", "If port 8080 is busy, change the left side, for example `-p 9090:80`."]
 };
 practicals[20] = kubeTask("nginx", "nginx", 80);
-practicals[21] = kubeTask("node", "node:20-alpine", 3000, `          command: ["node"]
-          args: ["-e", "require('http').createServer((req,res)=>res.end('Node app running')).listen(3000, '0.0.0.0')"]`);
+practicals[21] = kubeCommandTask("node", "node");
 
 const seleniumOpen = {
-  aim: "Write a JavaScript Selenium program to open Google or college website in Chrome.",
-  files: ["openWebsite.js", "package.json"],
-  blocks: [block("openWebsite.js", "javascript", `const { Builder } = require("selenium-webdriver");
+  aim: "Write a JavaScript Program to Open Google / College Website in the Browser Using Selenium.",
+  files: ["google.js"],
+  blocks: [block("google.js", "javascript", `const { Builder } = require('selenium-webdriver');
 
-(async function openWebsite() {
-  const driver = await new Builder().forBrowser("chrome").build();
-  try {
-    await driver.get("https://www.google.com");
-    console.log(await driver.getTitle());
-  } finally {
-    await driver.quit();
-  }
-})();`), block("package.json", "json", `{"scripts":{"test":"node openWebsite.js"},"dependencies":{"selenium-webdriver":"latest"}}`)],
-  steps: ["Install Node.js and Google Chrome.", "Install Selenium dependency.", "Run the script.", "Confirm Chrome opens and title prints."],
-  commandBlocks: [block("Selenium commands", "bash", "npm init -y\nnpm install selenium-webdriver\nnode openWebsite.js")],
-  expected: "Chrome opens Google and terminal prints page title.",
-  fixes: ["Do not close Chrome manually while test is running.", "Update Google Chrome if Selenium cannot create session."]
+async function openGoogle() {
+    let driver = await new Builder().forBrowser('chrome').build();
+
+    await driver.get('https://www.google.com');
+}
+
+openGoogle();`)],
+  steps: [
+    "Install Node.js and npm.",
+    "Create a project directory and move into it.",
+    "Initialize the Node.js project.",
+    "Install Selenium WebDriver.",
+    "Create `google.js`.",
+    "Add the Selenium code.",
+    "Run the program.",
+    "To open college website, replace the Google URL and run again."
+  ],
+  commandBlocks: [
+    block("Install Node.js and npm", "bash", "sudo apt update\nsudo apt install nodejs npm -y"),
+    block("Create project directory", "bash", "mkdir selenium-demo\ncd selenium-demo"),
+    block("Initialize Node project", "bash", "npm init -y"),
+    block("Install Selenium WebDriver", "bash", "npm install selenium-webdriver"),
+    block("Create file", "bash", "nano google.js"),
+    block("Run program", "bash", "node google.js"),
+    block("Replace with college website", "javascript", "await driver.get('https://www.google.com');\n\n// replace with\nawait driver.get('https://www.yourcollegewebsite.com');"),
+    block("Run again", "bash", "node google.js")
+  ],
+  expected: "Chrome browser opens automatically and loads the Google website.",
+  fixes: ["Install Google Chrome before running Selenium.", "If Chrome session fails, update Chrome and Selenium WebDriver."]
 };
 
 practicals[22] = {
@@ -684,6 +724,13 @@ practicals[23] = {
     await driver.quit();
   }
 })();`)],
+  steps: ["Create a project directory.", "Initialize Node.js project.", "Install Selenium WebDriver.", "Create `checkResult.js`.", "Paste the exam-result website Selenium code.", "Run the script.", "Verify that the page title and success message print in terminal."],
+  commandBlocks: [
+    block("Create project", "bash", "mkdir result-checker\ncd result-checker"),
+    block("Initialize and install Selenium", "bash", "npm init -y\nnpm install selenium-webdriver"),
+    block("Create file", "bash", "nano checkResult.js"),
+    block("Run program", "bash", "node checkResult.js")
+  ],
   expected: "Terminal prints page title and Result site loaded successfully."
 };
 
@@ -777,10 +824,9 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
   const id = index + 1;
   const practical = practicals[id];
   const q5Practical =
-    id === 15 ? kubeTask("nginx", "nginx", 80) :
-    id === 16 ? kubeTask("python", "python:3.12-slim", 8000, `          command: ["python"]
-          args: ["-m", "http.server", "8000"]`) :
-    id === 17 ? kubeTask("mongo", "mongo:7", 27017) :
+    id === 15 ? kubeCommandTask("nginx", "nginx") :
+    id === 16 ? kubeCommandTask("python", "python") :
+    id === 17 ? kubeCommandTask("mongo", "mongo") :
     id === 21 ? seleniumOpen :
     id === 10 ? {
       aim: "Create a Jenkins Job for executing shell commands and use Build Trigger - Build periodically.",
