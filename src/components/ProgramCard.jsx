@@ -84,6 +84,7 @@ function Practical({ practical }) {
 export default function ProgramCard({ program }) {
   const tabs = ["questions", "git", "docker", "kubernetes", "q4", ...(program.q5 ? ["q5"] : [])];
   const [active, setActive] = useState("questions");
+  const ActiveIcon = tabInfo[active].icon;
 
   const renderCommands = (title, items) => (
     <div className="command-table-wrap">
@@ -135,6 +136,14 @@ export default function ProgramCard({ program }) {
             </button>
           );
         })}
+      </div>
+
+      <div className="content-heading">
+        <div>
+          <span className="section-kicker">active section</span>
+          <h3><ActiveIcon size={18} /> {tabInfo[active].label}</h3>
+        </div>
+        <span className="section-chip">{program.title.split(": ")[0]}</span>
       </div>
 
       <div className="tab-content">

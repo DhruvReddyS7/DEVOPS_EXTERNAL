@@ -93,6 +93,7 @@ export default function App() {
           <div className="workbench">
             <aside className="set-panel">
               <div className="panel-title">/sets</div>
+              <div className="panel-hint">pick one set, then copy from the answer panel</div>
               <div className="topic-tabs">
                 {topics.map((item) => (
                   <button key={item} className={topic === item ? "active" : ""} onClick={() => setTopic(item)}>
@@ -110,6 +111,7 @@ export default function App() {
                   >
                     <b>Set {program.id}</b>
                     <span>{program.title.replace(`Set ${program.id}: `, "")}</span>
+                    <small>{program.q5 ? "Q1-Q5" : "Q1-Q4"}</small>
                   </button>
                 ))}
               </div>
