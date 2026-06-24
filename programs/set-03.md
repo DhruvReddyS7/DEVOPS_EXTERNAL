@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Write a simple program in HTML, build and run Docker image, push code to GitHub and image to DockerHub.
+4. Write a simple program in HTML, Build and run the Docker image and push the code to GITHUB and Docker Image to DockerHub.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

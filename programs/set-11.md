@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Create HTML registration form, push to GitHub, create Jenkins job for publishing HTML page.
+4. Create a simple HTML page - Registration form and push the code to GITHUB. Create a Jenkins Job for publishing the HTML Page.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

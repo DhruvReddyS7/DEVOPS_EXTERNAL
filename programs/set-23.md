@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Write JavaScript program for checking exam results on https://matrusri.skolo.in/ and test using Selenium.
+4. Write a JavaScript program for checking exam results on college website (https://matrusri.skolo.in/) and test it using Selenium.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

@@ -3,8 +3,8 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Run hello-world image and create Jenkins periodic shell job.
-5. Create a Jenkins job for executing shell commands using periodic build trigger.
+4. Give Docker commands to Run an Hello-World image in Docker.
+5. Create a Jenkins Job for executing shell commands and Using Build Trigger- build the job periodically.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

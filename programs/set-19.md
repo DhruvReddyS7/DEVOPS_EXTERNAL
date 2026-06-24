@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Using Docker Compose create busybox containers bbConA and bbConB and ping bbConB from bbConA.
+4. Using Docker compose - Create two instances of busybox images in two containers named bbConA and bbConB and ping bbConB from bbConA.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

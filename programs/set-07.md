@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Write a simple C program, push code to GitHub, create Jenkins job for execution.
+4. Write a simple program in C, and push the code to GITHUB. Create a Jenkins Job for executing the program.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

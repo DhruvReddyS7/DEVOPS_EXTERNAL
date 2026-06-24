@@ -3,8 +3,8 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Create node deployment and run kubectl commands.
-5. Write JavaScript Selenium program to open Google or college website.
+4. Kubernetes - Create an node deployment and run some kubectl commands
+5. Write a JavaScript program to open Google / College website in the browser using Selenium
 ## Q1 Git Commands
 
 | No. | Command | Usage |

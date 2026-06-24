@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Write Java and Python pattern programs and execute using Jenkins file parameterization.
+4. Write a simple program in Java and Python for Pattern display and Create a Jenkins Job for executing the programs. (Use file Parameterization)
 ## Q1 Git Commands
 
 | No. | Command | Usage |

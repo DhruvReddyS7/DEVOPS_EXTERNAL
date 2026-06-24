@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Create Jenkins job for Python calculator in Git using SCM polling trigger.
+4. Create a Jenkins Job for executing Python program (Calculator) in GIT – Using Trigger, execute the job through SCM polling. (automatically execute when code is changed in GITHub).
 ## Q1 Git Commands
 
 | No. | Command | Usage |

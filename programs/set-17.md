@@ -3,8 +3,8 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Run nginx Docker image and execute commands.
-5. Create Mongo deployment in Kubernetes and run kubectl commands.
+4. Give Docker commands to run a nginx image and execute some commands.
+5. Kubernetes - Create an Mongo deployment and run some kubectl commands
 ## Q1 Git Commands
 
 | No. | Command | Usage |

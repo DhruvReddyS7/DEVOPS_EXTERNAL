@@ -14,9 +14,9 @@
   --line-strong: #31506b;
   --text: #e5f0ff;
   --muted: #8ca3b8;
-  --green: #22c55e;
-  --green-soft: #0e2a1b;
-  --cyan: #38bdf8;
+  --green: #38bdf8;
+  --green-soft: #08243a;
+  --cyan: #60a5fa;
   --amber: #f59e0b;
 }
 
@@ -27,8 +27,8 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    linear-gradient(rgba(34, 197, 94, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px),
     var(--bg);
   background-size: 28px 28px;
   color: var(--text);
@@ -75,7 +75,7 @@ button:hover, button.active {
   justify-content: flex-start;
   gap: 9px;
   padding: 0 12px;
-  color: #bbf7d0;
+  color: #bae6fd;
   font-family: "JetBrains Mono", monospace;
   font-weight: 700;
   white-space: nowrap;
@@ -162,10 +162,10 @@ button:hover, button.active {
 
 .panel-hint {
   padding: 9px 10px;
-  border: 1px solid rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.18);
   border-radius: 6px;
-  background: rgba(34, 197, 94, 0.055);
-  color: #a7f3d0;
+  background: rgba(56, 189, 248, 0.055);
+  color: #bae6fd;
   font-size: 0.78rem;
   line-height: 1.35;
 }
@@ -204,7 +204,7 @@ button:hover, button.active {
 
 .set-list button.active {
   border-color: var(--green);
-  background: rgba(34, 197, 94, 0.12);
+  background: rgba(56, 189, 248, 0.12);
 }
 
 .set-list b {
@@ -278,7 +278,7 @@ button:hover, button.active {
   flex: 0 0 auto;
   border-radius: 50%;
   background: var(--green);
-  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.65);
+  box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.65);
   animation: livePulse 1.4s ease-out infinite;
 }
 
@@ -290,7 +290,7 @@ button:hover, button.active {
   padding: 16px;
   border-bottom: 1px solid var(--line);
   background:
-    linear-gradient(90deg, rgba(34, 197, 94, 0.08), transparent 58%),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.08), transparent 58%),
     var(--panel);
 }
 
@@ -353,8 +353,8 @@ button:hover, button.active {
 }
 
 .tabs button.active {
-  background: #0f2b1b;
-  color: #bbf7d0;
+  background: #08243a;
+  color: #bae6fd;
   box-shadow: inset 0 -2px 0 var(--green);
 }
 
@@ -420,7 +420,7 @@ button:hover, button.active {
 .table-title {
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
-  color: #bbf7d0;
+  color: #bae6fd;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.86rem;
   font-weight: 700;
@@ -647,10 +647,10 @@ button:hover, button.active {
   display: grid;
   place-items: center;
   height: 28px;
-  border: 1px solid rgba(34, 197, 94, 0.45);
+  border: 1px solid rgba(56, 189, 248, 0.45);
   border-radius: 6px;
-  background: #04130b;
-  color: #bbf7d0;
+  background: #04111d;
+  color: #bae6fd;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   font-weight: 700;
@@ -690,7 +690,7 @@ button:hover, button.active {
   padding: 7px 8px 7px 12px;
   border-bottom: 1px solid var(--line);
   background: #030712;
-  color: #bbf7d0;
+  color: #bae6fd;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.82rem;
   font-weight: 700;
@@ -905,9 +905,9 @@ pre {
 }
 
 @keyframes livePulse {
-  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
-  70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
 
 @keyframes tabPulse {

@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Develop web calculator, write test cases for any operation, and test using Selenium.
+4. Develop a Web-Application for Calculator, Write test cases for any operation and test it using Selenium.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

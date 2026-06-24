@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Create nginx deployment using Kubernetes YAML manifest files.
+4. Kubernetes - Create an nginx deployment using manifest (YAML) files.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

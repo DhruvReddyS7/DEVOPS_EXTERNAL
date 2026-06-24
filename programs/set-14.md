@@ -3,8 +3,8 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Run Ubuntu image in Docker container named MyContainer and execute shell commands.
-5. Create a Jenkins pipeline job with 5 stages.
+4. Give Docker commands to Run an Ubuntu image in Docker container named "MyContainer" and execute some shell commands inside it.
+5. Create a Jenkins pipeline Job using pipeline script with 5 stages.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

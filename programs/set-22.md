@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Write JavaScript login validation application and test it using Selenium.
+4. Write a JavaScript program for login validation application and test it using Selenium.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

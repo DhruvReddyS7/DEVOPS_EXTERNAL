@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Create Jenkins job for executing Java program in Git using remote build trigger.
+4. Create a Jenkins Job for executing Java program in GIT – Using Trigger, Build the Job remotely.
 ## Q1 Git Commands
 
 | No. | Command | Usage |

@@ -3,7 +3,7 @@
 1. List out any five Git commands and give its usage.
 2. List out any five Docker commands and give its usage.
 3. List out any five Kubernetes commands and give its usage.
-4. Develop containerized HTML registration form using Docker and push image to DockerHub and code to Git.
+4. Develop a simple containerized HTML application (Registration form) using Docker and push the image to dockerhub and code to GIT
 ## Q1 Git Commands
 
 | No. | Command | Usage |
