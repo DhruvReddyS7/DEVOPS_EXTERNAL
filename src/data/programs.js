@@ -600,6 +600,18 @@ const q = (n, q4, q5) => [
   q5
 ].filter(Boolean);
 
+const topicGroups = {
+  Docker: new Set([1, 2, 3, 4, 5, 6, 10, 14, 15, 16, 17, 18, 19]),
+  Jenkins: new Set([7, 8, 9, 10, 11, 12, 13, 14, 25, 26, 27]),
+  Kubernetes: new Set([15, 16, 17, 20, 21]),
+  Selenium: new Set([21, 22, 23, 24])
+};
+
+const getTopics = (id) =>
+  Object.entries(topicGroups)
+    .filter(([, setIds]) => setIds.has(id))
+    .map(([topic]) => topic);
+
 export const programs = programSpecs.map(([title, q4, q5], index) => {
   const id = index + 1;
   const practical = practicals[id];
@@ -627,7 +639,7 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
   return {
     id,
     title: `Set ${id}: ${title}`,
-    topics: ["Git", "Docker", "Kubernetes", ...(title.includes("Jenkins") ? ["Jenkins"] : []), ...(title.includes("Selenium") ? ["Selenium"] : [])],
+    topics: getTopics(id),
     questions: q(id, q4, q5),
     git: gitCommands,
     docker: dockerCommands,

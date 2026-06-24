@@ -183,6 +183,7 @@ button:hover, button.active {
   align-content: start;
   gap: 7px;
   padding-right: 2px;
+  scroll-snap-type: y proximity;
 }
 
 .set-list button {
@@ -197,6 +198,8 @@ button:hover, button.active {
   min-height: 64px;
   padding: 10px;
   text-align: left;
+  overflow: hidden;
+  scroll-snap-align: start;
 }
 
 .set-list button.active {
@@ -217,7 +220,10 @@ button:hover, button.active {
   color: #dbeafe;
   line-height: 1.25;
   font-size: 0.88rem;
-  overflow-wrap: anywhere;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .set-list small {
