@@ -196,23 +196,51 @@ EXPOSE 80`)
 });
 
 const fiveStageJenkinsfile = block("Jenkinsfile", "groovy", `pipeline {
-  agent any
-  stages {
-    stage('Start') { steps { sh 'echo start' } }
-    stage('Build') { steps { sh 'echo build' } }
-    stage('Test') { steps { sh 'echo test' } }
-    stage('Package') { steps { sh 'echo package' } }
-    stage('Deploy') { steps { sh 'echo deploy' } }
-  }
+    agent any
+
+    stages {
+
+        stage('Stage 1 - Build') {
+            steps {
+                echo 'Executing Build Stage'
+            }
+        }
+
+        stage('Stage 2 - Test') {
+            steps {
+                echo 'Executing Test Stage'
+            }
+        }
+
+        stage('Stage 3 - Deploy') {
+            steps {
+                echo 'Executing Deploy Stage'
+            }
+        }
+
+        stage('Stage 4 - Verify') {
+            steps {
+                echo 'Executing Verify Stage'
+            }
+        }
+
+        stage('Stage 5 - Cleanup') {
+            steps {
+                echo 'Executing Cleanup Stage'
+            }
+        }
+
+    }
 }`);
 
-const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [] }) => ({
+const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPush, setup = [], shellLabel = "Run commands" }) => ({
   aim,
   files,
   blocks,
   steps: [
-    "Create project folder and add the source files.",
-    "Run the program locally using Ubuntu commands.",
+    ...setup,
+    "Create the listed source files with the exact file names.",
+    "Run the program locally using the run commands.",
     "Push the project to GitHub.",
     "Open Jenkins at http://localhost:8080.",
     "Create New Item -> Freestyle project.",
@@ -222,8 +250,8 @@ const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [] }) => ({
     ...extra
   ],
   commandBlocks: [
-    block("Ubuntu commands", "bash", shell),
-    block("GitHub push commands", "bash", gitPush),
+    block(shellLabel, "bash", shell),
+    block("GitHub push commands", "bash", git),
     block("Jenkins Execute shell", "bash", shell)
   ],
   expected: output,
@@ -276,39 +304,57 @@ const practicals = {
   5: simpleApps.node,
   6: simpleApps.flask,
   7: jenkinsJob({
-    aim: "Write a C program, push it to GitHub, and create a Jenkins job to compile and execute it.",
-    files: ["main.c"],
-    blocks: [simpleApps.c.blocks[0]],
-    shell: "gcc main.c -o main\n./main",
-    output: "Hello from C DevOps Lab"
+    aim: "Write a Simple C Program, Push to GitHub, and Create a Jenkins Job.",
+    files: ["hello.c"],
+    blocks: [block("hello.c", "c", `#include <stdio.h>
+
+int main() {
+    printf("Hello World from C Program\\n");
+    return 0;
+}`)],
+    shell: "gcc hello.c -o hello\n./hello",
+    output: "Hello World from C Program",
+    setup: ["Create folder: `mkdir CProgram && cd CProgram`.", "Create file: `vi hello.c`."],
+    git: "git init\ngit add .\ngit commit -m \"Added C Program\"\ngit branch -M main\ngit remote add origin https://github.com/username/CProgram.git\ngit push -u origin main",
+    extra: ["Use job name `CProgramJob`.", "Branch specifier: `*/main`."]
   }),
   8: jenkinsJob({
-    aim: "Create a Python calculator, push it to GitHub, and run it through Jenkins.",
+    aim: "Write a Python Program (ADD, SUB, MUL, DIV), Push to GitHub, and Create a Jenkins Job.",
     files: ["calculator.py"],
     blocks: [block("calculator.py", "python", `a = 20
 b = 10
-print("Add:", a + b)
-print("Sub:", a - b)
-print("Mul:", a * b)
-print("Div:", a / b)`)],
+print("Addition =", a + b)
+print("Subtraction =", a - b)
+print("Multiplication =", a * b)
+print("Division =", a / b)`)],
     shell: "python3 calculator.py",
-    output: "Add: 30, Sub: 10, Mul: 200, Div: 2.0"
+    output: "Addition = 30, Subtraction = 10, Multiplication = 200, Division = 2.0",
+    setup: ["Create folder: `mkdir PythonProgram && cd PythonProgram`.", "Create file: `vi calculator.py`."],
+    git: "git init\ngit add .\ngit commit -m \"Added Python Calculator Program\"\ngit branch -M main\ngit remote add origin https://github.com/username/PythonProgram.git\ngit push -u origin main",
+    extra: ["Use job name `PythonProgramJob`.", "Branch specifier: `*/main`."]
   }),
   9: jenkinsJob({
-    aim: "Write a Java program to reverse a number, push it to GitHub, and execute through Jenkins.",
+    aim: "Write a Java Program (Reverse of a Number), Push to GitHub, and Create a Jenkins Job.",
     files: ["ReverseNumber.java"],
     blocks: [block("ReverseNumber.java", "java", `public class ReverseNumber {
-  public static void main(String[] args) {
-    int n = 12345, rev = 0;
-    while (n != 0) {
-      rev = rev * 10 + n % 10;
-      n = n / 10;
+    public static void main(String[] args) {
+        int num = 12345;
+        int rev = 0;
+
+        while(num != 0) {
+            int rem = num % 10;
+            rev = rev * 10 + rem;
+            num = num / 10;
+        }
+
+        System.out.println("Reverse Number = " + rev);
     }
-    System.out.println("Reverse number: " + rev);
-  }
 }`)],
     shell: "javac ReverseNumber.java\njava ReverseNumber",
-    output: "Reverse number: 54321"
+    output: "Reverse Number = 54321",
+    setup: ["Create folder: `mkdir JavaProgram && cd JavaProgram`.", "Create file: `vi ReverseNumber.java`."],
+    git: "git init\ngit add .\ngit commit -m \"Added Java Reverse Number Program\"\ngit branch -M main\ngit remote add origin https://github.com/username/JavaProgram.git\ngit push -u origin main",
+    extra: ["Use job name `JavaProgramJob`.", "Branch specifier: `*/main`."]
   }),
   10: {
     aim: "Give Docker commands to Run an Hello-World image in Docker.",
@@ -320,38 +366,68 @@ print("Div:", a / b)`)],
     fixes: ["If Docker is not running, start Docker Desktop or Docker service.", "If image pull fails, check internet connection."]
   },
   11: jenkinsJob({
-    aim: "Create an HTML registration form, push to GitHub, and publish it using Jenkins.",
+    aim: "Create a simple HTML Registration Form, push the code to GitHub, and publish the HTML page using Jenkins.",
     files: ["index.html"],
-    blocks: [block("index.html", "html", `<!doctype html>
+    blocks: [block("index.html", "html", `<!DOCTYPE html>
 <html>
-  <body>
-    <h2>Registration Form</h2>
-    <form>
-      <input placeholder="Name" required>
-      <input placeholder="Email" type="email" required>
-      <input placeholder="Password" type="password" required>
-      <button>Register</button>
-    </form>
-  </body>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+
+<h2>Student Registration Form</h2>
+
+<form>
+    Name:<br>
+    <input type="text" name="name"><br><br>
+
+    Email:<br>
+    <input type="email" name="email"><br><br>
+
+    Mobile:<br>
+    <input type="text" name="mobile"><br><br>
+
+    Password:<br>
+    <input type="password" name="password"><br><br>
+
+    <input type="submit" value="Register">
+</form>
+
+</body>
 </html>`)],
-    shell: "mkdir -p public\ncp index.html public/index.html\necho \"Published HTML page\"",
-    output: "Jenkins workspace contains public/index.html. Open it from workspace or configured web directory."
+    shell: "echo \"Publish HTML with HTML Publisher Plugin\"\necho \"HTML Directory to Archive: .\"\necho \"Index Page: index.html\"\necho \"Report Title: Registration Form Report\"",
+    output: "Open Registration Form Report in Jenkins to view the HTML page.",
+    setup: ["Create folder: `mkdir RegistrationForm && cd RegistrationForm`.", "Create file: `vi index.html`."],
+    git: "git init\ngit add .\ngit commit -m \"Added Registration Form\"\ngit remote add origin https://github.com/username/RegistrationForm.git\ngit branch -M main\ngit push -u origin main",
+    extra: ["Install HTML Publisher Plugin from Manage Jenkins -> Plugins.", "Use job name `RegistrationForm`.", "Post-build Action: Publish HTML Reports.", "HTML Directory to Archive: `.`", "Index Page(s): `index.html`", "Report Title: `Registration Form Report`."]
   }),
   12: {
-    aim: "Create a Jenkins pipeline job using Jenkinsfile from SCM Git.",
+    aim: "Jenkins Pipeline Job Using Jenkinsfile from GitHub (SCM - GIT).",
     files: ["Jenkinsfile"],
     blocks: [block("Jenkinsfile", "groovy", `pipeline {
-  agent any
-  stages {
-    stage('Checkout') { steps { checkout scm } }
-    stage('Build') { steps { sh 'echo Building DevOps project' } }
-    stage('Test') { steps { sh 'echo Tests passed' } }
-    stage('Deploy') { steps { sh 'echo Deployment completed' } }
-  }
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Hello from Jenkins Pipeline'
+            }
+        }
+    }
 }`)],
-    steps: ["Add Jenkinsfile to GitHub repository.", "Create Jenkins Pipeline item.", "Choose Pipeline script from SCM.", "Select Git and paste repository URL.", "Set branch as `*/main`.", "Script Path: `Jenkinsfile`.", "Save and Build Now."],
-    commandBlocks: [block("GitHub push commands", "bash", gitPush)],
-    expected: "Jenkins pipeline shows Checkout, Build, Test, and Deploy stages as successful.",
+    steps: ["Create project folder `JenkinsPipelineDemo`.", "Create `Jenkinsfile` and paste the pipeline script.", "Push the Jenkinsfile to GitHub.", "Open Jenkins and create a Pipeline job named `PipelineDemo`.", "In Pipeline definition choose `Pipeline script from SCM`.", "SCM: Git.", "Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.", "Branch Specifier: `*/main`.", "Script Path: `Jenkinsfile`.", "Save and Build Now.", "Open Console Output and verify success."],
+    commandBlocks: [block("Git Commands", "bash", "git init\ngit add .\ngit commit -m \"Added Jenkinsfile\"\ngit remote add origin https://github.com/username/JenkinsPipelineDemo.git\ngit branch -M main\ngit push -u origin main"), block("Jenkinsfile", "groovy", `pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Hello from Jenkins Pipeline'
+            }
+        }
+    }
+}`)],
+    expected: "Console Output shows `Hello from Jenkins Pipeline` and `Finished: SUCCESS`.",
     fixes: ["Keep filename exactly `Jenkinsfile`.", "Install Pipeline and Git plugins if SCM option is missing."]
   },
   13: jenkinsJob({
@@ -406,26 +482,33 @@ services:
   22: null,
   23: null,
   24: null,
-  25: jenkinsJob({
-    aim: "Create Jenkins Java Git job and trigger the build remotely.",
-    files: ["HelloWorld.java"],
-    blocks: [simpleApps.java.blocks[0]],
-    shell: "javac HelloWorld.java\njava HelloWorld",
-    output: "Remote trigger starts build and Java output appears in console.",
-    extra: ["Enable Build Triggers -> Trigger builds remotely.", "Set token as `devops123`.", "Trigger using: `curl http://localhost:8080/job/JOB_NAME/build?token=devops123`."]
-  }),
+  25: {
+    aim: "Jenkins Remote Build Trigger Using CURL.",
+    files: ["No source file required"],
+    blocks: [],
+    steps: ["Open Jenkins in the browser.", "Click New Item.", "Enter a project name such as `TestJob`.", "Select Freestyle Project and click OK.", "Go to Build Triggers.", "Select `Trigger builds remotely`.", "Authentication Token: `1234`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Open terminal.", "Trigger the build using curl.", "Open Jenkins -> Job -> Build History -> latest build -> Console Output."],
+    commandBlocks: [block("Execute Shell", "bash", "echo \"Hello World\""), block("Remote Trigger curl", "bash", "curl -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"\n\n# OR\ncurl -X POST -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"")],
+    output: "Started by remote host, Hello World, Finished: SUCCESS",
+    expected: "Jenkins accepts the request, starts a new build automatically, and Console Output shows `Hello World` and `Finished: SUCCESS`.",
+    fixes: ["Use the correct Jenkins username/password in curl.", "Use the exact job name in the URL.", "Keep token as `1234` or update the URL token to match your job."]
+  },
   26: jenkinsJob({
-    aim: "Create Jenkins Python calculator Git job and trigger automatically using SCM polling.",
+    aim: "Create a Jenkins Job for Executing Python Program (Calculator) in GitHub Using SCM Polling Trigger.",
     files: ["calculator.py"],
-    blocks: [block("calculator.py", "python", `a = 15
+    blocks: [block("calculator.py", "python", `print("Calculator Program")
+
+a = 10
 b = 5
+
 print("Addition:", a + b)
 print("Subtraction:", a - b)
 print("Multiplication:", a * b)
 print("Division:", a / b)`)],
-    shell: "python3 calculator.py",
-    output: "After GitHub code change, Jenkins detects SCM polling and runs calculator.",
-    extra: ["Enable Build Triggers -> Poll SCM.", "Use schedule `H/2 * * * *`.", "Commit and push any code change to test automatic build."]
+    shell: "ls\ngit log",
+    output: "Jenkins polls GitHub every minute and automatically triggers a build when code changes.",
+    setup: ["Create folder: `mkdir CalculatorProject && cd CalculatorProject`.", "Create file: `vi calculator.py`."],
+    git: "git init\ngit add .\ngit commit -m \"Initial Commit\"\ngit branch -M main\ngit remote add origin https://github.com/username/CalculatorProject.git\ngit push -u origin main",
+    extra: ["Use job name `Calculator-SCM-Polling`.", "Repository URL: `https://github.com/username/CalculatorProject.git`.", "Enable Build Triggers -> Poll SCM.", "Schedule: `* * * * *`.", "To test, change `calculator.py`, commit with `Updated Calculator Program`, and push to GitHub."]
   }),
   27: jenkinsJob({
     aim: "Run Java and Python calculator programs through Jenkins using file and variable parameterization.",
@@ -655,22 +738,22 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
     id === 17 ? kubeTask("mongo", "mongo:7", 27017) :
     id === 21 ? seleniumOpen :
     id === 10 ? {
-      aim: "Create a Jenkins periodic shell job.",
+      aim: "Create a Jenkins Job for executing shell commands and use Build Trigger - Build periodically.",
       files: ["No source file required"],
       blocks: [],
-      steps: ["Create Freestyle project.", "Enable Build periodically.", "Use `H/5 * * * *`.", "Add Execute shell commands.", "Save and Build Now."],
-      commandBlocks: [block("Jenkins shell", "bash", "date\necho \"Periodic shell job executed\"")],
-      expected: "Jenkins runs the shell job periodically.",
+      steps: ["Open Jenkins Dashboard.", "Click New Item.", "Enter job name `PeriodicShellJob`.", "Select Freestyle Project and click OK.", "In Build Triggers select `Build periodically`.", "Schedule: `* * * * *`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Click Build Now.", "Open Console Output to verify."],
+      commandBlocks: [block("Build periodically schedule", "text", "* * * * *"), block("Execute Shell", "bash", "echo \"Hello World\"")],
+      expected: "Console Output shows `Hello World` and `Finished: SUCCESS`.",
       fixes: ["Schedule must be valid cron syntax.", "Check Jenkins system time if trigger seems late."]
     } :
     id === 14 ? {
       aim: "Create a Jenkins pipeline Job using pipeline script with 5 stages.",
-      files: ["Jenkinsfile"],
+      files: ["Pipeline script"],
       blocks: [fiveStageJenkinsfile],
-      steps: ["Create a Jenkinsfile with 5 stages.", "Push the Jenkinsfile to GitHub.", "Open Jenkins.", "Create a Pipeline job.", "Use Pipeline script from SCM or paste the pipeline script.", "Save the job.", "Click Build Now and check all 5 stages."],
-      commandBlocks: [block("GitHub push commands", "bash", gitPush), fiveStageJenkinsfile],
-      expected: "Jenkins displays Start, Build, Test, Package, and Deploy stages as successful.",
-      fixes: ["Keep filename exactly `Jenkinsfile`.", "Install Pipeline plugin if the Pipeline job type is missing."]
+      steps: ["Open Jenkins in the browser.", "Click New Item.", "Enter job name `Pipeline5Stages`.", "Select Pipeline and click OK.", "In Pipeline section choose Definition: `Pipeline script`.", "Paste the 5-stage pipeline code.", "Click Apply.", "Click Save.", "Open the Pipeline job.", "Click Build Now.", "Open Build Number #1.", "Click Console Output and verify all five stages."],
+      commandBlocks: [fiveStageJenkinsfile],
+      expected: "Console Output shows Executing Build, Test, Deploy, Verify, Cleanup stages and `Finished: SUCCESS`.",
+      fixes: ["Select `Pipeline script`, not `Pipeline script from SCM`.", "Install Pipeline plugin if the Pipeline job type is missing."]
     } : null;
   const q4Practical = practical ? { ...practical, aim: q4 } : practical;
   const q5Answer = q5Practical && q5 ? { ...q5Practical, aim: q5 } : q5Practical;

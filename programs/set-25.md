@@ -42,63 +42,43 @@
 **Aim:** Create a Jenkins Job for executing Java program in GIT – Using Trigger, Build the Job remotely.
 
 **Files:**
-- HelloWorld.java
+- No source file required
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Enable Build Triggers -> Trigger builds remotely.
-10. Set token as `devops123`.
-11. Trigger using: `curl http://localhost:8080/job/JOB_NAME/build?token=devops123`.
-
-**Source Files:**
-
-#### HelloWorld.java
-
-```java
-public class HelloWorld{
-public static void main(String args[]){
-System.out.println("Hello from Java Docker Application");
-}
-}
-```
+1. Open Jenkins in the browser.
+2. Click New Item.
+3. Enter a project name such as `TestJob`.
+4. Select Freestyle Project and click OK.
+5. Go to Build Triggers.
+6. Select `Trigger builds remotely`.
+7. Authentication Token: `1234`.
+8. Add Build Step -> Execute Shell.
+9. Paste `echo "Hello World"`.
+10. Click Apply and Save.
+11. Open terminal.
+12. Trigger the build using curl.
+13. Open Jenkins -> Job -> Build History -> latest build -> Console Output.
 
 **Commands:**
 
-#### Ubuntu commands
+#### Execute Shell
 
 ```bash
-javac HelloWorld.java
-java HelloWorld
+echo "Hello World"
 ```
 
-#### GitHub push commands
+#### Remote Trigger curl
 
 ```bash
-git init
-git add .
-git commit -m "devops lab program"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
-git push -u origin main
+curl -u admin:admin "http://localhost:8080/job/TestJob/build?token=1234"
+
+# OR
+curl -X POST -u admin:admin "http://localhost:8080/job/TestJob/build?token=1234"
 ```
 
-#### Jenkins Execute shell
-
-```bash
-javac HelloWorld.java
-java HelloWorld
-```
-
-**Expected Output:** Remote trigger starts build and Java output appears in console.
+**Expected Output:** Jenkins accepts the request, starts a new build automatically, and Console Output shows `Hello World` and `Finished: SUCCESS`.
 
 **Quick Fixes:**
-- If Jenkins cannot access Git, install Git plugin and verify repository URL.
-- If command not found appears, use absolute paths like `/usr/bin/python3`.
-- If workspace is dirty, delete old files from Jenkins workspace and rebuild.
+- Use the correct Jenkins username/password in curl.
+- Use the exact job name in the URL.
+- Keep token as `1234` or update the URL token to match your job.

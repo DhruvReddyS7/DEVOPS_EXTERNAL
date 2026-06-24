@@ -45,13 +45,17 @@
 - Jenkinsfile
 
 **Execution Steps:**
-1. Add Jenkinsfile to GitHub repository.
-2. Create Jenkins Pipeline item.
-3. Choose Pipeline script from SCM.
-4. Select Git and paste repository URL.
-5. Set branch as `*/main`.
-6. Script Path: `Jenkinsfile`.
-7. Save and Build Now.
+1. Create project folder `JenkinsPipelineDemo`.
+2. Create `Jenkinsfile` and paste the pipeline script.
+3. Push the Jenkinsfile to GitHub.
+4. Open Jenkins and create a Pipeline job named `PipelineDemo`.
+5. In Pipeline definition choose `Pipeline script from SCM`.
+6. SCM: Git.
+7. Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.
+8. Branch Specifier: `*/main`.
+9. Script Path: `Jenkinsfile`.
+10. Save and Build Now.
+11. Open Console Output and verify success.
 
 **Source Files:**
 
@@ -59,30 +63,48 @@
 
 ```groovy
 pipeline {
-  agent any
-  stages {
-    stage('Checkout') { steps { checkout scm } }
-    stage('Build') { steps { sh 'echo Building DevOps project' } }
-    stage('Test') { steps { sh 'echo Tests passed' } }
-    stage('Deploy') { steps { sh 'echo Deployment completed' } }
-  }
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Hello from Jenkins Pipeline'
+            }
+        }
+    }
 }
 ```
 
 **Commands:**
 
-#### GitHub push commands
+#### Git Commands
 
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Added Jenkinsfile"
+git remote add origin https://github.com/username/JenkinsPipelineDemo.git
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
 git push -u origin main
 ```
 
-**Expected Output:** Jenkins pipeline shows Checkout, Build, Test, and Deploy stages as successful.
+#### Jenkinsfile
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Hello from Jenkins Pipeline'
+            }
+        }
+    }
+}
+```
+
+**Expected Output:** Console Output shows `Hello from Jenkins Pipeline` and `Finished: SUCCESS`.
 
 **Quick Fixes:**
 - Keep filename exactly `Jenkinsfile`.

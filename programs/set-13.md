@@ -46,8 +46,8 @@
 - pattern.py
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
+1. Create the listed source files with the exact file names.
+2. Run the program locally using the run commands.
 3. Push the project to GitHub.
 4. Open Jenkins at http://localhost:8080.
 5. Create New Item -> Freestyle project.
@@ -81,7 +81,7 @@ for i in range(1, 6):
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
 echo "Selected file: $PROGRAM_FILE"

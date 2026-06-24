@@ -76,22 +76,33 @@ docker run hello-world
 - No source file required
 
 **Execution Steps:**
-1. Create Freestyle project.
-2. Enable Build periodically.
-3. Use `H/5 * * * *`.
-4. Add Execute shell commands.
-5. Save and Build Now.
+1. Open Jenkins Dashboard.
+2. Click New Item.
+3. Enter job name `PeriodicShellJob`.
+4. Select Freestyle Project and click OK.
+5. In Build Triggers select `Build periodically`.
+6. Schedule: `* * * * *`.
+7. Add Build Step -> Execute Shell.
+8. Paste `echo "Hello World"`.
+9. Click Apply and Save.
+10. Click Build Now.
+11. Open Console Output to verify.
 
 **Commands:**
 
-#### Jenkins shell
+#### Build periodically schedule
 
-```bash
-date
-echo "Periodic shell job executed"
+```text
+* * * * *
 ```
 
-**Expected Output:** Jenkins runs the shell job periodically.
+#### Execute Shell
+
+```bash
+echo "Hello World"
+```
+
+**Expected Output:** Console Output shows `Hello World` and `Finished: SUCCESS`.
 
 **Quick Fixes:**
 - Schedule must be valid cron syntax.

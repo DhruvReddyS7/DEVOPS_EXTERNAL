@@ -45,14 +45,18 @@
 - calculator.py
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
+1. Create folder: `mkdir PythonProgram && cd PythonProgram`.
+2. Create file: `vi calculator.py`.
+3. Create the listed source files with the exact file names.
+4. Run the program locally using the run commands.
+5. Push the project to GitHub.
+6. Open Jenkins at http://localhost:8080.
+7. Create New Item -> Freestyle project.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell and paste the shell commands.
+10. Save and click Build Now.
+11. Use job name `PythonProgramJob`.
+12. Branch specifier: `*/main`.
 
 **Source Files:**
 
@@ -61,15 +65,15 @@
 ```python
 a = 20
 b = 10
-print("Add:", a + b)
-print("Sub:", a - b)
-print("Mul:", a * b)
-print("Div:", a / b)
+print("Addition =", a + b)
+print("Subtraction =", a - b)
+print("Multiplication =", a * b)
+print("Division =", a / b)
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
 python3 calculator.py
@@ -80,9 +84,9 @@ python3 calculator.py
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Added Python Calculator Program"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git remote add origin https://github.com/username/PythonProgram.git
 git push -u origin main
 ```
 
@@ -92,7 +96,7 @@ git push -u origin main
 python3 calculator.py
 ```
 
-**Expected Output:** Add: 30, Sub: 10, Mul: 200, Div: 2.0
+**Expected Output:** Addition = 30, Subtraction = 10, Multiplication = 200, Division = 2.0
 
 **Quick Fixes:**
 - If Jenkins cannot access Git, install Git plugin and verify repository URL.

@@ -45,42 +45,66 @@
 - index.html
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
+1. Create folder: `mkdir RegistrationForm && cd RegistrationForm`.
+2. Create file: `vi index.html`.
+3. Create the listed source files with the exact file names.
+4. Run the program locally using the run commands.
+5. Push the project to GitHub.
+6. Open Jenkins at http://localhost:8080.
+7. Create New Item -> Freestyle project.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell and paste the shell commands.
+10. Save and click Build Now.
+11. Install HTML Publisher Plugin from Manage Jenkins -> Plugins.
+12. Use job name `RegistrationForm`.
+13. Post-build Action: Publish HTML Reports.
+14. HTML Directory to Archive: `.`
+15. Index Page(s): `index.html`
+16. Report Title: `Registration Form Report`.
 
 **Source Files:**
 
 #### index.html
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <body>
-    <h2>Registration Form</h2>
-    <form>
-      <input placeholder="Name" required>
-      <input placeholder="Email" type="email" required>
-      <input placeholder="Password" type="password" required>
-      <button>Register</button>
-    </form>
-  </body>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+
+<h2>Student Registration Form</h2>
+
+<form>
+    Name:<br>
+    <input type="text" name="name"><br><br>
+
+    Email:<br>
+    <input type="email" name="email"><br><br>
+
+    Mobile:<br>
+    <input type="text" name="mobile"><br><br>
+
+    Password:<br>
+    <input type="password" name="password"><br><br>
+
+    <input type="submit" value="Register">
+</form>
+
+</body>
 </html>
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
-mkdir -p public
-cp index.html public/index.html
-echo "Published HTML page"
+echo "Publish HTML with HTML Publisher Plugin"
+echo "HTML Directory to Archive: ."
+echo "Index Page: index.html"
+echo "Report Title: Registration Form Report"
 ```
 
 #### GitHub push commands
@@ -88,21 +112,22 @@ echo "Published HTML page"
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Added Registration Form"
+git remote add origin https://github.com/username/RegistrationForm.git
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
 git push -u origin main
 ```
 
 #### Jenkins Execute shell
 
 ```bash
-mkdir -p public
-cp index.html public/index.html
-echo "Published HTML page"
+echo "Publish HTML with HTML Publisher Plugin"
+echo "HTML Directory to Archive: ."
+echo "Index Page: index.html"
+echo "Report Title: Registration Form Report"
 ```
 
-**Expected Output:** Jenkins workspace contains public/index.html. Open it from workspace or configured web directory.
+**Expected Output:** Open Registration Form Report in Jenkins to view the HTML page.
 
 **Quick Fixes:**
 - If Jenkins cannot access Git, install Git plugin and verify repository URL.

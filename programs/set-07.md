@@ -42,37 +42,42 @@
 **Aim:** Write a simple program in C, and push the code to GITHUB. Create a Jenkins Job for executing the program.
 
 **Files:**
-- main.c
+- hello.c
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
+1. Create folder: `mkdir CProgram && cd CProgram`.
+2. Create file: `vi hello.c`.
+3. Create the listed source files with the exact file names.
+4. Run the program locally using the run commands.
+5. Push the project to GitHub.
+6. Open Jenkins at http://localhost:8080.
+7. Create New Item -> Freestyle project.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell and paste the shell commands.
+10. Save and click Build Now.
+11. Use job name `CProgramJob`.
+12. Branch specifier: `*/main`.
 
 **Source Files:**
 
 #### hello.c
 
 ```c
-#include<stdio.h>
-int main(){
-printf("Hello from C Docker Application");
-return 0;
+#include <stdio.h>
+
+int main() {
+    printf("Hello World from C Program\n");
+    return 0;
 }
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
-gcc main.c -o main
-./main
+gcc hello.c -o hello
+./hello
 ```
 
 #### GitHub push commands
@@ -80,20 +85,20 @@ gcc main.c -o main
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Added C Program"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git remote add origin https://github.com/username/CProgram.git
 git push -u origin main
 ```
 
 #### Jenkins Execute shell
 
 ```bash
-gcc main.c -o main
-./main
+gcc hello.c -o hello
+./hello
 ```
 
-**Expected Output:** Hello from C DevOps Lab
+**Expected Output:** Hello World from C Program
 
 **Quick Fixes:**
 - If Jenkins cannot access Git, install Git plugin and verify repository URL.

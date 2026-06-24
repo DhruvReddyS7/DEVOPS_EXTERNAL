@@ -45,14 +45,18 @@
 - ReverseNumber.java
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
+1. Create folder: `mkdir JavaProgram && cd JavaProgram`.
+2. Create file: `vi ReverseNumber.java`.
+3. Create the listed source files with the exact file names.
+4. Run the program locally using the run commands.
+5. Push the project to GitHub.
+6. Open Jenkins at http://localhost:8080.
+7. Create New Item -> Freestyle project.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell and paste the shell commands.
+10. Save and click Build Now.
+11. Use job name `JavaProgramJob`.
+12. Branch specifier: `*/main`.
 
 **Source Files:**
 
@@ -60,20 +64,24 @@
 
 ```java
 public class ReverseNumber {
-  public static void main(String[] args) {
-    int n = 12345, rev = 0;
-    while (n != 0) {
-      rev = rev * 10 + n % 10;
-      n = n / 10;
+    public static void main(String[] args) {
+        int num = 12345;
+        int rev = 0;
+
+        while(num != 0) {
+            int rem = num % 10;
+            rev = rev * 10 + rem;
+            num = num / 10;
+        }
+
+        System.out.println("Reverse Number = " + rev);
     }
-    System.out.println("Reverse number: " + rev);
-  }
 }
 ```
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
 javac ReverseNumber.java
@@ -85,9 +93,9 @@ java ReverseNumber
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Added Java Reverse Number Program"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git remote add origin https://github.com/username/JavaProgram.git
 git push -u origin main
 ```
 
@@ -98,7 +106,7 @@ javac ReverseNumber.java
 java ReverseNumber
 ```
 
-**Expected Output:** Reverse number: 54321
+**Expected Output:** Reverse Number = 54321
 
 **Quick Fixes:**
 - If Jenkins cannot access Git, install Git plugin and verify repository URL.

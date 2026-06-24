@@ -76,16 +76,21 @@ exit
 **Aim:** Create a Jenkins pipeline Job using pipeline script with 5 stages.
 
 **Files:**
-- Jenkinsfile
+- Pipeline script
 
 **Execution Steps:**
-1. Create a Jenkinsfile with 5 stages.
-2. Push the Jenkinsfile to GitHub.
-3. Open Jenkins.
-4. Create a Pipeline job.
-5. Use Pipeline script from SCM or paste the pipeline script.
-6. Save the job.
-7. Click Build Now and check all 5 stages.
+1. Open Jenkins in the browser.
+2. Click New Item.
+3. Enter job name `Pipeline5Stages`.
+4. Select Pipeline and click OK.
+5. In Pipeline section choose Definition: `Pipeline script`.
+6. Paste the 5-stage pipeline code.
+7. Click Apply.
+8. Click Save.
+9. Open the Pipeline job.
+10. Click Build Now.
+11. Open Build Number #1.
+12. Click Console Output and verify all five stages.
 
 **Source Files:**
 
@@ -93,47 +98,90 @@ exit
 
 ```groovy
 pipeline {
-  agent any
-  stages {
-    stage('Start') { steps { sh 'echo start' } }
-    stage('Build') { steps { sh 'echo build' } }
-    stage('Test') { steps { sh 'echo test' } }
-    stage('Package') { steps { sh 'echo package' } }
-    stage('Deploy') { steps { sh 'echo deploy' } }
-  }
+    agent any
+
+    stages {
+
+        stage('Stage 1 - Build') {
+            steps {
+                echo 'Executing Build Stage'
+            }
+        }
+
+        stage('Stage 2 - Test') {
+            steps {
+                echo 'Executing Test Stage'
+            }
+        }
+
+        stage('Stage 3 - Deploy') {
+            steps {
+                echo 'Executing Deploy Stage'
+            }
+        }
+
+        stage('Stage 4 - Verify') {
+            steps {
+                echo 'Executing Verify Stage'
+            }
+        }
+
+        stage('Stage 5 - Cleanup') {
+            steps {
+                echo 'Executing Cleanup Stage'
+            }
+        }
+
+    }
 }
 ```
 
 **Commands:**
 
-#### GitHub push commands
-
-```bash
-git init
-git add .
-git commit -m "devops lab program"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
-git push -u origin main
-```
-
 #### Jenkinsfile
 
 ```groovy
 pipeline {
-  agent any
-  stages {
-    stage('Start') { steps { sh 'echo start' } }
-    stage('Build') { steps { sh 'echo build' } }
-    stage('Test') { steps { sh 'echo test' } }
-    stage('Package') { steps { sh 'echo package' } }
-    stage('Deploy') { steps { sh 'echo deploy' } }
-  }
+    agent any
+
+    stages {
+
+        stage('Stage 1 - Build') {
+            steps {
+                echo 'Executing Build Stage'
+            }
+        }
+
+        stage('Stage 2 - Test') {
+            steps {
+                echo 'Executing Test Stage'
+            }
+        }
+
+        stage('Stage 3 - Deploy') {
+            steps {
+                echo 'Executing Deploy Stage'
+            }
+        }
+
+        stage('Stage 4 - Verify') {
+            steps {
+                echo 'Executing Verify Stage'
+            }
+        }
+
+        stage('Stage 5 - Cleanup') {
+            steps {
+                echo 'Executing Cleanup Stage'
+            }
+        }
+
+    }
 }
 ```
 
-**Expected Output:** Jenkins displays Start, Build, Test, Package, and Deploy stages as successful.
+**Expected Output:** Console Output shows Executing Build, Test, Deploy, Verify, Cleanup stages and `Finished: SUCCESS`.
 
 **Quick Fixes:**
-- Keep filename exactly `Jenkinsfile`.
+- Select `Pipeline script`, not `Pipeline script from SCM`.
 - Install Pipeline plugin if the Pipeline job type is missing.

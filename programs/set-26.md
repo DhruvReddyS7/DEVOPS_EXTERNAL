@@ -45,25 +45,32 @@
 - calculator.py
 
 **Execution Steps:**
-1. Create project folder and add the source files.
-2. Run the program locally using Ubuntu commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Enable Build Triggers -> Poll SCM.
-10. Use schedule `H/2 * * * *`.
-11. Commit and push any code change to test automatic build.
+1. Create folder: `mkdir CalculatorProject && cd CalculatorProject`.
+2. Create file: `vi calculator.py`.
+3. Create the listed source files with the exact file names.
+4. Run the program locally using the run commands.
+5. Push the project to GitHub.
+6. Open Jenkins at http://localhost:8080.
+7. Create New Item -> Freestyle project.
+8. Under Source Code Management choose Git and paste the repository URL.
+9. Under Build Steps choose Execute shell and paste the shell commands.
+10. Save and click Build Now.
+11. Use job name `Calculator-SCM-Polling`.
+12. Repository URL: `https://github.com/username/CalculatorProject.git`.
+13. Enable Build Triggers -> Poll SCM.
+14. Schedule: `* * * * *`.
+15. To test, change `calculator.py`, commit with `Updated Calculator Program`, and push to GitHub.
 
 **Source Files:**
 
 #### calculator.py
 
 ```python
-a = 15
+print("Calculator Program")
+
+a = 10
 b = 5
+
 print("Addition:", a + b)
 print("Subtraction:", a - b)
 print("Multiplication:", a * b)
@@ -72,10 +79,11 @@ print("Division:", a / b)
 
 **Commands:**
 
-#### Ubuntu commands
+#### Run commands
 
 ```bash
-python3 calculator.py
+ls
+git log
 ```
 
 #### GitHub push commands
@@ -83,19 +91,20 @@ python3 calculator.py
 ```bash
 git init
 git add .
-git commit -m "devops lab program"
+git commit -m "Initial Commit"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/devops-lab-program.git
+git remote add origin https://github.com/username/CalculatorProject.git
 git push -u origin main
 ```
 
 #### Jenkins Execute shell
 
 ```bash
-python3 calculator.py
+ls
+git log
 ```
 
-**Expected Output:** After GitHub code change, Jenkins detects SCM polling and runs calculator.
+**Expected Output:** Jenkins polls GitHub every minute and automatically triggers a build when code changes.
 
 **Quick Fixes:**
 - If Jenkins cannot access Git, install Git plugin and verify repository URL.
