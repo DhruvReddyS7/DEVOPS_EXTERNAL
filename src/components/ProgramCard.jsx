@@ -1,4 +1,4 @@
-import { Boxes, Container, FileQuestion, GitBranch, PlayCircle, Server } from "lucide-react";
+import { Boxes, Container, FileQuestion, GitBranch, ListChecks, PlayCircle, Server } from "lucide-react";
 import { useState } from "react";
 import CodeBlock from "./CodeBlock.jsx";
 
@@ -7,8 +7,10 @@ const tabInfo = {
   git: { label: "Q1 Git", icon: GitBranch },
   docker: { label: "Q2 Docker", icon: Container },
   kubernetes: { label: "Q3 K8s", icon: Boxes },
-  q4: { label: "Q4 Practical", icon: PlayCircle },
-  q5: { label: "Q5 Practical", icon: Server }
+  q4steps: { label: "Q4 Steps", icon: ListChecks },
+  q4: { label: "Q4 Files", icon: PlayCircle },
+  q5steps: { label: "Q5 Steps", icon: ListChecks },
+  q5: { label: "Q5 Files", icon: Server }
 };
 
 function buildExecutionSteps(practical) {
@@ -26,7 +28,6 @@ function buildExecutionSteps(practical) {
 
 function Practical({ practical }) {
   if (!practical) return null;
-  const executionSteps = buildExecutionSteps(practical);
   return (
     <div className="answer-flow">
       <div className="brief-grid">
@@ -39,17 +40,6 @@ function Practical({ practical }) {
           <span>{practical.files.join(", ")}</span>
         </div>
       </div>
-      <div className="steps-panel">
-        <h3>Execution Steps</h3>
-        <ol>
-          {executionSteps.map((step, index) => (
-            <li key={step}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <p>{step}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
       {practical.blocks.map((item) => <CodeBlock key={item.label} {...item} />)}
       {practical.commandBlocks.map((item) => <CodeBlock key={item.label} {...item} />)}
       <div className="mini-info">
@@ -60,16 +50,51 @@ function Practical({ practical }) {
   );
 }
 
+function ExecutionSteps({ practical }) {
+  const executionSteps = buildExecutionSteps(practical);
+  return (
+    <div className="steps-panel">
+      <h3>Execution Steps</h3>
+      <ol>
+        {executionSteps.map((step, index) => (
+          <li key={step}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 export default function ProgramCard({ program }) {
-  const tabs = ["questions", "git", "docker", "kubernetes", "q4", ...(program.q5 ? ["q5"] : [])];
+  const tabs = ["questions", "git", "docker", "kubernetes", "q4steps", "q4", ...(program.q5 ? ["q5steps", "q5"] : [])];
   const [active, setActive] = useState("questions");
 
   const renderCommands = (title, items) => (
-    <CodeBlock
-      label={title}
-      language="bash"
-      code={items.map((item, index) => `${index + 1}. ${item.command}\n# ${item.usage}\n${item.example}`).join("\n\n")}
-    />
+    <div className="command-table-wrap">
+      <div className="table-title">{title}</div>
+      <table className="command-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Command</th>
+            <th>Usage</th>
+            <th>Copy / Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item, index) => (
+            <tr key={item.command}>
+              <td>{index + 1}</td>
+              <td><code>{item.command}</code></td>
+              <td>{item.usage}</td>
+              <td><CodeBlock label="copy" language="bash" code={item.example} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   return (
@@ -111,7 +136,9 @@ export default function ProgramCard({ program }) {
         {active === "git" && renderCommands("Q1 Git Commands", program.git)}
         {active === "docker" && renderCommands("Q2 Docker Commands", program.docker)}
         {active === "kubernetes" && renderCommands("Q3 Kubernetes Commands", program.kubernetes)}
+        {active === "q4steps" && <ExecutionSteps practical={program.q4} />}
         {active === "q4" && <Practical practical={program.q4} />}
+        {active === "q5steps" && <ExecutionSteps practical={program.q5} />}
         {active === "q5" && <Practical practical={program.q5} />}
       </div>
     </article>

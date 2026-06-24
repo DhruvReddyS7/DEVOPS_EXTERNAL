@@ -296,7 +296,7 @@ button:hover, button.active {
 
 .tabs {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
   gap: 1px;
   border-bottom: 1px solid var(--line);
   background: var(--line);
@@ -335,6 +335,82 @@ button:hover, button.active {
   min-height: 0;
   overflow: auto;
   padding: 14px;
+}
+
+.command-table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: #020617;
+}
+
+.table-title {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: #bbf7d0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.command-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.command-table th,
+.command-table td {
+  vertical-align: top;
+  padding: 10px;
+  border-bottom: 1px solid rgba(31, 51, 72, 0.8);
+  text-align: left;
+}
+
+.command-table th {
+  color: var(--green);
+  background: #030712;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.command-table td {
+  color: #dbeafe;
+  line-height: 1.45;
+}
+
+.command-table td:first-child {
+  width: 52px;
+  color: var(--muted);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.command-table code {
+  color: #d1fae5;
+  font-family: "JetBrains Mono", monospace;
+  overflow-wrap: anywhere;
+}
+
+.command-table .terminal {
+  border-radius: 5px;
+}
+
+.command-table .terminal-bar {
+  min-height: 32px;
+  padding: 4px 6px 4px 9px;
+  font-size: 0.72rem;
+}
+
+.command-table .terminal .language {
+  display: none;
+}
+
+.command-table pre {
+  padding: 8px;
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .question-list, .answer-flow {
@@ -617,10 +693,6 @@ pre {
 
   .set-tile {
     width: 100%;
-  }
-
-  .tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .brief-grid {
