@@ -752,7 +752,7 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
       files: ["Pipeline script"],
       blocks: [fiveStageJenkinsfile],
       steps: ["Open Jenkins in the browser.", "Click New Item.", "Enter job name `Pipeline5Stages`.", "Select Pipeline and click OK.", "In Pipeline section choose Definition: `Pipeline script`.", "Paste the 5-stage pipeline code.", "Click Apply.", "Click Save.", "Open the Pipeline job.", "Click Build Now.", "Open Build Number #1.", "Click Console Output and verify all five stages."],
-      commandBlocks: [fiveStageJenkinsfile],
+      commandBlocks: [],
       expected: "Console Output shows Executing Build, Test, Deploy, Verify, Cleanup stages and `Finished: SUCCESS`.",
       fixes: ["Select `Pipeline script`, not `Pipeline script from SCM`.", "Install Pipeline plugin if the Pipeline job type is missing."]
     } : null;
