@@ -47,15 +47,20 @@
 
 **Execution Steps:**
 1. Create the listed source files with the exact file names.
-2. Run the program locally using the run commands.
-3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Add Choice Parameter `PROGRAM_FILE`: Calculator.java, calculator.py.
-10. Add String Parameters `A` and `B`.
+2. Push the project to GitHub.
+3. Open Jenkins at http://localhost:8080.
+4. Create New Item -> Freestyle project.
+5. Enable `This project is parameterized`.
+6. Add Choice Parameter `PROGRAM_FILE` with choices `Calculator.java` and `calculator.py`.
+7. Add String Parameter `A` with value `10`.
+8. Add String Parameter `B` with value `5`.
+9. Under Source Code Management choose Git and paste the repository URL.
+10. Under Build Steps choose Execute shell.
+11. Paste the run command.
+12. Save.
+13. Click Build with Parameters.
+14. Select the file and enter A/B values.
+15. Click Build and check Console Output.
 
 **Source Files:**
 
@@ -64,8 +69,8 @@
 ```java
 public class Calculator {
   public static void main(String[] args) {
-    int a = Integer.parseInt(args[0]);
-    int b = Integer.parseInt(args[1]);
+    int a = Integer.parseInt(System.getenv().getOrDefault("A", "10"));
+    int b = Integer.parseInt(System.getenv().getOrDefault("B", "5"));
     System.out.println("Add: " + (a + b));
     System.out.println("Sub: " + (a - b));
   }
@@ -75,20 +80,15 @@ public class Calculator {
 #### calculator.py
 
 ```python
-import sys
-a = int(sys.argv[1])
-b = int(sys.argv[2])
+import os
+
+a = int(os.environ.get("A", "10"))
+b = int(os.environ.get("B", "5"))
 print("Add:", a + b)
 print("Sub:", a - b)
 ```
 
 **Commands:**
-
-#### Run commands
-
-```bash
-if [ "$PROGRAM_FILE" = "Calculator.java" ]; then javac Calculator.java && java Calculator $A $B; else python3 calculator.py $A $B; fi
-```
 
 #### GitHub push commands
 
@@ -104,12 +104,17 @@ git push -u origin main
 #### Jenkins Execute shell
 
 ```bash
-if [ "$PROGRAM_FILE" = "Calculator.java" ]; then javac Calculator.java && java Calculator $A $B; else python3 calculator.py $A $B; fi
+if [ "$PROGRAM_FILE" = "Calculator.java" ]; then
+  javac Calculator.java
+  java Calculator
+else
+  python3 calculator.py
+fi
 ```
 
-**Expected Output:** Selected calculator runs with parameter values A and B.
+**Expected Output:** Selected calculator prints Add and Sub using Jenkins parameters A and B.
 
 **Quick Fixes:**
-- If Jenkins cannot access Git, install Git plugin and verify repository URL.
-- If command not found appears, use absolute paths like `/usr/bin/python3`.
-- If workspace is dirty, delete old files from Jenkins workspace and rebuild.
+- Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.
+- Use `Build with Parameters`, not normal Build Now.
+- Use absolute paths like `/usr/bin/python3` if Python is not found.

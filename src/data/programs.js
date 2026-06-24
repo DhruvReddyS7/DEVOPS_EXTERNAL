@@ -365,7 +365,7 @@ print("Division =", a / b)`)],
     expected: "Docker prints the hello-world success message.",
     fixes: ["If Docker is not running, start Docker Desktop or Docker service.", "If image pull fails, check internet connection."]
   },
-  11: jenkinsJob({
+  11: {
     aim: "Create a simple HTML Registration Form, push the code to GitHub, and publish the HTML page using Jenkins.",
     files: ["index.html"],
     blocks: [block("index.html", "html", `<!DOCTYPE html>
@@ -395,12 +395,11 @@ print("Division =", a / b)`)],
 
 </body>
 </html>`)],
-    shell: "echo \"Publish HTML with HTML Publisher Plugin\"\necho \"HTML Directory to Archive: .\"\necho \"Index Page: index.html\"\necho \"Report Title: Registration Form Report\"",
-    output: "Open Registration Form Report in Jenkins to view the HTML page.",
-    setup: ["Create folder: `mkdir RegistrationForm && cd RegistrationForm`.", "Create file: `vi index.html`."],
-    git: "git init\ngit add .\ngit commit -m \"Added Registration Form\"\ngit remote add origin https://github.com/username/RegistrationForm.git\ngit branch -M main\ngit push -u origin main",
-    extra: ["Install HTML Publisher Plugin from Manage Jenkins -> Plugins.", "Use job name `RegistrationForm`.", "Post-build Action: Publish HTML Reports.", "HTML Directory to Archive: `.`", "Index Page(s): `index.html`", "Report Title: `Registration Form Report`."]
-  }),
+    steps: ["Install HTML Publisher Plugin from Manage Jenkins -> Plugins.", "Create folder: `mkdir RegistrationForm && cd RegistrationForm`.", "Create file: `vi index.html`.", "Paste the registration form code and save.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle Project.", "Use job name `RegistrationForm`.", "Under Source Code Management choose Git and paste `https://github.com/username/RegistrationForm.git`.", "Branch Specifier: `*/main`.", "Go to Post-build Actions.", "Select Publish HTML Reports.", "HTML Directory to Archive: `.`", "Index Page(s): `index.html`.", "Report Title: `Registration Form Report`.", "Click Apply and Save.", "Click Build Now.", "Open `Registration Form Report` from the build page."],
+    commandBlocks: [block("GitHub push commands", "bash", "git init\ngit add .\ngit commit -m \"Added Registration Form\"\ngit remote add origin https://github.com/username/RegistrationForm.git\ngit branch -M main\ngit push -u origin main"), block("HTML Publisher settings", "text", "HTML Directory to Archive: .\nIndex Page(s): index.html\nReport Title: Registration Form Report\nReport Files: index.html")],
+    expected: "Open Registration Form Report in Jenkins to view the HTML page.",
+    fixes: ["Install HTML Publisher Plugin if Publish HTML Reports is missing.", "Keep `index.html` in the repository root.", "Use `.` as the HTML directory."]
+  },
   12: {
     aim: "Jenkins Pipeline Job Using Jenkinsfile from GitHub (SCM - GIT).",
     files: ["Jenkinsfile"],
@@ -510,25 +509,27 @@ print("Division:", a / b)`)],
     git: "git init\ngit add .\ngit commit -m \"Initial Commit\"\ngit branch -M main\ngit remote add origin https://github.com/username/CalculatorProject.git\ngit push -u origin main",
     extra: ["Use job name `Calculator-SCM-Polling`.", "Repository URL: `https://github.com/username/CalculatorProject.git`.", "Enable Build Triggers -> Poll SCM.", "Schedule: `* * * * *`.", "To test, change `calculator.py`, commit with `Updated Calculator Program`, and push to GitHub."]
   }),
-  27: jenkinsJob({
-    aim: "Run Java and Python calculator programs through Jenkins using file and variable parameterization.",
+  27: {
+    aim: "Run a simple Java or Python calculator through Jenkins using file and variable parameterization.",
     files: ["Calculator.java", "calculator.py"],
     blocks: [block("Calculator.java", "java", `public class Calculator {
   public static void main(String[] args) {
-    int a = Integer.parseInt(args[0]);
-    int b = Integer.parseInt(args[1]);
+    int a = Integer.parseInt(System.getenv().getOrDefault("A", "10"));
+    int b = Integer.parseInt(System.getenv().getOrDefault("B", "5"));
     System.out.println("Add: " + (a + b));
     System.out.println("Sub: " + (a - b));
   }
-}`), block("calculator.py", "python", `import sys
-a = int(sys.argv[1])
-b = int(sys.argv[2])
+}`), block("calculator.py", "python", `import os
+
+a = int(os.environ.get("A", "10"))
+b = int(os.environ.get("B", "5"))
 print("Add:", a + b)
 print("Sub:", a - b)`)],
-    shell: "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then javac Calculator.java && java Calculator $A $B; else python3 calculator.py $A $B; fi",
-    output: "Selected calculator runs with parameter values A and B.",
-    extra: ["Add Choice Parameter `PROGRAM_FILE`: Calculator.java, calculator.py.", "Add String Parameters `A` and `B`."]
-  })
+    steps: ["Create the listed source files with the exact file names.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle project.", "Enable `This project is parameterized`.", "Add Choice Parameter `PROGRAM_FILE` with choices `Calculator.java` and `calculator.py`.", "Add String Parameter `A` with value `10`.", "Add String Parameter `B` with value `5`.", "Under Source Code Management choose Git and paste the repository URL.", "Under Build Steps choose Execute shell.", "Paste the run command.", "Save.", "Click Build with Parameters.", "Select the file and enter A/B values.", "Click Build and check Console Output."],
+    commandBlocks: [block("GitHub push commands", "bash", gitPush), block("Jenkins Execute shell", "bash", "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then\n  javac Calculator.java\n  java Calculator\nelse\n  python3 calculator.py\nfi")],
+    expected: "Selected calculator prints Add and Sub using Jenkins parameters A and B.",
+    fixes: ["Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.", "Use `Build with Parameters`, not normal Build Now.", "Use absolute paths like `/usr/bin/python3` if Python is not found."]
+  }
 };
 
 const dockerImageTask = (image, commands) => ({
