@@ -356,7 +356,7 @@ button:hover, button.active {
 
 .command-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 560px;
   border-collapse: collapse;
 }
 
@@ -387,31 +387,16 @@ button:hover, button.active {
   font-family: "JetBrains Mono", monospace;
 }
 
+.command-table td:nth-child(2) {
+  width: 34%;
+}
+
 .command-table code {
   color: #d1fae5;
   font-family: "JetBrains Mono", monospace;
   overflow-wrap: anywhere;
 }
 
-.command-table .terminal {
-  border-radius: 5px;
-}
-
-.command-table .terminal-bar {
-  min-height: 32px;
-  padding: 4px 6px 4px 9px;
-  font-size: 0.72rem;
-}
-
-.command-table .terminal .language {
-  display: none;
-}
-
-.command-table pre {
-  padding: 8px;
-  font-size: 0.78rem;
-  line-height: 1.45;
-}
 
 .question-list, .answer-flow {
   display: grid;
