@@ -28,56 +28,56 @@ export const gitCommands = [
 
 export const dockerCommands = [
   {
-    command: "docker --version",
-    usage: "Checks whether Docker is installed.",
-    example: "docker --version"
+    command: "docker pull <image>",
+    usage: "Downloads an image from Docker Hub.",
+    example: "docker pull nginx"
   },
   {
-    command: "docker build -t myapp .",
+    command: "docker run <image>",
+    usage: "Creates and starts a container from an image.",
+    example: "docker run nginx"
+  },
+  {
+    command: "docker build -t <image> .",
     usage: "Builds a Docker image from a Dockerfile.",
     example: "docker build -t myapp ."
   },
   {
-    command: "docker run --name mycontainer myapp",
-    usage: "Runs a container from an image.",
-    example: "docker run myapp"
+    command: "docker tag <image> <username>/<image>",
+    usage: "Tags an image with a new name for a registry.",
+    example: "docker tag myapp username/myapp"
   },
   {
-    command: "docker ps -a",
-    usage: "Lists running and stopped containers.",
-    example: "docker ps -a"
-  },
-  {
-    command: "docker push username/myapp:latest",
-    usage: "Pushes an image to DockerHub.",
-    example: "docker push username/myapp:latest"
+    command: "docker push <username>/<image>",
+    usage: "Uploads the image to Docker Hub.",
+    example: "docker push username/myapp"
   }
 ];
 
 export const kubernetesCommands = [
   {
-    command: "kubectl version --client",
-    usage: "Checks the installed kubectl client version.",
-    example: "kubectl version --client"
+    command: "kubectl create deployment <name> --image=<image>",
+    usage: "Creates a deployment using the specified image.",
+    example: "kubectl create deployment nginx-deployment --image=nginx"
   },
   {
-    command: "kubectl create deployment web --image=nginx",
-    usage: "Creates a deployment from an image.",
-    example: "kubectl create deployment web --image=nginx"
+    command: "kubectl get deployments",
+    usage: "Lists all deployments.",
+    example: "kubectl get deployments"
   },
   {
     command: "kubectl get pods",
-    usage: "Lists pods in the current namespace.",
+    usage: "Lists all pods.",
     example: "kubectl get pods"
   },
   {
-    command: "kubectl expose deployment web --type=NodePort --port=80",
-    usage: "Creates a service to access the deployment.",
-    example: "kubectl expose deployment web --type=NodePort --port=80"
+    command: "kubectl describe deployment <name>",
+    usage: "Shows detailed information about a deployment.",
+    example: "kubectl describe deployment nginx-deployment"
   },
   {
-    command: "kubectl apply -f deployment.yaml",
-    usage: "Creates or updates Kubernetes objects from YAML.",
-    example: "kubectl apply -f deployment.yaml"
+    command: "kubectl delete deployment <name>",
+    usage: "Deletes the specified deployment.",
+    example: "kubectl delete deployment nginx-deployment"
   }
 ];

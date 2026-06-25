@@ -22,21 +22,21 @@
 
 | No. | Command | Usage |
 | --- | --- | --- |
-| 1 | `docker --version` | Checks whether Docker is installed. |
-| 2 | `docker build -t myapp .` | Builds a Docker image from a Dockerfile. |
-| 3 | `docker run --name mycontainer myapp` | Runs a container from an image. |
-| 4 | `docker ps -a` | Lists running and stopped containers. |
-| 5 | `docker push username/myapp:latest` | Pushes an image to DockerHub. |
+| 1 | `docker pull <image>` | Downloads an image from Docker Hub. |
+| 2 | `docker run <image>` | Creates and starts a container from an image. |
+| 3 | `docker build -t <image> .` | Builds a Docker image from a Dockerfile. |
+| 4 | `docker tag <image> <username>/<image>` | Tags an image with a new name for a registry. |
+| 5 | `docker push <username>/<image>` | Uploads the image to Docker Hub. |
 
 ### Q3 Kubernetes Commands
 
 | No. | Command | Usage |
 | --- | --- | --- |
-| 1 | `kubectl version --client` | Checks the installed kubectl client version. |
-| 2 | `kubectl create deployment web --image=nginx` | Creates a deployment from an image. |
-| 3 | `kubectl get pods` | Lists pods in the current namespace. |
-| 4 | `kubectl expose deployment web --type=NodePort --port=80` | Creates a service to access the deployment. |
-| 5 | `kubectl apply -f deployment.yaml` | Creates or updates Kubernetes objects from YAML. |
+| 1 | `kubectl create deployment <name> --image=<image>` | Creates a deployment using the specified image. |
+| 2 | `kubectl get deployments` | Lists all deployments. |
+| 3 | `kubectl get pods` | Lists all pods. |
+| 4 | `kubectl describe deployment <name>` | Shows detailed information about a deployment. |
+| 5 | `kubectl delete deployment <name>` | Deletes the specified deployment. |
 
 ### Q4 Practical Answer
 
