@@ -146,13 +146,14 @@ CMD ["node","app.js"]`)
     files: ["app.py", "requirements.txt", "Dockerfile"],
     blocks: [
       block("app.py", "python", `from flask import Flask
-app=Flask(__name__)
+app = Flask(__name__)
 
 @app.route("/")
 def home():
- return "Hello Flask Docker Application"
+    return "Hello Flask Docker Application"
 
-app.run(host="0.0.0.0",port=5000)`),
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)`),
       block("requirements.txt", "text", "Flask"),
       block("Dockerfile", "dockerfile", `FROM python:3.12
 WORKDIR /app
