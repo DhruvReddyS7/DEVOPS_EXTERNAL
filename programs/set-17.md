@@ -46,16 +46,23 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Nginx latest image.
-2. Run Nginx container named nginxcontainer on port 8080.
-3. Check running containers.
-4. Open the browser URL.
-5. Enter the Nginx container.
-6. Run basic commands inside it.
-7. Exit and stop the container.
-8. If name already exists, remove old container and run again.
+1. Start Docker service on Ubuntu.
+2. Pull the Nginx latest image.
+3. Run Nginx container named nginxcontainer on port 8080.
+4. Check running containers.
+5. Open the browser URL.
+6. Enter the Nginx container.
+7. Run basic commands inside it.
+8. Exit and stop the container.
+9. If name already exists, remove old container and run again.
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Pull Nginx image
 
@@ -122,7 +129,7 @@ docker rm nginxcontainer
 - No YAML file required
 
 **Execution Steps:**
-1. Start Minikube or make sure Kubernetes is running.
+1. Start Minikube using force mode.
 2. Create mongo deployment using kubectl.
 3. Check deployments.
 4. Check pods.
@@ -135,6 +142,7 @@ docker rm nginxcontainer
 #### mongo kubectl commands
 
 ```bash
+minikube start --force
 kubectl create deployment mongo-deployment --image=mongo
 kubectl get deployments
 kubectl get pods
@@ -146,5 +154,5 @@ kubectl delete deployment mongo-deployment
 **Expected Output:** mongo deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If kubectl cannot connect, run `minikube start`.
+- If kubectl cannot connect, run `minikube start --force`.
 - If deployment already exists, delete it first using the delete command.

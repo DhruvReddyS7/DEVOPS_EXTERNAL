@@ -45,21 +45,30 @@
 - No source file required
 
 **Execution Steps:**
-1. Open Jenkins in the browser.
-2. Click New Item.
-3. Enter a project name such as `TestJob`.
-4. Select Freestyle Project and click OK.
-5. Go to Build Triggers.
-6. Select `Trigger builds remotely`.
-7. Authentication Token: `1234`.
-8. Add Build Step -> Execute Shell.
-9. Paste `echo "Hello World"`.
-10. Click Apply and Save.
-11. Open terminal.
-12. Trigger the build using curl.
-13. Open Jenkins -> Job -> Build History -> latest build -> Console Output.
+1. Start Jenkins service on Ubuntu.
+2. Open Jenkins in the browser.
+3. Click New Item.
+4. Enter a project name such as `TestJob`.
+5. Select Freestyle Project and click OK.
+6. Go to Build Triggers.
+7. Select `Trigger builds remotely`.
+8. Authentication Token: `1234`.
+9. Add Build Step -> Execute Shell.
+10. Paste `echo "Hello World"`.
+11. Click Apply and Save.
+12. Open terminal.
+13. Trigger the build using curl.
+14. Open Jenkins -> Job -> Build History -> latest build -> Console Output.
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### Execute Shell
 

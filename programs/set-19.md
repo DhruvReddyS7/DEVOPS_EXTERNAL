@@ -46,11 +46,12 @@
 
 **Execution Steps:**
 1. Create docker-compose.yml.
-2. Start both containers.
-3. Check containers are running.
-4. Enter bbConA shell.
-5. Ping bbConB from bbConA.
-6. Stop containers after verification.
+2. Start Docker service on Ubuntu.
+3. Start both containers.
+4. Check containers are running.
+5. Enter bbConA shell.
+6. Ping bbConB from bbConA.
+7. Stop containers after verification.
 
 **Source Files:**
 
@@ -70,6 +71,12 @@ services:
 ```
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Docker Compose BusyBox commands
 

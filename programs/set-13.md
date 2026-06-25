@@ -48,13 +48,14 @@
 **Execution Steps:**
 1. Create the listed source files with the exact file names.
 2. Push the project to GitHub.
-3. Open Jenkins at http://localhost:8080.
-4. Create New Item -> Freestyle project.
-5. Under Source Code Management choose Git and paste the repository URL.
-6. Under Build Steps choose Execute shell and paste the shell commands.
-7. Save and click Build Now.
-8. Enable This project is parameterized -> Choice Parameter.
-9. Name it `PROGRAM_FILE` and add `Pattern.java` and `pattern.py`.
+3. Start Jenkins service on Ubuntu.
+4. Open Jenkins at http://localhost:8080.
+5. Create New Item -> Freestyle project.
+6. Under Source Code Management choose Git and paste the repository URL.
+7. Under Build Steps choose Execute shell and paste the shell commands.
+8. Save and click Build Now.
+9. Enable This project is parameterized -> Choice Parameter.
+10. Name it `PROGRAM_FILE` and add `Pattern.java` and `pattern.py`.
 
 **Source Files:**
 
@@ -79,6 +80,14 @@ for i in range(1, 6):
 ```
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### GitHub push commands
 

@@ -48,13 +48,14 @@
 1. Create folder: `mkdir CProgram && cd CProgram`.
 2. Create file: `vi hello.c`.
 3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Use job name `CProgramJob`.
-10. Branch specifier: `*/main`.
+4. Start Jenkins service on Ubuntu.
+5. Open Jenkins at http://localhost:8080.
+6. Create New Item -> Freestyle project.
+7. Under Source Code Management choose Git and paste the repository URL.
+8. Under Build Steps choose Execute shell and paste the shell commands.
+9. Save and click Build Now.
+10. Use job name `CProgramJob`.
+11. Branch specifier: `*/main`.
 
 **Source Files:**
 
@@ -70,6 +71,14 @@ int main() {
 ```
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### GitHub push commands
 

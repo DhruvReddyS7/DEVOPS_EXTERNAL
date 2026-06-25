@@ -46,14 +46,21 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Node latest image.
-2. Run Node container named nodecontainer.
-3. Inside Node, execute JavaScript commands.
-4. Exit Node.
-5. Stop the container after completion.
-6. If name already exists, remove old container and run again.
+1. Start Docker service on Ubuntu.
+2. Pull the Node latest image.
+3. Run Node container named nodecontainer.
+4. Inside Node, execute JavaScript commands.
+5. Exit Node.
+6. Stop the container after completion.
+7. If name already exists, remove old container and run again.
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Pull Node image
 
@@ -101,7 +108,7 @@ docker rm nodecontainer
 - No YAML file required
 
 **Execution Steps:**
-1. Start Minikube or make sure Kubernetes is running.
+1. Start Minikube using force mode.
 2. Create python deployment using kubectl.
 3. Check deployments.
 4. Check pods.
@@ -114,6 +121,7 @@ docker rm nodecontainer
 #### python kubectl commands
 
 ```bash
+minikube start --force
 kubectl create deployment python-deployment --image=python
 kubectl get deployments
 kubectl get pods
@@ -125,5 +133,5 @@ kubectl delete deployment python-deployment
 **Expected Output:** python deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If kubectl cannot connect, run `minikube start`.
+- If kubectl cannot connect, run `minikube start --force`.
 - If deployment already exists, delete it first using the delete command.

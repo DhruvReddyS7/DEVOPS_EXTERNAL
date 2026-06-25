@@ -47,14 +47,21 @@
 
 **Execution Steps:**
 1. Open terminal and become root if required.
-2. Pull the Ubuntu latest image.
-3. Run Ubuntu container named ubuntucontainer.
-4. Inside the container, create folder and file.
-5. Exit the container.
-6. Stop the container after completion.
-7. If name already exists, remove old container and run again.
+2. Start Docker service on Ubuntu.
+3. Pull the Ubuntu latest image.
+4. Run Ubuntu container named ubuntucontainer.
+5. Inside the container, create folder and file.
+6. Exit the container.
+7. Stop the container after completion.
+8. If name already exists, remove old container and run again.
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Root login
 
@@ -112,18 +119,19 @@ docker rm ubuntucontainer
 - Pipeline script
 
 **Execution Steps:**
-1. Open Jenkins in the browser.
-2. Click New Item.
-3. Enter job name `Pipeline5Stages`.
-4. Select Pipeline and click OK.
-5. In Pipeline section choose Definition: `Pipeline script`.
-6. Paste the 5-stage pipeline code.
-7. Click Apply.
-8. Click Save.
-9. Open the Pipeline job.
-10. Click Build Now.
-11. Open Build Number #1.
-12. Click Console Output and verify all five stages.
+1. Start Jenkins service on Ubuntu.
+2. Open Jenkins in the browser.
+3. Click New Item.
+4. Enter job name `Pipeline5Stages`.
+5. Select Pipeline and click OK.
+6. In Pipeline section choose Definition: `Pipeline script`.
+7. Paste the 5-stage pipeline code.
+8. Click Apply.
+9. Click Save.
+10. Open the Pipeline job.
+11. Click Build Now.
+12. Open Build Number #1.
+13. Click Console Output and verify all five stages.
 
 **Source Files:**
 
@@ -167,6 +175,16 @@ pipeline {
 
     }
 }
+```
+
+**Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
 ```
 
 **Expected Output:** Console Output shows Executing Build, Test, Deploy, Verify, Cleanup stages and `Finished: SUCCESS`.

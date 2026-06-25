@@ -46,14 +46,21 @@
 - No source file required
 
 **Execution Steps:**
-1. Pull the Python latest image.
-2. Run Python container named pycontainer.
-3. Inside Python, execute basic commands.
-4. Exit Python.
-5. Stop the container after completion.
-6. If name already exists, remove old container and run again.
+1. Start Docker service on Ubuntu.
+2. Pull the Python latest image.
+3. Run Python container named pycontainer.
+4. Inside Python, execute basic commands.
+5. Exit Python.
+6. Stop the container after completion.
+7. If name already exists, remove old container and run again.
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Pull Python image
 
@@ -102,7 +109,7 @@ docker rm pycontainer
 - No YAML file required
 
 **Execution Steps:**
-1. Start Minikube or make sure Kubernetes is running.
+1. Start Minikube using force mode.
 2. Create nginx deployment using kubectl.
 3. Check deployments.
 4. Check pods.
@@ -115,6 +122,7 @@ docker rm pycontainer
 #### nginx kubectl commands
 
 ```bash
+minikube start --force
 kubectl create deployment nginx-deployment --image=nginx
 kubectl get deployments
 kubectl get pods
@@ -126,5 +134,5 @@ kubectl delete deployment nginx-deployment
 **Expected Output:** nginx deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If kubectl cannot connect, run `minikube start`.
+- If kubectl cannot connect, run `minikube start --force`.
 - If deployment already exists, delete it first using the delete command.

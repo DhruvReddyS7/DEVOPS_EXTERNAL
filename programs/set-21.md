@@ -46,7 +46,7 @@
 - No YAML file required
 
 **Execution Steps:**
-1. Start Minikube or make sure Kubernetes is running.
+1. Start Minikube using force mode.
 2. Create node deployment using kubectl.
 3. Check deployments.
 4. Check pods.
@@ -59,6 +59,7 @@
 #### node kubectl commands
 
 ```bash
+minikube start --force
 kubectl create deployment node-deployment --image=node
 kubectl get deployments
 kubectl get pods
@@ -70,7 +71,7 @@ kubectl delete deployment node-deployment
 **Expected Output:** node deployment is created, shown in kubectl output, described, and deleted successfully.
 
 **Quick Fixes:**
-- If kubectl cannot connect, run `minikube start`.
+- If kubectl cannot connect, run `minikube start --force`.
 - If deployment already exists, delete it first using the delete command.
 
 ### Q5 Practical Answer

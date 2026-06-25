@@ -12,9 +12,15 @@ git branch -M main
 git remote add origin ${repo}
 git push -u origin main`;
 
-const dockerPush = (image) => `docker login -u ${dockerUser}
+const dockerPush = (image) => `docker login
 docker tag ${image} ${dockerUser}/${image}
 docker push ${dockerUser}/${image}`;
+
+const dockerStart = "sudo systemctl start docker";
+
+const jenkinsStart = `sudo su
+systemctl enable jenkins
+systemctl start jenkins`;
 
 const makeDockerPractical = ({ title, aim, files, blocks, build, run, output, commit = "Docker App" }) => ({
   aim,
@@ -23,12 +29,14 @@ const makeDockerPractical = ({ title, aim, files, blocks, build, run, output, co
   steps: [
     "Create the listed source files in one folder.",
     "Open terminal in that folder.",
+    "Start Docker service on Ubuntu.",
     "Run the Build & Run commands.",
     "Check output in terminal or browser.",
     "Run the DockerHub commands to push the image.",
     "Run the GitHub commands to push the code."
   ],
   commandBlocks: [
+    block("Start Docker", "bash", dockerStart),
     block("Build & Run", "bash", [...build, ...run].join("\n")),
     block("DockerHub", "bash", dockerPush(title)),
     block("GitHub", "bash", `git init
@@ -242,6 +250,7 @@ const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPu
     ...setup,
     ...(setup.length ? [] : ["Create the listed source files with the exact file names."]),
     "Push the project to GitHub.",
+    "Start Jenkins service on Ubuntu.",
     "Open Jenkins at http://localhost:8080.",
     "Create New Item -> Freestyle project.",
     "Under Source Code Management choose Git and paste the repository URL.",
@@ -250,6 +259,7 @@ const jenkinsJob = ({ aim, files, blocks, shell, output, extra = [], git = gitPu
     ...extra
   ],
   commandBlocks: [
+    block("Start Jenkins", "bash", jenkinsStart),
     block("GitHub push commands", "bash", git),
     block("Jenkins Execute shell", "bash", shell)
   ],
@@ -359,8 +369,8 @@ print("Division =", a / b)`)],
     aim: "Give Docker commands to Run an Hello-World image in Docker.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Open terminal.", "Pull the hello-world image.", "List Docker images.", "Run the hello-world image.", "Read the success message in terminal."],
-    commandBlocks: [block("Run Hello-World image in Docker", "bash", "docker pull hello-world\ndocker images\ndocker run hello-world")],
+    steps: ["Open terminal.", "Start Docker service on Ubuntu.", "Pull the hello-world image.", "List Docker images.", "Run the hello-world image.", "Read the success message in terminal."],
+    commandBlocks: [block("Start Docker", "bash", dockerStart), block("Run Hello-World image in Docker", "bash", "docker pull hello-world\ndocker images\ndocker run hello-world")],
     expected: "Docker prints the hello-world success message.",
     fixes: ["If Docker is not running, start Docker Desktop or Docker service.", "If image pull fails, check internet connection."]
   },
@@ -395,7 +405,7 @@ print("Division =", a / b)`)],
 </body>
 </html>`)],
     steps: ["Install HTML Publisher Plugin from Manage Jenkins -> Plugins.", "Create folder: `mkdir RegistrationForm && cd RegistrationForm`.", "Create file: `vi index.html`.", "Paste the registration form code and save.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle Project.", "Use job name `RegistrationForm`.", "Under Source Code Management choose Git and paste `https://github.com/username/RegistrationForm.git`.", "Branch Specifier: `*/main`.", "Go to Post-build Actions.", "Select Publish HTML Reports.", "HTML Directory to Archive: `.`", "Index Page(s): `index.html`.", "Report Title: `Registration Form Report`.", "Click Apply and Save.", "Click Build Now.", "Open `Registration Form Report` from the build page."],
-    commandBlocks: [block("GitHub push commands", "bash", "git init\ngit add .\ngit commit -m \"Added Registration Form\"\ngit remote add origin https://github.com/username/RegistrationForm.git\ngit branch -M main\ngit push -u origin main"), block("HTML Publisher settings", "text", "HTML Directory to Archive: .\nIndex Page(s): index.html\nReport Title: Registration Form Report\nReport Files: index.html")],
+    commandBlocks: [block("Start Jenkins", "bash", jenkinsStart), block("GitHub push commands", "bash", "git init\ngit add .\ngit commit -m \"Added Registration Form\"\ngit remote add origin https://github.com/username/RegistrationForm.git\ngit branch -M main\ngit push -u origin main"), block("HTML Publisher settings", "text", "HTML Directory to Archive: .\nIndex Page(s): index.html\nReport Title: Registration Form Report\nReport Files: index.html")],
     expected: "Open Registration Form Report in Jenkins to view the HTML page.",
     fixes: ["Install HTML Publisher Plugin if Publish HTML Reports is missing.", "Keep `index.html` in the repository root.", "Use `.` as the HTML directory."]
   },
@@ -413,8 +423,8 @@ print("Division =", a / b)`)],
         }
     }
 }`)],
-    steps: ["Create project folder `JenkinsPipelineDemo`.", "Create `Jenkinsfile` and paste the pipeline script.", "Push the Jenkinsfile to GitHub.", "Open Jenkins and create a Pipeline job named `PipelineDemo`.", "In Pipeline definition choose `Pipeline script from SCM`.", "SCM: Git.", "Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.", "Branch Specifier: `*/main`.", "Script Path: `Jenkinsfile`.", "Save and Build Now.", "Open Console Output and verify success."],
-    commandBlocks: [block("Git Commands", "bash", "git init\ngit add .\ngit commit -m \"Added Jenkinsfile\"\ngit remote add origin https://github.com/username/JenkinsPipelineDemo.git\ngit branch -M main\ngit push -u origin main")],
+    steps: ["Create project folder `JenkinsPipelineDemo`.", "Create `Jenkinsfile` and paste the pipeline script.", "Push the Jenkinsfile to GitHub.", "Start Jenkins service on Ubuntu.", "Open Jenkins and create a Pipeline job named `PipelineDemo`.", "In Pipeline definition choose `Pipeline script from SCM`.", "SCM: Git.", "Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.", "Branch Specifier: `*/main`.", "Script Path: `Jenkinsfile`.", "Save and Build Now.", "Open Console Output and verify success."],
+    commandBlocks: [block("Start Jenkins", "bash", jenkinsStart), block("Git Commands", "bash", "git init\ngit add .\ngit commit -m \"Added Jenkinsfile\"\ngit remote add origin https://github.com/username/JenkinsPipelineDemo.git\ngit branch -M main\ngit push -u origin main")],
     expected: "Console Output shows `Hello from Jenkins Pipeline` and `Finished: SUCCESS`.",
     fixes: ["Keep filename exactly `Jenkinsfile`.", "Install Pipeline and Git plugins if SCM option is missing."]
   },
@@ -438,8 +448,9 @@ print("Division =", a / b)`)],
     aim: "Give Docker commands to Run an Ubuntu image in Docker container named \"MyContainer\" and execute some shell commands inside it.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Open terminal and become root if required.", "Pull the Ubuntu latest image.", "Run Ubuntu container named ubuntucontainer.", "Inside the container, create folder and file.", "Exit the container.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+    steps: ["Open terminal and become root if required.", "Start Docker service on Ubuntu.", "Pull the Ubuntu latest image.", "Run Ubuntu container named ubuntucontainer.", "Inside the container, create folder and file.", "Exit the container.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
     commandBlocks: [
+      block("Start Docker", "bash", dockerStart),
       block("Root login", "bash", "sudo su"),
       block("Pull Ubuntu image", "bash", "docker pull ubuntu:latest"),
       block("Run Ubuntu container", "bash", "docker run -it --name ubuntucontainer ubuntu bash"),
@@ -467,8 +478,8 @@ services:
   image: busybox
   container_name: bbConB
   command: sleep 3600`)],
-    steps: ["Create docker-compose.yml.", "Start both containers.", "Check containers are running.", "Enter bbConA shell.", "Ping bbConB from bbConA.", "Stop containers after verification."],
-    commandBlocks: [block("Docker Compose BusyBox commands", "bash", "docker compose up -d\ndocker ps\ndocker exec -it bbConA sh\nping bbConB\ndocker compose down")],
+    steps: ["Create docker-compose.yml.", "Start Docker service on Ubuntu.", "Start both containers.", "Check containers are running.", "Enter bbConA shell.", "Ping bbConB from bbConA.", "Stop containers after verification."],
+    commandBlocks: [block("Start Docker", "bash", dockerStart), block("Docker Compose BusyBox commands", "bash", "docker compose up -d\ndocker ps\ndocker exec -it bbConA sh\nping bbConB\ndocker compose down")],
     expected: "Ping replies from bbConB are displayed inside bbConA.",
     fixes: ["Use `docker compose`, not old `docker-compose`, on recent Docker.", "Both containers must be on the same compose network."]
   },
@@ -481,8 +492,8 @@ services:
     aim: "Jenkins Remote Build Trigger Using CURL.",
     files: ["No source file required"],
     blocks: [],
-    steps: ["Open Jenkins in the browser.", "Click New Item.", "Enter a project name such as `TestJob`.", "Select Freestyle Project and click OK.", "Go to Build Triggers.", "Select `Trigger builds remotely`.", "Authentication Token: `1234`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Open terminal.", "Trigger the build using curl.", "Open Jenkins -> Job -> Build History -> latest build -> Console Output."],
-    commandBlocks: [block("Execute Shell", "bash", "echo \"Hello World\""), block("Remote Trigger curl", "bash", "curl -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"\n\n# OR\ncurl -X POST -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"")],
+    steps: ["Start Jenkins service on Ubuntu.", "Open Jenkins in the browser.", "Click New Item.", "Enter a project name such as `TestJob`.", "Select Freestyle Project and click OK.", "Go to Build Triggers.", "Select `Trigger builds remotely`.", "Authentication Token: `1234`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Open terminal.", "Trigger the build using curl.", "Open Jenkins -> Job -> Build History -> latest build -> Console Output."],
+    commandBlocks: [block("Start Jenkins", "bash", jenkinsStart), block("Execute Shell", "bash", "echo \"Hello World\""), block("Remote Trigger curl", "bash", "curl -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"\n\n# OR\ncurl -X POST -u admin:admin \"http://localhost:8080/job/TestJob/build?token=1234\"")],
     output: "Started by remote host, Hello World, Finished: SUCCESS",
     expected: "Jenkins accepts the request, starts a new build automatically, and Console Output shows `Hello World` and `Finished: SUCCESS`.",
     fixes: ["Use the correct Jenkins username/password in curl.", "Use the exact job name in the URL.", "Keep token as `1234` or update the URL token to match your job."]
@@ -525,8 +536,8 @@ print("Add:", a + b)
 print("Sub:", a - b)
 print("Mul:", a * b)
 print("Div:", a / b)`)],
-    steps: ["Create the listed source files with the exact file names.", "Push the project to GitHub.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle project.", "Enable `This project is parameterized`.", "Add Choice Parameter named `PROGRAM_FILE`.", "Choices: `Calculator.java` and `calculator.py`.", "Add String Parameter `A` with default value `10`.", "Add String Parameter `B` with default value `5`.", "Under Source Code Management choose Git and paste the repository URL.", "Under Build Steps choose Execute shell.", "Paste the run command.", "Save.", "Click Build with Parameters.", "Select Java or Python file and enter A/B values.", "Click Build and check Console Output."],
-    commandBlocks: [block("GitHub push commands", "bash", gitPush), block("Jenkins Execute shell", "bash", "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then\n  javac Calculator.java && java Calculator $A $B\nelse\n  python3 calculator.py $A $B\nfi")],
+    steps: ["Create the listed source files with the exact file names.", "Push the project to GitHub.", "Start Jenkins service on Ubuntu.", "Open Jenkins at http://localhost:8080.", "Create New Item -> Freestyle project.", "Enable `This project is parameterized`.", "Add Choice Parameter named `PROGRAM_FILE`.", "Choices: `Calculator.java` and `calculator.py`.", "Add String Parameter `A` with default value `10`.", "Add String Parameter `B` with default value `5`.", "Under Source Code Management choose Git and paste the repository URL.", "Under Build Steps choose Execute shell.", "Paste the run command.", "Save.", "Click Build with Parameters.", "Select Java or Python file and enter A/B values.", "Click Build and check Console Output."],
+    commandBlocks: [block("Start Jenkins", "bash", jenkinsStart), block("GitHub push commands", "bash", gitPush), block("Jenkins Execute shell", "bash", "if [ \"$PROGRAM_FILE\" = \"Calculator.java\" ]; then\n  javac Calculator.java && java Calculator $A $B\nelse\n  python3 calculator.py $A $B\nfi")],
     expected: "Selected calculator prints Add, Sub, Mul, and Div using Jenkins values A and B.",
     fixes: ["Parameter names must be exactly `PROGRAM_FILE`, `A`, and `B`.", "Use `Build with Parameters`, not normal Build Now.", "If values are blank, enter numbers like `10` and `5`."]
   }
@@ -546,8 +557,8 @@ const kubeTask = (name, image, port = 80, command = "") => ({
   aim: `Create a Kubernetes ${name} deployment and run kubectl commands.`,
   files: [`${name}-deployment.yaml`],
   blocks: [block(`${name}-deployment.yaml`, "yaml", kubeYaml(name, image, port, command))],
-  steps: ["Start Minikube.", "Create the YAML file.", "Apply the YAML manifest.", "Check deployments, pods, and services.", "Open service using Minikube URL."],
-  commandBlocks: [block("kubectl commands", "bash", `minikube start
+  steps: ["Start Minikube using force mode.", "Create the YAML file.", "Apply the YAML manifest.", "Check deployments, pods, and services.", "Open service using Minikube URL."],
+  commandBlocks: [block("kubectl commands", "bash", `minikube start --force
 kubectl apply -f ${name}-deployment.yaml
 kubectl get deployments
 kubectl get pods -o wide
@@ -562,7 +573,7 @@ const kubeCommandTask = (name, image) => ({
   files: ["No YAML file required"],
   blocks: [],
   steps: [
-    "Start Minikube or make sure Kubernetes is running.",
+    "Start Minikube using force mode.",
     `Create ${name} deployment using kubectl.`,
     "Check deployments.",
     "Check pods.",
@@ -571,7 +582,8 @@ const kubeCommandTask = (name, image) => ({
     "Delete the deployment after verification."
   ],
   commandBlocks: [
-    block(`${name} kubectl commands`, "bash", `kubectl create deployment ${name}-deployment --image=${image}
+    block(`${name} kubectl commands`, "bash", `minikube start --force
+kubectl create deployment ${name}-deployment --image=${image}
 kubectl get deployments
 kubectl get pods
 kubectl describe deployment ${name}-deployment
@@ -579,15 +591,16 @@ kubectl get all
 kubectl delete deployment ${name}-deployment`)
   ],
   expected: `${name} deployment is created, shown in kubectl output, described, and deleted successfully.`,
-  fixes: ["If kubectl cannot connect, run `minikube start`.", "If deployment already exists, delete it first using the delete command."]
+  fixes: ["If kubectl cannot connect, run `minikube start --force`.", "If deployment already exists, delete it first using the delete command."]
 });
 
 practicals[15] = {
   aim: "Give Docker commands to run a Python image and execute some commands.",
   files: ["No source file required"],
   blocks: [],
-  steps: ["Pull the Python latest image.", "Run Python container named pycontainer.", "Inside Python, execute basic commands.", "Exit Python.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+  steps: ["Start Docker service on Ubuntu.", "Pull the Python latest image.", "Run Python container named pycontainer.", "Inside Python, execute basic commands.", "Exit Python.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
   commandBlocks: [
+    block("Start Docker", "bash", dockerStart),
     block("Pull Python image", "bash", "docker pull python:latest"),
     block("Run Python container", "bash", "docker run -it --name pycontainer python"),
     block("Inside Python", "python", "x = 5\nprint(x)\nprint(4 + 3)\nexit()"),
@@ -601,8 +614,9 @@ practicals[16] = {
   aim: "Give Docker commands to run a node image and execute some commands.",
   files: ["No source file required"],
   blocks: [],
-  steps: ["Pull the Node latest image.", "Run Node container named nodecontainer.", "Inside Node, execute JavaScript commands.", "Exit Node.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
+  steps: ["Start Docker service on Ubuntu.", "Pull the Node latest image.", "Run Node container named nodecontainer.", "Inside Node, execute JavaScript commands.", "Exit Node.", "Stop the container after completion.", "If name already exists, remove old container and run again."],
   commandBlocks: [
+    block("Start Docker", "bash", dockerStart),
     block("Pull Node image", "bash", "docker pull node:latest"),
     block("Run Node container", "bash", "docker run -it --name nodecontainer node"),
     block("Inside Node", "javascript", "console.log(\"Hello Node\");\n2 + 5\n.exit"),
@@ -616,8 +630,9 @@ practicals[17] = {
   aim: "Give Docker commands to run a nginx image and execute some commands.",
   files: ["No source file required"],
   blocks: [],
-  steps: ["Pull the Nginx latest image.", "Run Nginx container named nginxcontainer on port 8080.", "Check running containers.", "Open the browser URL.", "Enter the Nginx container.", "Run basic commands inside it.", "Exit and stop the container.", "If name already exists, remove old container and run again."],
+  steps: ["Start Docker service on Ubuntu.", "Pull the Nginx latest image.", "Run Nginx container named nginxcontainer on port 8080.", "Check running containers.", "Open the browser URL.", "Enter the Nginx container.", "Run basic commands inside it.", "Exit and stop the container.", "If name already exists, remove old container and run again."],
   commandBlocks: [
+    block("Start Docker", "bash", dockerStart),
     block("Pull Nginx image", "bash", "docker pull nginx:latest"),
     block("Run Nginx container", "bash", "docker run -d --name nginxcontainer -p 8080:80 nginx"),
     block("Check running container", "bash", "docker ps"),
@@ -832,8 +847,8 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
       aim: "Create a Jenkins Job for executing shell commands and use Build Trigger - Build periodically.",
       files: ["No source file required"],
       blocks: [],
-      steps: ["Open Jenkins Dashboard.", "Click New Item.", "Enter job name `PeriodicShellJob`.", "Select Freestyle Project and click OK.", "In Build Triggers select `Build periodically`.", "Schedule: `* * * * *`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Click Build Now.", "Open Console Output to verify."],
-      commandBlocks: [block("Build periodically schedule", "text", "* * * * *"), block("Execute Shell", "bash", "echo \"Hello World\"")],
+      steps: ["Start Jenkins service on Ubuntu.", "Open Jenkins Dashboard.", "Click New Item.", "Enter job name `PeriodicShellJob`.", "Select Freestyle Project and click OK.", "In Build Triggers select `Build periodically`.", "Schedule: `* * * * *`.", "Add Build Step -> Execute Shell.", "Paste `echo \"Hello World\"`.", "Click Apply and Save.", "Click Build Now.", "Open Console Output to verify."],
+      commandBlocks: [block("Start Jenkins", "bash", jenkinsStart), block("Build periodically schedule", "text", "* * * * *"), block("Execute Shell", "bash", "echo \"Hello World\"")],
       expected: "Console Output shows `Hello World` and `Finished: SUCCESS`.",
       fixes: ["Schedule must be valid cron syntax.", "Check Jenkins system time if trigger seems late."]
     } :
@@ -841,8 +856,8 @@ export const programs = programSpecs.map(([title, q4, q5], index) => {
       aim: "Create a Jenkins pipeline Job using pipeline script with 5 stages.",
       files: ["Pipeline script"],
       blocks: [fiveStageJenkinsfile],
-      steps: ["Open Jenkins in the browser.", "Click New Item.", "Enter job name `Pipeline5Stages`.", "Select Pipeline and click OK.", "In Pipeline section choose Definition: `Pipeline script`.", "Paste the 5-stage pipeline code.", "Click Apply.", "Click Save.", "Open the Pipeline job.", "Click Build Now.", "Open Build Number #1.", "Click Console Output and verify all five stages."],
-      commandBlocks: [],
+      steps: ["Start Jenkins service on Ubuntu.", "Open Jenkins in the browser.", "Click New Item.", "Enter job name `Pipeline5Stages`.", "Select Pipeline and click OK.", "In Pipeline section choose Definition: `Pipeline script`.", "Paste the 5-stage pipeline code.", "Click Apply.", "Click Save.", "Open the Pipeline job.", "Click Build Now.", "Open Build Number #1.", "Click Console Output and verify all five stages."],
+      commandBlocks: [block("Start Jenkins", "bash", jenkinsStart)],
       expected: "Console Output shows Executing Build, Test, Deploy, Verify, Cleanup stages and `Finished: SUCCESS`.",
       fixes: ["Select `Pipeline script`, not `Pipeline script from SCM`.", "Install Pipeline plugin if the Pipeline job type is missing."]
     } : null;

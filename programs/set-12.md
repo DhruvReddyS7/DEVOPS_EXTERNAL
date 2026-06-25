@@ -48,14 +48,15 @@
 1. Create project folder `JenkinsPipelineDemo`.
 2. Create `Jenkinsfile` and paste the pipeline script.
 3. Push the Jenkinsfile to GitHub.
-4. Open Jenkins and create a Pipeline job named `PipelineDemo`.
-5. In Pipeline definition choose `Pipeline script from SCM`.
-6. SCM: Git.
-7. Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.
-8. Branch Specifier: `*/main`.
-9. Script Path: `Jenkinsfile`.
-10. Save and Build Now.
-11. Open Console Output and verify success.
+4. Start Jenkins service on Ubuntu.
+5. Open Jenkins and create a Pipeline job named `PipelineDemo`.
+6. In Pipeline definition choose `Pipeline script from SCM`.
+7. SCM: Git.
+8. Repository URL: `https://github.com/username/JenkinsPipelineDemo.git`.
+9. Branch Specifier: `*/main`.
+10. Script Path: `Jenkinsfile`.
+11. Save and Build Now.
+12. Open Console Output and verify success.
 
 **Source Files:**
 
@@ -76,6 +77,14 @@ pipeline {
 ```
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### Git Commands
 

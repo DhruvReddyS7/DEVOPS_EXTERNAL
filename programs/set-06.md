@@ -49,10 +49,11 @@
 **Execution Steps:**
 1. Create the listed source files in one folder.
 2. Open terminal in that folder.
-3. Run the Build & Run commands.
-4. Check output in terminal or browser.
-5. Run the DockerHub commands to push the image.
-6. Run the GitHub commands to push the code.
+3. Start Docker service on Ubuntu.
+4. Run the Build & Run commands.
+5. Check output in terminal or browser.
+6. Run the DockerHub commands to push the image.
+7. Run the GitHub commands to push the code.
 
 **Source Files:**
 
@@ -90,6 +91,12 @@ CMD ["python","app.py"]
 
 **Commands:**
 
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
+
 #### Build & Run
 
 ```bash
@@ -100,7 +107,7 @@ docker run -p 5000:5000 flask-app
 #### DockerHub
 
 ```bash
-docker login -u 245123751006
+docker login
 docker tag flask-app 245123751006/flask-app
 docker push 245123751006/flask-app
 ```

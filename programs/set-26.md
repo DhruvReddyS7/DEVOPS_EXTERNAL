@@ -48,16 +48,17 @@
 1. Create folder: `mkdir CalculatorProject && cd CalculatorProject`.
 2. Create file: `vi calculator.py`.
 3. Push the project to GitHub.
-4. Open Jenkins at http://localhost:8080.
-5. Create New Item -> Freestyle project.
-6. Under Source Code Management choose Git and paste the repository URL.
-7. Under Build Steps choose Execute shell and paste the shell commands.
-8. Save and click Build Now.
-9. Use job name `Calculator-SCM-Polling`.
-10. Repository URL: `https://github.com/username/CalculatorProject.git`.
-11. Enable Build Triggers -> Poll SCM.
-12. Schedule: `* * * * *`.
-13. To test, change `calculator.py`, commit with `Updated Calculator Program`, and push to GitHub.
+4. Start Jenkins service on Ubuntu.
+5. Open Jenkins at http://localhost:8080.
+6. Create New Item -> Freestyle project.
+7. Under Source Code Management choose Git and paste the repository URL.
+8. Under Build Steps choose Execute shell and paste the shell commands.
+9. Save and click Build Now.
+10. Use job name `Calculator-SCM-Polling`.
+11. Repository URL: `https://github.com/username/CalculatorProject.git`.
+12. Enable Build Triggers -> Poll SCM.
+13. Schedule: `* * * * *`.
+14. To test, change `calculator.py`, commit with `Updated Calculator Program`, and push to GitHub.
 
 **Source Files:**
 
@@ -76,6 +77,14 @@ print("Division:", a / b)
 ```
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### GitHub push commands
 

@@ -45,7 +45,7 @@
 - nginx-deployment.yaml
 
 **Execution Steps:**
-1. Start Minikube.
+1. Start Minikube using force mode.
 2. Create the YAML file.
 3. Apply the YAML manifest.
 4. Check deployments, pods, and services.
@@ -96,7 +96,7 @@ spec:
 #### kubectl commands
 
 ```bash
-minikube start
+minikube start --force
 kubectl apply -f nginx-deployment.yaml
 kubectl get deployments
 kubectl get pods -o wide

@@ -48,20 +48,21 @@
 **Execution Steps:**
 1. Create the listed source files with the exact file names.
 2. Push the project to GitHub.
-3. Open Jenkins at http://localhost:8080.
-4. Create New Item -> Freestyle project.
-5. Enable `This project is parameterized`.
-6. Add Choice Parameter named `PROGRAM_FILE`.
-7. Choices: `Calculator.java` and `calculator.py`.
-8. Add String Parameter `A` with default value `10`.
-9. Add String Parameter `B` with default value `5`.
-10. Under Source Code Management choose Git and paste the repository URL.
-11. Under Build Steps choose Execute shell.
-12. Paste the run command.
-13. Save.
-14. Click Build with Parameters.
-15. Select Java or Python file and enter A/B values.
-16. Click Build and check Console Output.
+3. Start Jenkins service on Ubuntu.
+4. Open Jenkins at http://localhost:8080.
+5. Create New Item -> Freestyle project.
+6. Enable `This project is parameterized`.
+7. Add Choice Parameter named `PROGRAM_FILE`.
+8. Choices: `Calculator.java` and `calculator.py`.
+9. Add String Parameter `A` with default value `10`.
+10. Add String Parameter `B` with default value `5`.
+11. Under Source Code Management choose Git and paste the repository URL.
+12. Under Build Steps choose Execute shell.
+13. Paste the run command.
+14. Save.
+15. Click Build with Parameters.
+16. Select Java or Python file and enter A/B values.
+17. Click Build and check Console Output.
 
 **Source Files:**
 
@@ -94,6 +95,14 @@ print("Div:", a / b)
 ```
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### GitHub push commands
 

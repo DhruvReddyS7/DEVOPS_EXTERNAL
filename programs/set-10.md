@@ -47,12 +47,19 @@
 
 **Execution Steps:**
 1. Open terminal.
-2. Pull the hello-world image.
-3. List Docker images.
-4. Run the hello-world image.
-5. Read the success message in terminal.
+2. Start Docker service on Ubuntu.
+3. Pull the hello-world image.
+4. List Docker images.
+5. Run the hello-world image.
+6. Read the success message in terminal.
 
 **Commands:**
+
+#### Start Docker
+
+```bash
+sudo systemctl start docker
+```
 
 #### Run Hello-World image in Docker
 
@@ -76,19 +83,28 @@ docker run hello-world
 - No source file required
 
 **Execution Steps:**
-1. Open Jenkins Dashboard.
-2. Click New Item.
-3. Enter job name `PeriodicShellJob`.
-4. Select Freestyle Project and click OK.
-5. In Build Triggers select `Build periodically`.
-6. Schedule: `* * * * *`.
-7. Add Build Step -> Execute Shell.
-8. Paste `echo "Hello World"`.
-9. Click Apply and Save.
-10. Click Build Now.
-11. Open Console Output to verify.
+1. Start Jenkins service on Ubuntu.
+2. Open Jenkins Dashboard.
+3. Click New Item.
+4. Enter job name `PeriodicShellJob`.
+5. Select Freestyle Project and click OK.
+6. In Build Triggers select `Build periodically`.
+7. Schedule: `* * * * *`.
+8. Add Build Step -> Execute Shell.
+9. Paste `echo "Hello World"`.
+10. Click Apply and Save.
+11. Click Build Now.
+12. Open Console Output to verify.
 
 **Commands:**
+
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
 
 #### Build periodically schedule
 

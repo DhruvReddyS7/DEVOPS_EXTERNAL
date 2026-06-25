@@ -100,6 +100,14 @@
 
 **Commands:**
 
+#### Start Jenkins
+
+```bash
+sudo su
+systemctl enable jenkins
+systemctl start jenkins
+```
+
 #### GitHub push commands
 
 ```bash
